@@ -21,14 +21,14 @@ inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, std::string & t
 
 inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, bool value)
 {
-    xmlNode.addText(value ? _T("true") : _T("false"));
+    xmlNode.addText(value ? "true" : "false");
     return xmlNode;
 }
 
 inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, bool & value)
 {
     const auto text{xmlNode.getText()};
-    value = (text == _T("true"));
+    value = (text == "true");
     return xmlNode;
 }
 
@@ -82,7 +82,7 @@ inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, std::optional<T
 }
 
 template<typename T>
-std::optional<T> TryOptionalReadFromCurrentNode(const XMLNodeAdapter & xmlNode, std::basic_string_view<TCHAR> nodeName)
+std::optional<T> TryOptionalReadFromCurrentNode(const XMLNodeAdapter & xmlNode, std::string_view nodeName)
 {
     std::optional<T> result;
     if(xmlNode.isCurrentTag(nodeName))

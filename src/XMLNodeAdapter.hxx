@@ -1,13 +1,21 @@
 #pragma once
 
+#include <memory>
 #include <string>
 
-#include "xmlParser/xmlParser.h"
+class XMLNodeAdapterImpl;
+
+namespace XMLParser
+{
+    struct XMLNode;
+}
 
 class XMLNodeAdapter
 {
 public:
     explicit XMLNodeAdapter(XMLParser::XMLNode xmlNode);
+
+    XMLNodeAdapter& operator=(XMLNodeAdapter&& other) noexcept;
 
     [[nodiscard]] bool isEmpty() const;
     [[nodiscard]] std::string getCurrentTag() const;
@@ -21,8 +29,8 @@ public:
     XMLNodeAdapter addChild(std::string_view name);
     XMLNodeAdapter addChild(XMLNodeAdapter & node);
     void addText(std::string_view text);
-    XMLParser::XMLError writeToUTF8(std::string_view outString);
+    int writeToUTF8(std::string_view outString);
 
 private:
-    XMLParser::XMLNode node_;
+    std::unique_ptr<XMLNodeAdapterImpl> pimpl_;
 };
