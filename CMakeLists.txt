@@ -24,9 +24,9 @@ if(NOT "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 endif()
 
-set(BUILD_XMLParser_tests OFF CACHE BOOL "")
-
 include(CMakeLists-XMLParser.txt)
+
+set(XMLParser_LIB $<IF:$<CONFIG:Debug>,${CMAKE_BINARY_DIR}/lib/Debug/XMLParser.lib,${CMAKE_BINARY_DIR}/lib/Release/XMLParser.lib>)
 
 add_subdirectory(src)
 
