@@ -15,6 +15,11 @@ namespace Helper
     {
         return "\t<BaseElement>"
                "\t\t<SampleText>TestText</SampleText>"
+               "\t\t<OptionalText>OptionalText</OptionalText>"
+               "\t\t<Integer>13</Integer>"
+               "\t\t<OptionalInteger>23</OptionalInteger>"
+               "\t\t<Double>3.1415926</Double>"
+               "\t\t<OptionalDouble>4.1415926</OptionalDouble>"
                "\t</BaseElement>";
     }
 

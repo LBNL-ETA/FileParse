@@ -33,6 +33,19 @@ inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, bool & value)
     return xmlNode;
 }
 
+inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, int value)
+{
+    xmlNode.addText(std::to_string(value));
+    return xmlNode;
+}
+
+inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, int & value)
+{
+    const auto text{xmlNode.getText()};
+    value = std::stoi(text);
+    return xmlNode;
+}
+
 inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, double value)
 {
     xmlNode.addText(std::to_string(value));
@@ -45,7 +58,6 @@ inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, double & value)
     value = std::stod(text);
     return xmlNode;
 }
-
 
 inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, size_t value)
 {
