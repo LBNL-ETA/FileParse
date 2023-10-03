@@ -3,12 +3,24 @@
 XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::BaseElement & base)
 {
     xmlNode >> Child("SampleText", base.text);
+    xmlNode >> Child("Integer", base.integer_number);
+    xmlNode >> Child("Double", base.double_number);
+    xmlNode >> Child("OptionalText", base.optional_text);
+    xmlNode >> Child("OptionalInteger", base.optional_int);
+    xmlNode >> Child("OptionalDouble", base.optional_double);
+
     return xmlNode;
 }
 
 XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::BaseElement & base)
 {
     xmlNode << Child("SampleText", base.text);
+    xmlNode << Child("Integer", base.integer_number);
+    xmlNode << Child("Double", base.double_number);
+    xmlNode << Child("OptionalText", base.optional_text);
+    xmlNode << Child("OptionalInteger", base.optional_int);
+    xmlNode << Child("OptionalDouble", base.optional_int);
+
     return xmlNode;
 }
 
