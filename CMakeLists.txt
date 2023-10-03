@@ -1,6 +1,12 @@
+project( FileParse CXX )
+
+set(LIB_MAJOR_VERSION "1")
+set(LIB_MINOR_VERSION "1")
+set(LIB_PATCH_VERSION "0")
+set(LIB_VERSION_STRING "${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_PATCH_VERSION}")
+
 cmake_minimum_required(VERSION 3.5)
 
-project( FileParse VERSION 0.0.1 LANGUAGES CXX )
 set(LIB_NAME ${PROJECT_NAME})
 
 if(NOT "${CMAKE_CXX_STANDARD}")
@@ -24,9 +30,7 @@ if(NOT "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 endif()
 
-include(CMakeLists-XMLParser.txt)
-
-set(XMLParser_LIB $<IF:$<CONFIG:Debug>,${CMAKE_BINARY_DIR}/lib/Debug/XMLParser.lib,${CMAKE_BINARY_DIR}/lib/Release/XMLParser.lib>)
+include(CMakeLists-xmlParser.txt)
 
 add_subdirectory(src)
 
