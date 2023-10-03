@@ -28,7 +28,15 @@ add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
                  EXCLUDE_FROM_ALL)
 
 add_executable(${PROJECT_TEST_NAME}
-		       main.cpp)
+        helper/FileManipulation.hxx
+        helper/FileManipulation.cxx
+		helper/TestSerializers.hxx
+		helper/TestSerializers.cxx
+        helper/TestStructures.hxx
+        helper/TestXML.hxx
+        helper/TestXML.cxx
+        BaseSerializers.unit.cxx
+		main.cpp)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)

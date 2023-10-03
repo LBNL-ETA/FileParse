@@ -5,7 +5,8 @@
 #include <optional>
 #include <variant>
 
-#include "XMLNodeAdapter.hxx"
+
+class XMLNodeAdapter;
 
 inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const std::string & text)
 {
@@ -82,7 +83,7 @@ inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, std::optional<T
 }
 
 template<typename T>
-std::optional<T> TryOptionalReadFromCurrentNode(const XMLNodeAdapter & xmlNode, std::string_view nodeName)
+std::optional<T> TryOptionalReadFromCurrentNode(const XMLNodeAdapter & xmlNode, std::string nodeName)
 {
     std::optional<T> result;
     if(xmlNode.isCurrentTag(nodeName))
@@ -111,17 +112,17 @@ inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, std::variant<T,
 template<typename T>
 struct Child
 {
-    std::vector<std::basic_string<TCHAR>> nodeNames;
+    std::vector<std::string> nodeNames;
     T & data;
     size_t index{0u};
 
-    Child(const std::basic_string<TCHAR> & nodeName, T & data, size_t index = 0u) :
+    Child(const std::string & nodeName, T & data, size_t index = 0u) :
         nodeNames({nodeName}),
         data(data),
         index(index)
     {}
 
-    Child(std::initializer_list<std::basic_string<TCHAR>> nodeNames, T & data, size_t index = 0u) :
+    Child(std::initializer_list<std::string> nodeNames, T & data, size_t index = 0u) :
         nodeNames(nodeNames),
         data(data),
         index(index)

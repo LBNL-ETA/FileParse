@@ -3,8 +3,6 @@
 #include <memory>
 #include <string>
 
-class XMLNodeAdapterImpl;
-
 namespace XMLParser
 {
     struct XMLNode;
@@ -14,8 +12,6 @@ class XMLNodeAdapter
 {
 public:
     explicit XMLNodeAdapter(XMLParser::XMLNode xmlNode);
-
-    XMLNodeAdapter& operator=(XMLNodeAdapter&& other) noexcept;
 
     [[nodiscard]] bool isEmpty() const;
     [[nodiscard]] std::string getCurrentTag() const;
@@ -32,5 +28,6 @@ public:
     int writeToUTF8(std::string_view outString);
 
 private:
-    std::unique_ptr<XMLNodeAdapterImpl> pimpl_;
+    struct Impl;
+    std::shared_ptr<Impl> pimpl_;
 };
