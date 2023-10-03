@@ -21,7 +21,7 @@ if ( MSVC )
 endif()
 
 target_compile_features(${LIB_NAME} PUBLIC cxx_std_17)
-target_link_libraries(${LIB_NAME} PRIVATE ${XMLParser_LIB})
+target_link_libraries(${LIB_NAME} PUBLIC xmlParser)
 
 
 
