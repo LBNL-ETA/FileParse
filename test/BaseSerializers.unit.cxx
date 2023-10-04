@@ -38,8 +38,23 @@ TEST_F(BaserSerializerTest, TestReadingBaseElement)
     }
     else
     {
-        FAIL() << "variant_field does not hold a string value";
+        std::cerr << "variant_field does not hold a string value" << std::endl;
+        FAIL();
     }
+
+    std::remove(fileName.c_str());
+}
+
+TEST_F(BaserSerializerTest, TestWritingBaseElement)
+{
+    Helper::BaseElement base;
+    base.text = "Some example text";
+
+    const std::string fileName{"TestWrite.xml"};
+
+    Helper::saveBaseElement(base, fileName);
+
+    const auto test{File::loadToString(fileName)};
 
     std::remove(fileName.c_str());
 }

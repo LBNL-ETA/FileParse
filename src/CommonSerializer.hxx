@@ -8,28 +8,28 @@
 
 class XMLNodeAdapter;
 
-template <typename NodeAdapter>
+template<typename NodeAdapter>
 inline NodeAdapter operator<<(NodeAdapter node, const std::string & text)
 {
     node.addText(text);
     return node;
 }
 
-template <typename NodeAdapter>
+template<typename NodeAdapter>
 inline NodeAdapter operator>>(const NodeAdapter & node, std::string & text)
 {
     text = node.getText();
     return node;
 }
 
-template <typename NodeAdapter>
+template<typename NodeAdapter>
 inline NodeAdapter operator<<(NodeAdapter node, bool value)
 {
     node.addText(value ? "true" : "false");
     return node;
 }
 
-template <typename NodeAdapter>
+template<typename NodeAdapter>
 inline NodeAdapter operator>>(const NodeAdapter & node, bool & value)
 {
     const auto text{node.getText()};
@@ -37,14 +37,14 @@ inline NodeAdapter operator>>(const NodeAdapter & node, bool & value)
     return node;
 }
 
-template <typename NodeAdapter>
+template<typename NodeAdapter>
 inline NodeAdapter operator<<(NodeAdapter node, int value)
 {
     node.addText(std::to_string(value));
     return node;
 }
 
-template <typename NodeAdapter>
+template<typename NodeAdapter>
 inline NodeAdapter operator>>(const NodeAdapter & node, int & value)
 {
     const auto text{node.getText()};
@@ -52,14 +52,14 @@ inline NodeAdapter operator>>(const NodeAdapter & node, int & value)
     return node;
 }
 
-template <typename NodeAdapter>
+template<typename NodeAdapter>
 inline NodeAdapter operator<<(NodeAdapter node, double value)
 {
     node.addText(std::to_string(value));
     return node;
 }
 
-template <typename NodeAdapter>
+template<typename NodeAdapter>
 inline NodeAdapter operator>>(const NodeAdapter & node, double & value)
 {
     const auto text{node.getText()};
@@ -67,14 +67,14 @@ inline NodeAdapter operator>>(const NodeAdapter & node, double & value)
     return node;
 }
 
-template <typename NodeAdapter>
+template<typename NodeAdapter>
 inline NodeAdapter operator<<(NodeAdapter node, size_t value)
 {
     node.addText(std::to_string(value));
     return node;
 }
 
-template <typename NodeAdapter>
+template<typename NodeAdapter>
 inline NodeAdapter operator>>(const NodeAdapter & node, size_t & value)
 {
     const auto text{node.getText()};
@@ -124,16 +124,11 @@ struct Child
     T & data;
     size_t index{0u};
 
-    Child(const std::string & nodeName, T & data, size_t index = 0u) :
-        nodeNames({nodeName}),
-        data(data),
-        index(index)
+    Child(const std::string & nodeName, T & data, size_t index = 0u) : nodeNames({nodeName}), data(data), index(index)
     {}
 
     Child(std::initializer_list<std::string> nodeNames, T & data, size_t index = 0u) :
-        nodeNames(nodeNames),
-        data(data),
-        index(index)
+        nodeNames(nodeNames), data(data), index(index)
     {}
 };
 
@@ -149,7 +144,7 @@ inline NodeAdapter operator<<(NodeAdapter node, const Child<T> & child)
     return node;
 }
 
-template <typename NodeAdapter, typename T>
+template<typename NodeAdapter, typename T>
 inline NodeAdapter operator>>(const NodeAdapter & node, const Child<T> & child)
 {
     for(const auto & nodeName : child.nodeNames)
@@ -166,25 +161,31 @@ inline NodeAdapter operator>>(const NodeAdapter & node, const Child<T> & child)
 // ------ variant
 
 template<typename NodeAdapter, typename... Ts>
-void serializeVariant(NodeAdapter& node, const std::vector<std::string>& nodeNames, const std::variant<Ts...>& variantValue) {
-    if (variantValue.index() < nodeNames.size()) {
-        std::visit([&](const auto& val) {
-            node << Child{nodeNames[variantValue.index()], val};
-        }, variantValue);
+void serializeVariant(NodeAdapter & node,
+                      const std::vector<std::string> & nodeNames,
+                      const std::variant<Ts...> & variantValue)
+{
+    if(variantValue.index() < nodeNames.size())
+    {
+        std::visit([&](const auto & val) { node << Child{nodeNames[variantValue.index()], val}; }, variantValue);
     }
 }
 
 template<typename NodeAdapter, typename... Ts>
-void deserializeVariant(const NodeAdapter& node, const std::vector<std::string>& nodeNames, std::variant<Ts...>& variantValue) {
+void deserializeVariant(const NodeAdapter & node,
+                        const std::vector<std::string> & nodeNames,
+                        std::variant<Ts...> & variantValue)
+{
     bool deserialized = false;
     int index = 0;
 
-    auto try_deserialize_variant = [&](auto&& dummyType) {
+    auto try_deserialize_variant = [&](auto && dummyType) {
         using Type = std::decay_t<decltype(dummyType)>;
-        if (!deserialized && index < nodeNames.size()) {
+        if(!deserialized && index < nodeNames.size())
+        {
             Type value;
-            if(node.nChildNode(nodeNames[index]) > 0) {
-            //if (node.hasChild(nodeNames[index])) {
+            if(node.nChildNode(nodeNames[index]) > 0)
+            {
                 node >> Child{nodeNames[index], value};
                 variantValue = value;
                 deserialized = true;

@@ -39,4 +39,13 @@ namespace Helper
 
         return base;
     }
+
+    void saveBaseElement(const BaseElement& base, std::string_view fileName)
+    {
+        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+
+        //xmlNode << Child{"BaseElement", base};
+
+        xmlNode.writeToUTF8(fileName);
+    }
 }   // namespace Helper
