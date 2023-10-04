@@ -45,6 +45,11 @@ int XMLNodeAdapter::writeToUTF8(std::string_view outString) {
   return static_cast<int>(pimpl_->node_.writeToUTF8(outString.data()));
 }
 
+int XMLNodeAdapter::writeToFile(std::string_view outString)
+{
+  return pimpl_->node_.writeToFile(outString.data());
+}
+
 bool XMLNodeAdapter::hasChildNode(std::string_view name) const {
   return pimpl_->node_.nChildNode(name.data()) > 0;
 }
