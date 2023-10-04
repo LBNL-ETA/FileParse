@@ -21,7 +21,7 @@ XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::BaseElement & ba
     xmlNode << Child{"Double", base.double_number};
     xmlNode << Child{"OptionalText", base.optional_text};
     xmlNode << Child{"OptionalInteger", base.optional_int};
-    xmlNode << Child{"OptionalDouble", base.optional_int};
+    xmlNode << Child{"OptionalDouble", base.optional_double};
     serializeVariant(xmlNode, {"VariantDouble", "VariantString"}, base.variant_field);
     //xmlNode << Child{{"Double", "String"}, base.variant_field};
 
@@ -44,8 +44,8 @@ namespace Helper
     {
         XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
 
-        //xmlNode << Child{"BaseElement", base};
+        xmlNode << Child{"BaseElement", base};
 
-        xmlNode.writeToUTF8(fileName);
+        xmlNode.writeToFile(fileName);
     }
 }   // namespace Helper

@@ -49,12 +49,48 @@ TEST_F(BaserSerializerTest, TestWritingBaseElement)
 {
     Helper::BaseElement base;
     base.text = "Some example text";
+    base.optional_double = 3.1415926;
+    base.double_number = 1.4321345;
+    base.variant_field = 18.1;
 
     const std::string fileName{"TestWrite.xml"};
 
+    // Sometimes in debug mode the above file was not removed from the previous run. This is to ensure deletion.
+    std::remove(fileName.c_str());
+
     Helper::saveBaseElement(base, fileName);
 
-    const auto test{File::loadToString(fileName)};
+    Helper::BaseElement loadedBase{Helper::loadBaseElement(fileName)};
+
+    EXPECT_EQ(base.text, loadedBase.text);
+
+    constexpr auto tolerance{1e-6};
+
+    if(base.optional_double.has_value() && loadedBase.optional_double.has_value())
+    {
+        EXPECT_NEAR(*base.optional_double, *loadedBase.optional_double, tolerance);
+    }
+    else
+    {
+        EXPECT_EQ(base.optional_double.has_value(), loadedBase.optional_double.has_value());   // Both should be nullopt
+    }
+
+    EXPECT_NEAR(base.double_number, loadedBase.double_number, tolerance);   // Assuming double_number is not optional
+
+    // Check for variant_field
+    if(std::holds_alternative<double>(base.variant_field) && std::holds_alternative<double>(loadedBase.variant_field))
+    {
+        EXPECT_NEAR(std::get<double>(base.variant_field), std::get<double>(loadedBase.variant_field), tolerance);
+    }
+    else if(std::holds_alternative<std::string>(base.variant_field)
+            && std::holds_alternative<std::string>(loadedBase.variant_field))
+    {
+        EXPECT_EQ(std::get<std::string>(base.variant_field), std::get<std::string>(loadedBase.variant_field));
+    }
+    else
+    {
+        EXPECT_FALSE(true);   // Fail test since variant fields are not matching in type
+    }
 
     std::remove(fileName.c_str());
 }

@@ -26,6 +26,7 @@ public:
     XMLNodeAdapter addChild(XMLNodeAdapter & node);
     void addText(std::string_view text);
     int writeToUTF8(std::string_view outString);
+    int writeToFile(std::string_view outString);
 
 private:
     struct Impl;

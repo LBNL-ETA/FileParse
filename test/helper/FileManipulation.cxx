@@ -18,11 +18,19 @@ namespace File
         std::ifstream in{fileName.data()};
         std::string result;
         std::string line;
-        while (std::getline(in, line))
+        while(std::getline(in, line))
         {
             result += line + "\n";
         }
         in.close();
+
+        // Check and remove UTF-8 BOM if present
+        if(result.size() >= 3 && static_cast<unsigned char>(result[0]) == 0xEF
+           && static_cast<unsigned char>(result[1]) == 0xBB && static_cast<unsigned char>(result[2]) == 0xBF)
+        {
+            result.erase(0, 3);   // Remove the first 3 characters (the BOM)
+        }
+
         return result;
     }
 
@@ -33,7 +41,7 @@ namespace File
         std::string line;
 
         // Extract each column name
-        while (std::getline(in, line))
+        while(std::getline(in, line))
         {
             result.insert(line);
         }
