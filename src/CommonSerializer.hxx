@@ -6,8 +6,6 @@
 #include <variant>
 #include <stdexcept>
 
-class XMLNodeAdapter;
-
 template<typename NodeAdapter>
 inline NodeAdapter operator<<(NodeAdapter node, const std::string & text)
 {
