@@ -2,7 +2,7 @@
 
 namespace Helper
 {
-    std::string testDatabase()
+    std::string testBaseElementDatabase()
     {
         static const std::string rootTag{"Test"};
         std::string fileContent{"<" + rootTag + ">\n"};
@@ -20,6 +20,7 @@ namespace Helper
                "\t\t<OptionalInteger>23</OptionalInteger>"
                "\t\t<Double>3.1415926</Double>"
                "\t\t<OptionalDouble>4.1415926</OptionalDouble>"
+               "\t\t<VariantString>VariantText</VariantString>"
                "\t</BaseElement>";
     }
 

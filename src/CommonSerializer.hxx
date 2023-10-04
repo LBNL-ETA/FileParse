@@ -4,121 +4,117 @@
 #include <string>
 #include <optional>
 #include <variant>
-
+#include <stdexcept>
 
 class XMLNodeAdapter;
 
-inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const std::string & text)
+template <typename NodeAdapter>
+inline NodeAdapter operator<<(NodeAdapter node, const std::string & text)
 {
-    xmlNode.addText(text);
-    return xmlNode;
+    node.addText(text);
+    return node;
 }
 
-inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, std::string & text)
+template <typename NodeAdapter>
+inline NodeAdapter operator>>(const NodeAdapter & node, std::string & text)
 {
-    text = xmlNode.getText();
-    return xmlNode;
+    text = node.getText();
+    return node;
 }
 
-inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, bool value)
+template <typename NodeAdapter>
+inline NodeAdapter operator<<(NodeAdapter node, bool value)
 {
-    xmlNode.addText(value ? "true" : "false");
-    return xmlNode;
+    node.addText(value ? "true" : "false");
+    return node;
 }
 
-inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, bool & value)
+template <typename NodeAdapter>
+inline NodeAdapter operator>>(const NodeAdapter & node, bool & value)
 {
-    const auto text{xmlNode.getText()};
+    const auto text{node.getText()};
     value = (text == "true");
-    return xmlNode;
+    return node;
 }
 
-inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, int value)
+template <typename NodeAdapter>
+inline NodeAdapter operator<<(NodeAdapter node, int value)
 {
-    xmlNode.addText(std::to_string(value));
-    return xmlNode;
+    node.addText(std::to_string(value));
+    return node;
 }
 
-inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, int & value)
+template <typename NodeAdapter>
+inline NodeAdapter operator>>(const NodeAdapter & node, int & value)
 {
-    const auto text{xmlNode.getText()};
+    const auto text{node.getText()};
     value = std::stoi(text);
-    return xmlNode;
+    return node;
 }
 
-inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, double value)
+template <typename NodeAdapter>
+inline NodeAdapter operator<<(NodeAdapter node, double value)
 {
-    xmlNode.addText(std::to_string(value));
-    return xmlNode;
+    node.addText(std::to_string(value));
+    return node;
 }
 
-inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, double & value)
+template <typename NodeAdapter>
+inline NodeAdapter operator>>(const NodeAdapter & node, double & value)
 {
-    const auto text{xmlNode.getText()};
+    const auto text{node.getText()};
     value = std::stod(text);
-    return xmlNode;
+    return node;
 }
 
-inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, size_t value)
+template <typename NodeAdapter>
+inline NodeAdapter operator<<(NodeAdapter node, size_t value)
 {
-    xmlNode.addText(std::to_string(value));
-    return xmlNode;
+    node.addText(std::to_string(value));
+    return node;
 }
 
-inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, size_t & value)
+template <typename NodeAdapter>
+inline NodeAdapter operator>>(const NodeAdapter & node, size_t & value)
 {
-    const auto text{xmlNode.getText()};
+    const auto text{node.getText()};
     value = std::stoul(text);
-    return xmlNode;
+    return node;
 }
 
-template<typename T>
-inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const std::optional<T> & opt)
+template<typename NodeAdapter, typename T>
+inline XMLNodeAdapter operator<<(NodeAdapter node, const std::optional<T> & opt)
 {
     if(opt.has_value())
     {
-        xmlNode << opt.value();
+        node << opt.value();
     }
-    return xmlNode;
+    return node;
 }
 
-template<typename T>
-inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, std::optional<T> & opt)
+template<typename NodeAdapter, typename T>
+inline NodeAdapter operator>>(const NodeAdapter & node, std::optional<T> & opt)
 {
-    if(!xmlNode.isEmpty())
+    if(!node.isEmpty())
     {
         T value;
-        xmlNode >> value;
+        node >> value;
         opt = value;
     }
-    return xmlNode;
+    return node;
 }
 
-template<typename T>
-std::optional<T> TryOptionalReadFromCurrentNode(const XMLNodeAdapter & xmlNode, std::string nodeName)
+template<typename NodeAdapter, typename T>
+std::optional<T> TryOptionalReadFromCurrentNode(const NodeAdapter & node, std::string nodeName)
 {
     std::optional<T> result;
-    if(xmlNode.isCurrentTag(nodeName))
+    if(node.isCurrentTag(nodeName))
     {
         T value;
-        xmlNode >> value;
+        node >> value;
         result = value;
     }
     return result;
-}
-
-template<typename T, typename... Ts>
-inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const std::variant<T, Ts...> & v)
-{
-    std::visit([&](auto && arg) { xmlNode << arg; }, v);
-    return xmlNode;
-}
-
-template<typename T, typename... Ts>
-inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, std::variant<T, Ts...> & v)
-{
-    std::visit([&](auto && arg) { xmlNode >> arg; }, v);
-    return xmlNode;
 }
 
 template<typename T>
@@ -141,68 +137,103 @@ struct Child
     {}
 };
 
-template<typename T>
-inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Child<T> & child)
+template<typename NodeAdapter, typename T>
+inline NodeAdapter operator<<(NodeAdapter node, const Child<T> & child)
 {
-    auto childNode = xmlNode;
+    auto childNode = node;
     for(const auto & nodeName : child.nodeNames)
     {
         childNode = childNode.addChild(nodeName);
     }
     childNode << child.data;
-    return xmlNode;
+    return node;
 }
 
-template<typename T>
-inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, const Child<T> & child)
+template <typename NodeAdapter, typename T>
+inline NodeAdapter operator>>(const NodeAdapter & node, const Child<T> & child)
 {
     for(const auto & nodeName : child.nodeNames)
     {
-        auto childNode = xmlNode.getChildNode(nodeName);
+        auto childNode = node.getChildNode(nodeName);
         if(!childNode.isEmpty())
         {
             childNode >> child.data;
         }
     }
-    return xmlNode;
+    return node;
 }
 
-template<typename T>
-inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Child<const std::optional<T>> & child)
+// ------ variant
+
+template<typename NodeAdapter, typename... Ts>
+void serializeVariant(NodeAdapter& node, const std::vector<std::string>& nodeNames, const std::variant<Ts...>& variantValue) {
+    if (variantValue.index() < nodeNames.size()) {
+        std::visit([&](const auto& val) {
+            node << Child{nodeNames[variantValue.index()], val};
+        }, variantValue);
+    }
+}
+
+template<typename NodeAdapter, typename... Ts>
+void deserializeVariant(const NodeAdapter& node, const std::vector<std::string>& nodeNames, std::variant<Ts...>& variantValue) {
+    bool deserialized = false;
+    int index = 0;
+
+    auto try_deserialize_variant = [&](auto&& dummyType) {
+        using Type = std::decay_t<decltype(dummyType)>;
+        if (!deserialized && index < nodeNames.size()) {
+            Type value;
+            if(node.nChildNode(nodeNames[index]) > 0) {
+            //if (node.hasChild(nodeNames[index])) {
+                node >> Child{nodeNames[index], value};
+                variantValue = value;
+                deserialized = true;
+            }
+        }
+        index++;
+    };
+
+    (try_deserialize_variant(Ts{}), ...);
+}
+
+// ------ optional
+
+template<typename NodeAdapter, typename T>
+inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::optional<T>> & child)
 {
     if(child.data.has_value())
     {
         for(const auto & nodeName : child.nodeNames)
         {
-            xmlNode = xmlNode.addChild(nodeName);
+            node = node.addChild(nodeName);
         }
-        xmlNode << child.data.value();
+        node << child.data.value();
     }
-    return xmlNode;
+    return node;
 }
 
-template<typename T>
-inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Child<const std::vector<T>> & vec)
+template<typename NodeAdapter, typename T>
+inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::vector<T>> & vec)
 {
     for(const auto & item : vec.data)
     {
-        XMLNodeAdapter currentNode = xmlNode;
+        XMLNodeAdapter currentNode = node;
         for(const auto & nodeName : vec.nodeNames)
         {
             currentNode = currentNode.addChild(nodeName);
         }
         currentNode << item;
     }
-    return xmlNode;
+    return node;
 }
 
-template<typename T>
-inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, const Child<std::vector<T>> & vec)
+template<typename NodeAdapter, typename T>
+inline NodeAdapter operator>>(const NodeAdapter & node, const Child<std::vector<T>> & vec)
 {
     vec.data.clear();
-    for(int i = 0; i < xmlNode.nChildNode(vec.nodeNames.front()); ++i)
+    for(int i = 0; i < node.nChildNode(vec.nodeNames.front()); ++i)
     {
-        XMLNodeAdapter currentNode = xmlNode;
+        NodeAdapter currentNode = node;
         for(const auto & nodeName : vec.nodeNames)
         {
             currentNode = currentNode.getChildNode(nodeName, i);
@@ -211,24 +242,24 @@ inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, const Child<std
         currentNode >> item;
         vec.data.push_back(item);
     }
-    return xmlNode;
+    return node;
 }
 
-template<typename T>
-inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, const Child<std::optional<std::vector<T>>> & opt_vec)
+template<typename NodeAdapter, typename T>
+inline NodeAdapter operator>>(const NodeAdapter & node, const Child<std::optional<std::vector<T>>> & opt_vec)
 {
-    if(xmlNode.nChildNode(opt_vec.nodeNames.front()) == 0)
+    if(node.nChildNode(opt_vec.nodeNames.front()) == 0)
     {
-        return xmlNode;
+        return node;
     }
 
-    XMLNodeAdapter childNode = xmlNode;
+    NodeAdapter childNode = node;
     for(size_t i = 0u; i < opt_vec.nodeNames.size() - 1u; ++i)
     {
         childNode = childNode.getChildNode(opt_vec.nodeNames[i]);
         if(childNode.isEmpty() || childNode.nChildNode() == 0)
         {
-            return xmlNode;
+            return node;
         }
     }
 
@@ -240,15 +271,15 @@ inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, const Child<std
         tableNode >> item;
         opt_vec.data->push_back(item);
     }
-    return xmlNode;
+    return node;
 }
 
-template<typename T>
-inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Child<const std::optional<std::vector<T>>> & opt_vec)
+template<typename NodeAdapter, typename T>
+inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::optional<std::vector<T>>> & opt_vec)
 {
     if(opt_vec.data.has_value())
     {
-        XMLNodeAdapter currentNode = xmlNode;
+        NodeAdapter currentNode = node;
         for(size_t i = 0u; i < opt_vec.nodeNames.size() - 1; ++i)
         {
             currentNode = currentNode.addChild(opt_vec.nodeNames[i]);
@@ -261,5 +292,5 @@ inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Child<const std::
         }
     }
 
-    return xmlNode;
+    return node;
 }

@@ -18,7 +18,7 @@ protected:
 
 TEST_F(BaserSerializerTest, TestReadingBaseElement)
 {
-    const std::string fileContent{Helper::testDatabase()};
+    const std::string fileContent{Helper::testBaseElementDatabase()};
     const std::string fileName{"TestRead.xml"};
 
     File::createFileFromString(fileName, fileContent);
@@ -32,6 +32,14 @@ TEST_F(BaserSerializerTest, TestReadingBaseElement)
     EXPECT_EQ(23, base.optional_int);
     ASSERT_EQ(true, base.optional_double.has_value());
     EXPECT_NEAR(4.1415926, base.optional_double.value(), 1e-6);
+    if(auto str_ptr = std::get_if<std::string>(&base.variant_field))
+    {
+        EXPECT_EQ("VariantText", *str_ptr);
+    }
+    else
+    {
+        FAIL() << "variant_field does not hold a string value";
+    }
 
     std::remove(fileName.c_str());
 }

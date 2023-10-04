@@ -4,6 +4,6 @@
 
 namespace Helper
 {
-    std::string testDatabase();
+    std::string testBaseElementDatabase();
     std::string baseElement();
 }
