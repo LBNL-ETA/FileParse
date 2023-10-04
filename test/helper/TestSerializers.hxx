@@ -13,4 +13,5 @@ inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::BaseEleme
 namespace Helper
 {
     BaseElement loadBaseElement(std::string_view fileName);
+    void saveBaseElement(const BaseElement& base, std::string_view fileName);
 }   // namespace Helper
