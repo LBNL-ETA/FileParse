@@ -211,18 +211,30 @@ inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::optional<
     return node;
 }
 
+// ------ vector
+
 template<typename NodeAdapter, typename T>
 inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::vector<T>> & vec)
 {
-    for(const auto & item : vec.data)
+    if (vec.nodeNames.empty() || vec.data.empty()) return node;
+
+    // Navigate to the second-to-last node
+    NodeAdapter secondToLastNode = node;
+    for (size_t i = 0; i < vec.nodeNames.size() - 1; ++i)
     {
-        XMLNodeAdapter currentNode = node;
-        for(const auto & nodeName : vec.nodeNames)
-        {
-            currentNode = currentNode.addChild(nodeName);
-        }
-        currentNode << item;
+        secondToLastNode = secondToLastNode.addChild(vec.nodeNames[i]);
     }
+
+    // Name of the last node where items should be attached
+    const auto& lastNodeName = vec.nodeNames.back();
+
+    // For each item in vec.data, add the last node and serialize the item to it.
+    for (const auto & item : vec.data)
+    {
+        NodeAdapter lastNode = secondToLastNode.addChild(lastNodeName);
+        lastNode << item;
+    }
+
     return node;
 }
 
@@ -230,19 +242,32 @@ template<typename NodeAdapter, typename T>
 inline NodeAdapter operator>>(const NodeAdapter & node, const Child<std::vector<T>> & vec)
 {
     vec.data.clear();
-    for(int i = 0; i < node.nChildNode(vec.nodeNames.front()); ++i)
+
+    if(node.nChildNode(vec.nodeNames.front()) <= 0)
+        return node;
+
+    // Dive into the nested structure until the second-to-last node
+    NodeAdapter currentNode = node;
+    for(size_t j = 0; j < vec.nodeNames.size() - 1; ++j)
     {
-        NodeAdapter currentNode = node;
-        for(const auto & nodeName : vec.nodeNames)
-        {
-            currentNode = currentNode.getChildNode(nodeName, i);
-        }
+        currentNode = currentNode.getChildNode(vec.nodeNames[j]);
+    }
+
+    const auto& targetNodeName = vec.nodeNames.back();
+    int childCount = currentNode.nChildNode(targetNodeName);
+    vec.data.reserve(childCount);
+    for(int i = 0; i < childCount; ++i)
+    {
+        NodeAdapter activeNode = currentNode.getChildNode(targetNodeName, i);
         T item;
-        currentNode >> item;
+        activeNode >> item;
         vec.data.push_back(item);
     }
+
     return node;
 }
+
+// ------ optional<vector
 
 template<typename NodeAdapter, typename T>
 inline NodeAdapter operator>>(const NodeAdapter & node, const Child<std::optional<std::vector<T>>> & opt_vec)

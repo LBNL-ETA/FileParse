@@ -24,4 +24,30 @@ namespace Helper
                "\t</BaseElement>";
     }
 
+    std::string testVectorElementDatabase()
+    {
+        static const std::string rootTag{"Test"};
+        std::string fileContent{"<" + rootTag + ">\n"};
+        fileContent += vectorElement();
+        fileContent += "</" + rootTag + ">";
+        return fileContent;
+    }
+
+    std::string vectorElement()
+    {
+        return "\t<VectorElement>\n"
+               "\t\t<Table>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\t23.41\n"
+               "\t\t\t</Value>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\t18.13\n"
+               "\t\t\t</Value>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\t5.0756\n"
+               "\t\t\t</Value>\n"
+               "\t\t</Table>\n"
+               "\t</VectorElement>";
+    }
+
 }   // namespace Helper

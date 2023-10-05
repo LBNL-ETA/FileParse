@@ -35,7 +35,9 @@ add_executable(${PROJECT_TEST_NAME}
         helper/TestStructures.hxx
         helper/TestXML.hxx
         helper/TestXML.cxx
+		helper/Utility.hxx
         BaseSerializers.unit.cxx
+        VectorSerializers.unit.cxx
 		main.cpp)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)

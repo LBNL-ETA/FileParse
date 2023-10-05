@@ -3,6 +3,7 @@
 #include <string>
 #include <optional>
 #include <variant>
+#include <vector>
 
 namespace Helper
 {
@@ -15,5 +16,10 @@ namespace Helper
         std::optional<int> optional_int;
         std::optional<double> optional_double;
         std::variant<double, std::string> variant_field{0.0};
+    };
+
+    struct VectorElement
+    {
+        std::vector<double> values;
     };
 }   // namespace Helper
