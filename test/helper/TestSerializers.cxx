@@ -28,6 +28,20 @@ XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::BaseElement & ba
     return xmlNode;
 }
 
+XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::VectorElement & element)
+{
+    xmlNode >> Child{{"Table", "Value"}, element.values};
+
+    return xmlNode;
+}
+
+XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::VectorElement & element)
+{
+    xmlNode << Child{{"Table", "Value"}, element.values};
+
+    return xmlNode;
+}
+
 namespace Helper
 {
     BaseElement loadBaseElement(std::string_view fileName)
@@ -45,6 +59,25 @@ namespace Helper
         XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
 
         xmlNode << Child{"BaseElement", base};
+
+        xmlNode.writeToFile(fileName);
+    }
+
+    VectorElement loadVectorElement(std::string_view fileName)
+    {
+        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+
+        VectorElement element;
+        xmlNode >> Child{"VectorElement", element};
+
+        return element;
+    }
+
+    void saveVectorElement(const VectorElement & element, std::string_view fileName)
+    {
+        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+
+        xmlNode << Child{"VectorElement", element};
 
         xmlNode.writeToFile(fileName);
     }
