@@ -104,7 +104,7 @@ namespace Helper
 
     struct EnumElement
     {
-        Day day;
+        Day day{Day::None};
         std::optional<Color> color;
     };
 }   // namespace Helper

@@ -40,5 +40,7 @@ namespace Helper
 
         XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
         xmlNode << Child{"EnumElement", element};
+
+        xmlNode.writeToFile(fileName);
     }
 }   // namespace Helper
