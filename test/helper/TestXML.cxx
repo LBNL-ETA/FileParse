@@ -29,6 +29,7 @@ namespace Helper
         static const std::string rootTag{"Test"};
         std::string fileContent{"<" + rootTag + ">\n"};
         fileContent += vectorElement();
+        fileContent += optionalVectorElement();
         fileContent += "</" + rootTag + ">";
         return fileContent;
     }
@@ -48,6 +49,22 @@ namespace Helper
                "\t\t\t</Value>\n"
                "\t\t</Table>\n"
                "\t</VectorElement>";
+    }
+
+    std::string optionalVectorElement() {
+        return "\t<OptionalVectorElement>\n"
+               "\t\t<Table>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\t33.41\n"
+               "\t\t\t</Value>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\t28.13\n"
+               "\t\t\t</Value>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\t6.0756\n"
+               "\t\t\t</Value>\n"
+               "\t\t</Table>\n"
+               "\t</OptionalVectorElement>";
     }
 
 }   // namespace Helper

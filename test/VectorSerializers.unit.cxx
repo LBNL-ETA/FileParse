@@ -18,7 +18,7 @@ protected:
     {}
 };
 
-TEST_F(VectorSerializerTest, TestReading)
+TEST_F(VectorSerializerTest, TestReadingVector)
 {
     const std::string fileContent{Helper::testVectorElementDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -34,7 +34,7 @@ TEST_F(VectorSerializerTest, TestReading)
     std::remove(fileName.c_str());
 }
 
-TEST_F(VectorSerializerTest, TestWriting)
+TEST_F(VectorSerializerTest, TestWritingVector)
 {
     Helper::VectorElement vectorEl;
     vectorEl.values = {1, 2, 3, 4, 5};
@@ -50,6 +50,22 @@ TEST_F(VectorSerializerTest, TestWriting)
 
     constexpr auto tolerance{1e-6};
     Helper::checkVectorValues(vectorEl.values, loadedVector.values, tolerance);
+
+    std::remove(fileName.c_str());
+}
+
+TEST_F(VectorSerializerTest, TestReadingOptionalVector)
+{
+    const std::string fileContent{Helper::testVectorElementDatabase()};
+    const std::string fileName{"TestRead.xml"};
+
+    File::createFileFromString(fileName, fileContent);
+
+    Helper::OptionalVectorElement vectorEl{Helper::loadOptionalVectorElement(fileName)};
+
+    const std::vector<double> correct{33.41, 28.13, 6.0756};
+    constexpr auto tolerance{1e-6};
+    Helper::checkVectorValues(correct, vectorEl.values.value(), tolerance);
 
     std::remove(fileName.c_str());
 }
