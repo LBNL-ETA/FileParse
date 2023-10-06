@@ -25,7 +25,7 @@ TEST_F(VectorSerializerTest, TestReadingVector)
 
     File::createFileFromString(fileName, fileContent);
 
-    Helper::VectorElement vectorEl{Helper::loadVectorElement(fileName)};
+    const auto vectorEl{Helper::loadVectorElement(fileName)};
 
     const std::vector<double> correct{23.41, 18.13, 5.0756};
     constexpr auto tolerance{1e-6};
@@ -46,7 +46,7 @@ TEST_F(VectorSerializerTest, TestWritingVector)
 
     Helper::saveVectorElement(vectorEl, fileName);
 
-    Helper::VectorElement loadedVector{Helper::loadVectorElement(fileName)};
+    const auto loadedVector{Helper::loadVectorElement(fileName)};
 
     constexpr auto tolerance{1e-6};
     Helper::checkVectorValues(vectorEl.values, loadedVector.values, tolerance);
@@ -61,11 +61,61 @@ TEST_F(VectorSerializerTest, TestReadingOptionalVector)
 
     File::createFileFromString(fileName, fileContent);
 
-    Helper::OptionalVectorElement vectorEl{Helper::loadOptionalVectorElement(fileName)};
+    const auto vectorEl{Helper::loadOptionalVectorElement(fileName)};
 
     const std::vector<double> correct{33.41, 28.13, 6.0756};
     constexpr auto tolerance{1e-6};
     Helper::checkVectorValues(correct, vectorEl.values.value(), tolerance);
+
+    std::remove(fileName.c_str());
+}
+
+TEST_F(VectorSerializerTest, TestReadingOptionalVectorEmpty)
+{
+    const std::string fileContent{Helper::testVectorElementEmptyOptionalDatabase()};
+    const std::string fileName{"TestRead.xml"};
+
+    File::createFileFromString(fileName, fileContent);
+
+    const auto vectorEl{Helper::loadOptionalVectorElement(fileName)};
+
+    EXPECT_EQ(false, vectorEl.values.has_value());
+
+    std::remove(fileName.c_str());
+}
+
+TEST_F(VectorSerializerTest, TestWritingOptionalVector)
+{
+    Helper::OptionalVectorElement vectorEl;
+    vectorEl.values = {0.342561, 2.673412, 6.895461, 7.012345, 8.567890};
+
+    const std::string fileName{"TestWrite.xml"};
+
+    std::remove(fileName.c_str());
+
+    Helper::saveOptionalVectorElement(vectorEl, fileName);
+
+    const auto loadedVector{Helper::loadOptionalVectorElement(fileName)};
+
+    constexpr auto tolerance{1e-6};
+    Helper::checkVectorValues(vectorEl.values.value(), loadedVector.values.value(), tolerance);
+
+    std::remove(fileName.c_str());
+}
+
+TEST_F(VectorSerializerTest, TestWritingOptionalVectorEmpty)
+{
+    Helper::OptionalVectorElement vectorEl;
+
+    const std::string fileName{"TestWrite.xml"};
+
+    std::remove(fileName.c_str());
+
+    Helper::saveOptionalVectorElement(vectorEl, fileName);
+
+    const auto loadedVector{Helper::loadOptionalVectorElement(fileName)};
+
+    EXPECT_EQ(false, loadedVector.values.has_value());
 
     std::remove(fileName.c_str());
 }

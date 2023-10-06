@@ -8,6 +8,7 @@ namespace Helper
     std::string baseElement();
 
     std::string testVectorElementDatabase();
+    std::string testVectorElementEmptyOptionalDatabase();
     std::string vectorElement();
     std::string optionalVectorElement();
 }
