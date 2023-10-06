@@ -3,7 +3,7 @@
 #include "xmlParser/xmlParser.h"
 
 struct XMLNodeAdapter::Impl {
-  Impl(XMLParser::XMLNode xmlNode) : node_(xmlNode) {}
+  explicit Impl(XMLParser::XMLNode xmlNode) : node_(xmlNode) {}
   XMLParser::XMLNode node_;
 };
 
@@ -37,7 +37,7 @@ void XMLNodeAdapter::addText(std::string_view text) {
   pimpl_->node_.addText(text.data());
 }
 
-XMLNodeAdapter XMLNodeAdapter::addChild(XMLNodeAdapter &node) {
+XMLNodeAdapter XMLNodeAdapter::addChild(const XMLNodeAdapter &node) {
   return XMLNodeAdapter(pimpl_->node_.addChild(node.pimpl_->node_));
 }
 
@@ -45,7 +45,7 @@ int XMLNodeAdapter::writeToUTF8(std::string_view outString) {
   return static_cast<int>(pimpl_->node_.writeToUTF8(outString.data()));
 }
 
-int XMLNodeAdapter::writeToFile(std::string_view outString)
+int XMLNodeAdapter::writeToFile(std::string_view outString) const
 {
   return pimpl_->node_.writeToFile(outString.data());
 }
