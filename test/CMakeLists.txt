@@ -30,13 +30,24 @@ add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
 add_executable(${PROJECT_TEST_NAME}
         helper/FileManipulation.hxx
         helper/FileManipulation.cxx
-		helper/TestSerializers.hxx
-		helper/TestSerializers.cxx
+
+		helper/serializers/TestBaseElementSerializers.hxx
+		helper/serializers/TestBaseElementSerializers.cxx
+		helper/serializers/TestVectorSerializers.hxx
+		helper/serializers/TestVectorSerializers.cxx
+		helper/serializers/TestEnumSerializers.hxx
+		helper/serializers/TestEnumSerializers.cxx
+
         helper/TestStructures.hxx
-        helper/TestXML.hxx
-        helper/TestXML.cxx
+		helper/TestBaseElementXML.hxx
+		helper/TestBaseElementXML.cxx
+		helper/TestVectorElementXML.hxx
+		helper/TestVectorElementXML.cxx
+		helper/TestEnumElementXML.hxx
+		helper/TestEnumElementXML.cxx
 		helper/Utility.hxx
         BaseSerializers.unit.cxx
+        EnumSerializers.unit.cxx
         VectorSerializers.unit.cxx
 		main.cpp)
 
