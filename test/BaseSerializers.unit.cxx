@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "helper/TestXML.hxx"
+#include "helper/TestBaseElementXML.hxx"
 #include "helper/TestStructures.hxx"
 
 #include "helper/FileManipulation.hxx"
-#include "helper/TestSerializers.hxx"
+#include "test/helper/serializers/TestBaseElementSerializers.hxx"
 
 class BaseSerializerTest : public testing::Test
 {

@@ -2,11 +2,11 @@
 
 #include "helper/Utility.hxx"
 
-#include "helper/TestXML.hxx"
+#include "helper/TestVectorElementXML.hxx"
 #include "helper/TestStructures.hxx"
 
 #include "helper/FileManipulation.hxx"
-#include "helper/TestSerializers.hxx"
+#include "helper/serializers/TestVectorSerializers.hxx"
 
 class VectorSerializerTest : public testing::Test
 {
