@@ -32,13 +32,11 @@ namespace Helper
     }
 
     std::string enumElementOptionalMissing() {
-        return "\t<Test>\n"
-               "\t\t<EnumElement>\n"
-               "\t\t\t<Day>\n"
-               "\t\t\t\tMonday\n"
-               "\t\t\t</Day>\n"
-               "\t\t</EnumElement>\n"
-               "\t</Test>";
+        return "\t<EnumElement>\n"
+               "\t\t<Day>\n"
+               "\t\t\tMonday\n"
+               "\t\t</Day>\n"
+               "\t</EnumElement>\n";
     }
 
 
