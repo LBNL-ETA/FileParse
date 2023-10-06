@@ -323,4 +323,4 @@ namespace FileParse
 
         return node;
     }
-}
+}   // namespace FileParse

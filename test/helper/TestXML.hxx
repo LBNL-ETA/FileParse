@@ -9,4 +9,5 @@ namespace Helper
 
     std::string testVectorElementDatabase();
     std::string vectorElement();
+    std::string optionalVectorElement();
 }
