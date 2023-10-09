@@ -14,9 +14,13 @@ namespace Helper
         xmlNode >> Child{"SampleText", base.text};
         xmlNode >> Child{"Integer", base.integer_number};
         xmlNode >> Child{"Double", base.double_number};
+        xmlNode >> Child{"Boolean", base.boolean_field};
+        xmlNode >> Child{"Size_t", base.size_t_field};
+
         xmlNode >> Child{"OptionalText", base.optional_text};
         xmlNode >> Child{"OptionalInteger", base.optional_int};
         xmlNode >> Child{"OptionalDouble", base.optional_double};
+        xmlNode >> Child{"OptionalBoolean", base.boolean_optional};
         deserializeVariant(xmlNode, {"VariantDouble", "VariantString"}, base.variant_field);
         // xmlNode >> Child{{"Double", "String"}, base.variant_field};
 
@@ -32,9 +36,13 @@ namespace Helper
         xmlNode << Child{"SampleText", base.text};
         xmlNode << Child{"Integer", base.integer_number};
         xmlNode << Child{"Double", base.double_number};
+        xmlNode << Child{"Boolean", base.boolean_field};
+        xmlNode << Child{"Size_t", base.size_t_field};
+
         xmlNode << Child{"OptionalText", base.optional_text};
         xmlNode << Child{"OptionalInteger", base.optional_int};
         xmlNode << Child{"OptionalDouble", base.optional_double};
+        xmlNode << Child{"OptionalBoolean", base.boolean_optional};
         serializeVariant(xmlNode, {"VariantDouble", "VariantString"}, base.variant_field);
         // xmlNode << Child{{"Double", "String"}, base.variant_field};
 

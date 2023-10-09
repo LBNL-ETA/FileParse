@@ -202,7 +202,7 @@ namespace FileParse
             {
                 node = node.addChild(nodeName);
             }
-            node << child.data.value();
+            node << child.data;
         }
         return node;
     }
