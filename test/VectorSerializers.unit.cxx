@@ -119,3 +119,17 @@ TEST_F(VectorSerializerTest, TestWritingOptionalVectorEmpty)
 
     std::remove(fileName.c_str());
 }
+
+TEST_F(VectorSerializerTest, TestReadingEmptyVector)
+{
+    const std::string fileContent{Helper::testEmptyVectorElementDatabase()};
+    const std::string fileName{"TestRead.xml"};
+
+    File::createFileFromString(fileName, fileContent);
+
+    const auto vectorEl{Helper::loadOptionalVectorElement(fileName)};
+
+    EXPECT_EQ(false, vectorEl.values.has_value());
+
+    std::remove(fileName.c_str());
+}

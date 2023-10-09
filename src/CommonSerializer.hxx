@@ -106,19 +106,6 @@ namespace FileParse
         return node;
     }
 
-    template<typename NodeAdapter, typename T>
-    std::optional<T> TryOptionalReadFromCurrentNode(const NodeAdapter & node, std::string nodeName)
-    {
-        std::optional<T> result;
-        if(node.isCurrentTag(nodeName))
-        {
-            T value;
-            node >> value;
-            result = value;
-        }
-        return result;
-    }
-
     template<typename T>
     struct Child
     {
@@ -161,7 +148,9 @@ namespace FileParse
         return node;
     }
 
-    // ------ variant
+    ///////////////////
+    /// ------ variant
+    ///////////////////
 
     template<typename NodeAdapter, typename... Ts>
     void serializeVariant(NodeAdapter & node,
@@ -200,7 +189,9 @@ namespace FileParse
         (try_deserialize_variant(Ts{}), ...);
     }
 
-    // ------ optional
+    ///////////////////
+    /// ------ optional
+    ///////////////////
 
     template<typename NodeAdapter, typename T>
     inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::optional<T>> & child)
@@ -216,7 +207,9 @@ namespace FileParse
         return node;
     }
 
-    // ------ vector
+    ///////////////////
+    /// ------ vector
+    ///////////////////
 
     template<typename NodeAdapter, typename T>
     inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::vector<T>> & vec)
@@ -249,7 +242,7 @@ namespace FileParse
     {
         vec.data.clear();
 
-        if(node.nChildNode(vec.nodeNames.front()) <= 0)
+        if(!node.hasChildNode(vec.nodeNames.front()))
             return node;
 
         // Dive into the nested structure until the second-to-last node
@@ -273,12 +266,14 @@ namespace FileParse
         return node;
     }
 
-    // ------ optional<vector
+    ///////////////////
+    /// ------ optional<vector>
+    ///////////////////
 
     template<typename NodeAdapter, typename T>
     inline NodeAdapter operator>>(const NodeAdapter & node, const Child<std::optional<std::vector<T>>> & opt_vec)
     {
-        if(node.nChildNode(opt_vec.nodeNames.front()) == 0)
+        if(!node.hasChildNode(opt_vec.nodeNames.front()))
         {
             return node;
         }
@@ -325,7 +320,9 @@ namespace FileParse
         return node;
     }
 
-    // ------ enum class
+    ///////////////////
+    /// ------ enum class
+    ///////////////////
 
     template<typename NodeAdapter, typename EnumType>
     NodeAdapter serializeEnum(NodeAdapter node,

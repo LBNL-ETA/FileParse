@@ -78,7 +78,6 @@ TEST_F(EnumSerializerTest, TestWritingOptionalMissing)
 
     const std::string fileName{"TestWrite.xml"};
 
-    // Sometimes in debug mode the above file was not removed from the previous run. This is to ensure deletion.
     std::remove(fileName.c_str());
 
     Helper::saveEnumElement(enumEl, fileName);
