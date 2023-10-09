@@ -17,4 +17,6 @@ namespace Helper
 
     OptionalVectorElement loadOptionalVectorElement(std::string_view fileName);
     void saveOptionalVectorElement(const OptionalVectorElement& element, std::string_view fileName);
+
+        
 }   // namespace Helper

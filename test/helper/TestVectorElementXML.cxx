@@ -22,6 +22,15 @@ namespace Helper
         return fileContent;
     }
 
+    std::string testEmptyVectorElementDatabase()
+    {
+        static const std::string rootTag{"Test"};
+        std::string fileContent{"<" + rootTag + ">\n"};
+        fileContent += emptyVectorElement();
+        fileContent += "</" + rootTag + ">";
+        return fileContent;
+    }
+
     std::string vectorElement()
     {
         return "\t<VectorElement>\n"
@@ -52,6 +61,14 @@ namespace Helper
                "\t\t\t<Value>\n"
                "\t\t\t\t6.0756\n"
                "\t\t\t</Value>\n"
+               "\t\t</Table>\n"
+               "\t</OptionalVectorElement>";
+    }
+
+    std::string emptyVectorElement()
+    {
+        return "\t<OptionalVectorElement>\n"
+               "\t\t<Table>\n"
                "\t\t</Table>\n"
                "\t</OptionalVectorElement>";
     }
