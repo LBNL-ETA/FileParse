@@ -133,3 +133,21 @@ TEST_F(VectorSerializerTest, TestReadingEmptyVector)
 
     std::remove(fileName.c_str());
 }
+
+TEST_F(VectorSerializerTest, TestWritingEmptyVector)
+{
+    Helper::VectorElement vectorEl;
+
+    const std::string fileName{"TestWrite.xml"};
+
+    // Sometimes in debug mode the above file was not removed from the previous run. This is to ensure deletion.
+    std::remove(fileName.c_str());
+
+    Helper::saveVectorElement(vectorEl, fileName);
+
+    const auto loadedVector{Helper::loadVectorElement(fileName)};
+
+    EXPECT_EQ(vectorEl.values.size(), loadedVector.values.size());
+
+    std::remove(fileName.c_str());
+}

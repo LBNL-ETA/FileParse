@@ -28,10 +28,17 @@ TEST_F(BaseSerializerTest, TestReadingBaseElement)
     EXPECT_EQ("TestText", base.text);
     EXPECT_EQ(13, base.integer_number);
     EXPECT_NEAR(3.1415926, base.double_number, 1e-6);
+    EXPECT_EQ(true, base.boolean_field);
     EXPECT_EQ("OptionalText", base.optional_text);
     EXPECT_EQ(23, base.optional_int);
+    EXPECT_EQ(18u, base.size_t_field);
     ASSERT_EQ(true, base.optional_double.has_value());
     EXPECT_NEAR(4.1415926, base.optional_double.value(), 1e-6);
+    ASSERT_EQ(true, base.boolean_optional.has_value());
+    if(base.boolean_optional.has_value())
+    {
+        EXPECT_EQ(false, base.boolean_optional.value());
+    }
     if(auto str_ptr = std::get_if<std::string>(&base.variant_field))
     {
         EXPECT_EQ("VariantText", *str_ptr);
@@ -52,6 +59,7 @@ TEST_F(BaseSerializerTest, TestWritingBaseElement)
     base.optional_double = 3.1415926;
     base.double_number = 1.4321345;
     base.variant_field = 18.1;
+    base.boolean_field = false;
 
     const std::string fileName{"TestWrite.xml"};
 
@@ -68,7 +76,18 @@ TEST_F(BaseSerializerTest, TestWritingBaseElement)
 
     if(base.optional_double.has_value() && loadedBase.optional_double.has_value())
     {
-        EXPECT_NEAR(*base.optional_double, *loadedBase.optional_double, tolerance);
+        EXPECT_NEAR(base.optional_double.value(), loadedBase.optional_double.value(), tolerance);
+    }
+    else
+    {
+        EXPECT_EQ(base.optional_double.has_value(), loadedBase.optional_double.has_value());   // Both should be nullopt
+    }
+
+    EXPECT_EQ(base.boolean_optional, loadedBase.boolean_optional);
+
+    if(base.boolean_optional.has_value() && loadedBase.boolean_optional.has_value())
+    {
+        EXPECT_EQ(base.boolean_optional.value(), loadedBase.boolean_optional.value());
     }
     else
     {
@@ -77,7 +96,6 @@ TEST_F(BaseSerializerTest, TestWritingBaseElement)
 
     EXPECT_NEAR(base.double_number, loadedBase.double_number, tolerance);   // Assuming double_number is not optional
 
-    // Check for variant_field
     if(std::holds_alternative<double>(base.variant_field) && std::holds_alternative<double>(loadedBase.variant_field))
     {
         EXPECT_NEAR(std::get<double>(base.variant_field), std::get<double>(loadedBase.variant_field), tolerance);
