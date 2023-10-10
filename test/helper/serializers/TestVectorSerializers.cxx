@@ -1,6 +1,8 @@
 #include "TestVectorSerializers.hxx"
 
-#include "CommonSerializer.hxx"
+#include "Common.hxx"
+#include "Vector.hxx"
+
 #include "xmlParser.h"
 
 namespace Helper

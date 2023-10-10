@@ -1,7 +1,12 @@
 set( CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON )
 
-add_library( ${LIB_NAME}   
-		CommonSerializer.hxx
+add_library( ${LIB_NAME}
+		Base.hxx
+		Common.hxx
+		Enum.hxx
+		Optional.hxx
+		Variant.hxx
+		Vector.hxx
 		XMLNodeAdapter.cxx
 		XMLNodeAdapter.hxx)
 

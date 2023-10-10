@@ -1,6 +1,9 @@
 #include "TestBaseElementSerializers.hxx"
 
-#include "CommonSerializer.hxx"
+#include "Common.hxx"
+#include "Variant.hxx"
+#include "Optional.hxx"
+
 #include "xmlParser.h"
 
 namespace Helper
