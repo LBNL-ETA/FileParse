@@ -47,6 +47,19 @@ namespace Helper
         return xmlNode;
     }
 
+    XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, EnumVectorElement & element)
+    {
+        FileParse::deserializeEnumVector<XMLNodeAdapter, Helper::Day>(xmlNode, {"Table", "Value"}, element.days, toDay);
+
+        return xmlNode;
+    }
+
+    XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const EnumVectorElement & element)
+    {
+        FileParse::serializeEnumVector<XMLNodeAdapter, Helper::Day>(xmlNode, {"Table", "Value"}, element.days, toDayString);
+        return xmlNode;
+    }
+
     VectorElement loadVectorElement(std::string_view fileName)
     {
         using FileParse::Child;
@@ -89,6 +102,29 @@ namespace Helper
         XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
 
         xmlNode << Child{"OptionalVectorElement", element};
+
+        xmlNode.writeToFile(fileName);
+    }
+
+    EnumVectorElement loadEnumVectorElement(std::string_view fileName)
+    {
+        using FileParse::Child;
+
+        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+
+        EnumVectorElement element;
+        xmlNode >> Child{"EnumVectorElement", element};
+
+        return element;
+    }
+
+    void saveEnumVectorElement(const EnumVectorElement & element, std::string_view fileName)
+    {
+        using FileParse::Child;
+
+        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+
+        xmlNode << Child{"EnumVectorElement", element};
 
         xmlNode.writeToFile(fileName);
     }

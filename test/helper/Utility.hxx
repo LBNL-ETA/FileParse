@@ -22,6 +22,33 @@ namespace Helper
     }
 
     template<typename T>
+    void checkVectorEquality(const std::vector<T> & expected, const std::vector<T> & actual)
+    {
+        ASSERT_EQ(expected.size(), actual.size())
+          << "Vectors have different sizes: expected " << expected.size() << ", but got " << actual.size();
+
+        for(size_t i = 0u; i < expected.size(); ++i)
+        {
+            EXPECT_EQ(expected[i], actual[i])
+              << "At index " << i << ": expected " << expected[i] << ", but got " << actual[i];
+        }
+    }
+
+    template<typename T, typename ConverterFunction>
+    void
+      checkVectorEquality(const std::vector<T> & expected, const std::vector<T> & actual, ConverterFunction converter)
+    {
+        ASSERT_EQ(expected.size(), actual.size())
+          << "Vectors have different sizes: expected " << expected.size() << ", but got " << actual.size();
+
+        for(size_t i = 0u; i < expected.size(); ++i)
+        {
+            EXPECT_EQ(expected[i], actual[i])
+              << "At index " << i << ": expected " << converter(expected[i]) << ", but got " << converter(actual[i]);
+        }
+    }
+
+    template<typename T>
     void checkSetValues(const std::set<T> & correct, const std::set<T> & values, T tolerance)
     {
         ASSERT_EQ(correct.size(), values.size())

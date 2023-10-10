@@ -151,3 +151,37 @@ TEST_F(VectorSerializerTest, TestWritingEmptyVector)
 
     std::remove(fileName.c_str());
 }
+
+TEST_F(VectorSerializerTest, TestReadingEnumVector)
+{
+    const std::string fileContent{Helper::testDayVectorElementDatabase()};
+    const std::string fileName{"TestRead.xml"};
+
+    File::createFileFromString(fileName, fileContent);
+
+    const auto vectorEl{Helper::loadEnumVectorElement(fileName)};
+
+    const std::vector<Helper::Day> correct{Helper::Day::Friday, Helper::Day::Saturday, Helper::Day::Sunday};
+    Helper::checkVectorEquality(correct, vectorEl.days, Helper::toDayString);
+
+    std::remove(fileName.c_str());
+}
+
+TEST_F(VectorSerializerTest, TestWritingEnumVector)
+{
+    Helper::EnumVectorElement vectorEl;
+    using Helper::Day;
+    vectorEl.days = {Day::Monday, Day::Tuesday, Day::Thursday, Day::Friday};
+
+    const std::string fileName{"TestWrite.xml"};
+
+    std::remove(fileName.c_str());
+
+    Helper::saveEnumVectorElement(vectorEl, fileName);
+
+    const auto loadedVector{Helper::loadEnumVectorElement(fileName)};
+
+    Helper::checkVectorEquality(vectorEl.days, loadedVector.days, Helper::toDayString);
+
+    std::remove(fileName.c_str());
+}

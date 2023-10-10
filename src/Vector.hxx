@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <optional>
+#include <functional>
+#include <stdexcept>
 
 #include "Common.hxx"
 
@@ -111,4 +113,72 @@ namespace FileParse
 
         return node;
     }
-}
+
+    template<typename NodeAdapter, typename EnumType>
+    NodeAdapter serializeEnumVector(NodeAdapter node,
+                                    const std::vector<std::string> & tags,
+                                    const std::vector<EnumType> & vec,
+                                    std::function<std::string(EnumType)> converter)
+    {
+        if(tags.empty())
+        {
+            throw std::invalid_argument("Tag vector is empty");
+        }
+
+        NodeAdapter currentNode = node;
+
+        for(size_t i = 0; i < tags.size() - 1; ++i)
+        {
+            currentNode = currentNode.addChild(tags[i]);
+        }
+
+        for(const auto & value : vec)
+        {
+            NodeAdapter childNode = currentNode.addChild(tags.back());
+            childNode.addText(converter(value));
+        }
+
+        return node;
+    }
+
+
+    template<typename NodeAdapter, typename EnumType>
+    NodeAdapter deserializeEnumVector(const NodeAdapter & node,
+                                      const std::vector<std::string> & tags,
+                                      std::vector<EnumType> & vec,
+                                      std::function<EnumType(std::string_view)> converter)
+    {
+        static_assert(std::is_enum_v<EnumType>, "Provided type is not an enum!");
+
+        if(tags.empty())
+        {
+            throw std::invalid_argument("Tag vector is empty");
+        }
+
+        NodeAdapter currentNode = node;
+
+        for(size_t i = 0; i < tags.size() - 1; ++i)
+        {
+            currentNode = currentNode.getChildNode(tags[i]);
+            if(currentNode.isEmpty())
+            {
+                throw std::runtime_error("Failed to navigate XML using provided tags");
+            }
+        }
+
+        vec.clear();
+        int totalNodes = currentNode.nChildNode(tags.back());
+        for(int i = 0; i < totalNodes; ++i)
+        {
+            NodeAdapter childNode = currentNode.getChildNode(tags.back(), i);
+            if(!childNode.isEmpty())
+            {
+                const auto text = childNode.getText();
+                vec.emplace_back(converter(text));
+            }
+        }
+
+        return node;
+    }
+
+}   // namespace FileParse

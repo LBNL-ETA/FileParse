@@ -40,6 +40,7 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/serializers/VectorSerializers.hxx
 		helper/serializers/VectorSerializers.cxx
 
+		helper/structures/Enums.hxx
 		helper/structures/StructureBase.hxx
 		helper/structures/StructureEnum.hxx
 		helper/structures/StructureSet.hxx
