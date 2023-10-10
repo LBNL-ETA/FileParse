@@ -39,16 +39,16 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/serializers/TestEnumSerializers.cxx
 
         helper/TestStructures.hxx
-		helper/TestBaseElementXML.hxx
-		helper/TestBaseElementXML.cxx
-		helper/TestVectorElementXML.hxx
-		helper/TestVectorElementXML.cxx
-		helper/TestEnumElementXML.hxx
-		helper/TestEnumElementXML.cxx
+        helper/files/TestBaseElementXML.hxx
+        helper/files/TestBaseElementXML.cxx
+        helper/files/TestVectorElementXML.hxx
+        helper/files/TestVectorElementXML.cxx
+        helper/files/TestEnumElementXML.hxx
+        helper/files/TestEnumElementXML.cxx
 		helper/Utility.hxx
-        BaseSerializers.unit.cxx
-        EnumSerializers.unit.cxx
-        VectorSerializers.unit.cxx
+		units/BaseSerializers.unit.cxx
+		units/EnumSerializers.unit.cxx
+		units/VectorSerializers.unit.cxx
 		main.cpp)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
