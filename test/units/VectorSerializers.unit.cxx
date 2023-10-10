@@ -1,12 +1,12 @@
 #include <gtest/gtest.h>
 
-#include "helper/Utility.hxx"
+#include "test/helper/Utility.hxx"
 
-#include "helper/TestVectorElementXML.hxx"
-#include "helper/TestStructures.hxx"
+#include "test/helper/files/TestVectorElementXML.hxx"
+#include "test/helper/TestStructures.hxx"
 
-#include "helper/FileManipulation.hxx"
-#include "helper/serializers/TestVectorSerializers.hxx"
+#include "test/helper/FileManipulation.hxx"
+#include "test/helper/serializers/TestVectorSerializers.hxx"
 
 class VectorSerializerTest : public testing::Test
 {

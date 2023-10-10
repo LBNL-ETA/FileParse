@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "helper/TestBaseElementXML.hxx"
-#include "helper/TestStructures.hxx"
+#include "test/helper/files/TestBaseElementXML.hxx"
+#include "test/helper/TestStructures.hxx"
 
-#include "helper/FileManipulation.hxx"
+#include "test/helper/FileManipulation.hxx"
 #include "test/helper/serializers/TestBaseElementSerializers.hxx"
 
 class BaseSerializerTest : public testing::Test
