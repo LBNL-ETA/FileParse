@@ -1,6 +1,6 @@
 #pragma once
 
-#include "test/helper/TestStructures.hxx"
+#include "test/helper/structures/StructureEnum.hxx"
 
 #include "XMLNodeAdapter.hxx"
 

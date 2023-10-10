@@ -1,4 +1,4 @@
-#include "TestEnumElementXML.hxx"
+#include "EnumElementXML.hxx"
 
 namespace Helper
 {
