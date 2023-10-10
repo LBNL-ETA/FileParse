@@ -6,10 +6,6 @@
 
 namespace FileParse
 {
-        ///////////////////
-    /// ------ variant
-    ///////////////////
-
     template<typename NodeAdapter, typename... Ts>
     void serializeVariant(NodeAdapter & node,
                           const std::vector<std::string> & nodeNames,

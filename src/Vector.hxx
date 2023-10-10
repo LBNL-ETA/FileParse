@@ -7,10 +7,6 @@
 
 namespace FileParse
 {
-    ///////////////////
-    /// ------ vector
-    ///////////////////
-
     template<typename NodeAdapter, typename T>
     inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::vector<T>> & vec)
     {
@@ -65,10 +61,6 @@ namespace FileParse
 
         return node;
     }
-
-    ///////////////////
-    /// ------ optional<vector>
-    ///////////////////
 
     template<typename NodeAdapter, typename T>
     inline NodeAdapter operator>>(const NodeAdapter & node, const Child<std::optional<std::vector<T>>> & opt_vec)

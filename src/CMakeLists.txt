@@ -5,6 +5,7 @@ add_library( ${LIB_NAME}
 		Common.hxx
 		Enum.hxx
 		Optional.hxx
+		Set.hxx
 		Variant.hxx
 		Vector.hxx
 		XMLNodeAdapter.cxx

@@ -1,10 +1,11 @@
 #include <gtest/gtest.h>
 
-#include "test/helper/files/TestEnumElementXML.hxx"
-#include "test/helper/TestStructures.hxx"
-
 #include "test/helper/FileManipulation.hxx"
-#include "test/helper/serializers/TestBaseElementSerializers.hxx"
+
+#include "test/helper/files/EnumElementXML.hxx"
+#include "test/helper/structures/StructureEnum.hxx"
+
+#include "test/helper/serializers/EnumSerializers.hxx"
 
 class EnumSerializerTest : public testing::Test
 {

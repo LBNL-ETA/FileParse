@@ -1,4 +1,4 @@
-#include "TestVectorElementXML.hxx"
+#include "VectorElementXML.hxx"
 
 namespace Helper
 {

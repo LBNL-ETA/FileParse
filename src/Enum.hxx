@@ -6,10 +6,6 @@
 
 namespace FileParse
 {
-    ///////////////////
-    /// ------ enum class
-    ///////////////////
-
     template<typename NodeAdapter, typename EnumType>
     NodeAdapter serializeEnum(NodeAdapter node,
                               const std::string & tag,

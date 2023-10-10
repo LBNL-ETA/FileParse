@@ -31,20 +31,23 @@ add_executable(${PROJECT_TEST_NAME}
         helper/FileManipulation.hxx
         helper/FileManipulation.cxx
 
-		helper/serializers/TestBaseElementSerializers.hxx
-		helper/serializers/TestBaseElementSerializers.cxx
-		helper/serializers/TestVectorSerializers.hxx
-		helper/serializers/TestVectorSerializers.cxx
-		helper/serializers/TestEnumSerializers.hxx
-		helper/serializers/TestEnumSerializers.cxx
+		helper/serializers/BaseElementSerializers.hxx
+		helper/serializers/BaseElementSerializers.cxx
+		helper/serializers/VectorSerializers.hxx
+		helper/serializers/VectorSerializers.cxx
+		helper/serializers/EnumSerializers.hxx
+		helper/serializers/EnumSerializers.cxx
 
-        helper/TestStructures.hxx
-        helper/files/TestBaseElementXML.hxx
-        helper/files/TestBaseElementXML.cxx
-        helper/files/TestVectorElementXML.hxx
-        helper/files/TestVectorElementXML.cxx
-        helper/files/TestEnumElementXML.hxx
-        helper/files/TestEnumElementXML.cxx
+		helper/structures/StructureBase.hxx
+		helper/structures/StructureEnum.hxx
+		helper/structures/StructureVector.hxx
+
+		helper/files/BaseElementXML.hxx
+		helper/files/BaseElementXML.cxx
+		helper/files/VectorElementXML.hxx
+		helper/files/VectorElementXML.cxx
+		helper/files/EnumElementXML.hxx
+		helper/files/EnumElementXML.cxx
 		helper/Utility.hxx
 		units/BaseSerializers.unit.cxx
 		units/EnumSerializers.unit.cxx
