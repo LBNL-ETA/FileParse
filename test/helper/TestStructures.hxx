@@ -91,7 +91,7 @@ namespace Helper
         return map;
     }();
 
-    inline std::string toColorString(Color color)
+    inline std::string toString(Color color)
     {
         if(ColorToString.count(color) == 0)
             return "";

@@ -1,6 +1,7 @@
 #include "TestEnumSerializers.hxx"
 
-#include "CommonSerializer.hxx"
+#include "Common.hxx"
+#include "Enum.hxx"
 #include "xmlParser.h"
 
 namespace Helper
@@ -17,7 +18,7 @@ namespace Helper
     XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const EnumElement & element)
     {
         FileParse::serializeEnum<XMLNodeAdapter, Helper::Day>(xmlNode, "Day", element.day, Helper::toDayString);
-        FileParse::serializeEnum<XMLNodeAdapter, Helper::Color>(xmlNode, "Color", element.color, Helper::toColorString);
+        FileParse::serializeEnum<XMLNodeAdapter, Helper::Color>(xmlNode, "Color", element.color, Helper::toString);
 
         return xmlNode;
     }
