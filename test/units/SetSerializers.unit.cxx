@@ -34,22 +34,21 @@ TEST_F(SetSerializerTest, TestReadingSet)
     std::remove(fileName.c_str());
 }
 
-//TEST_F(SetSerializerTest, TestWritingSet)
-//{
-//    Helper::VectorElement vectorEl;
-//    vectorEl.values = {1, 2, 3, 4, 5};
-//
-//    const std::string fileName{"TestWrite.xml"};
-//
-//    // Sometimes in debug mode the above file was not removed from the previous run. This is to ensure deletion.
-//    std::remove(fileName.c_str());
-//
-//    Helper::saveVectorElement(vectorEl, fileName);
-//
-//    const auto loadedVector{Helper::loadVectorElement(fileName)};
-//
-//    constexpr auto tolerance{1e-6};
-//    Helper::checkVectorValues(vectorEl.values, loadedVector.values, tolerance);
-//
-//    std::remove(fileName.c_str());
-//}
+TEST_F(SetSerializerTest, TestWritingSet)
+{
+    Helper::SetElementDouble setEl;
+    setEl.values = {1, 2, 3, 4, 5};
+
+    const std::string fileName{"TestWrite.xml"};
+
+    std::remove(fileName.c_str());
+
+    Helper::saveSetElementDouble(setEl, fileName);
+
+    const auto loadedVector{Helper::loadSetElementDouble(fileName)};
+
+    constexpr auto tolerance{1e-6};
+    Helper::checkSetValues(setEl.values, loadedVector.values, tolerance);
+
+    std::remove(fileName.c_str());
+}

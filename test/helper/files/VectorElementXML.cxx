@@ -31,6 +31,15 @@ namespace Helper
         return fileContent;
     }
 
+    std::string testDayVectorElementDatabase()
+    {
+        static const std::string rootTag{"Test"};
+        std::string fileContent{"<" + rootTag + ">\n"};
+        fileContent += enumVectorElement();
+        fileContent += "</" + rootTag + ">";
+        return fileContent;
+    }
+
     std::string vectorElement()
     {
         return "\t<VectorElement>\n"
@@ -71,5 +80,21 @@ namespace Helper
                "\t\t<Table>\n"
                "\t\t</Table>\n"
                "\t</OptionalVectorElement>";
+    }
+
+    std::string enumVectorElement() {
+        return "\t<EnumVectorElement>\n"
+               "\t\t<Table>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\tFriday\n"
+               "\t\t\t</Value>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\tSaturday\n"
+               "\t\t\t</Value>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\tSunday\n"
+               "\t\t\t</Value>\n"
+               "\t\t</Table>\n"
+               "\t</EnumVectorElement>";
     }
 }   // namespace Helper
