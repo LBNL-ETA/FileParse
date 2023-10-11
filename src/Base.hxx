@@ -6,6 +6,48 @@
 namespace FileParse
 {
     template<typename NodeAdapter>
+    NodeAdapter insertAllButLastChild(NodeAdapter node, const std::vector<std::string> & nodeNames)
+    {
+        NodeAdapter secondToLastNode = node;
+        for(size_t i = 0; i < nodeNames.size() - 1; ++i)
+        {
+            secondToLastNode = secondToLastNode.addChild(nodeNames[i]);
+        }
+
+        return secondToLastNode;
+    }
+
+    template<typename NodeAdapter>
+    std::optional<NodeAdapter> findParentOfLastTag(NodeAdapter node, const std::vector<std::string> & nodeNames)
+    {
+        NodeAdapter currentNode = node;
+
+        for(size_t i = 0; i < nodeNames.size() - 1; ++i)
+        {
+            currentNode = currentNode.getChildNode(nodeNames[i]);
+            if(currentNode.isEmpty())
+            {
+                return std::nullopt;
+            }
+        }
+
+        return currentNode;
+    }
+
+    template<typename NodeAdapter>
+    int numberOfChilds(NodeAdapter node, const std::vector<std::string> & nodeNames)
+    {
+        auto currentNode{findParentOfLastTag(node, nodeNames)};
+
+        if(!currentNode.has_value())
+        {
+            return 0;
+        }
+
+        return currentNode.value().nChilds(nodeNames.size());
+    }
+
+    template<typename NodeAdapter>
     inline NodeAdapter operator<<(NodeAdapter node, const std::string & text)
     {
         node.addText(text);

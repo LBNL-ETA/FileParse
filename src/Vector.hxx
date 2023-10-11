@@ -15,17 +15,10 @@ namespace FileParse
         if(vec.nodeNames.empty() || vec.data.empty())
             return node;
 
-        // Navigate to the second-to-last node
-        NodeAdapter secondToLastNode = node;
-        for(size_t i = 0; i < vec.nodeNames.size() - 1; ++i)
-        {
-            secondToLastNode = secondToLastNode.addChild(vec.nodeNames[i]);
-        }
+        auto secondToLastNode{insertAllButLastChild(node, vec.nodeNames)};
 
-        // Name of the last node where items should be attached
         const auto & lastNodeName = vec.nodeNames.back();
 
-        // For each item in vec.data, add the last node and serialize the item to it.
         for(const auto & item : vec.data)
         {
             NodeAdapter lastNode = secondToLastNode.addChild(lastNodeName);
@@ -67,29 +60,16 @@ namespace FileParse
     template<typename NodeAdapter, typename T>
     inline NodeAdapter operator>>(const NodeAdapter & node, const Child<std::optional<std::vector<T>>> & opt_vec)
     {
-        if(!node.hasChildNode(opt_vec.nodeNames.front()))
+        auto childNode{findParentOfLastTag(node, opt_vec.nodeNames)};
+
+        if(!childNode.has_value() || childNode.value().nChildNode(opt_vec.nodeNames.back()) == 0)
         {
             return node;
         }
 
-        NodeAdapter childNode = node;
-        for(size_t i = 0u; i < opt_vec.nodeNames.size() - 1u; ++i)
-        {
-            childNode = childNode.getChildNode(opt_vec.nodeNames[i]);
-            if(childNode.isEmpty() || childNode.nChildNode() == 0)
-            {
-                return node;
-            }
-        }
-
         opt_vec.data = std::vector<T>();
-        for(int i = 0; i < childNode.nChildNode(opt_vec.nodeNames.back()); ++i)
-        {
-            auto tableNode = childNode.getChildNode(opt_vec.nodeNames.back(), i);
-            T item;
-            tableNode >> item;
-            opt_vec.data->push_back(item);
-        }
+        node >> Child{opt_vec.nodeNames, opt_vec.data.value()};
+
         return node;
     }
 
@@ -98,11 +78,7 @@ namespace FileParse
     {
         if(opt_vec.data.has_value())
         {
-            NodeAdapter currentNode = node;
-            for(size_t i = 0u; i < opt_vec.nodeNames.size() - 1; ++i)
-            {
-                currentNode = currentNode.addChild(opt_vec.nodeNames[i]);
-            }
+            auto currentNode{insertAllButLastChild(node, opt_vec.nodeNames)};
 
             for(const auto & item : opt_vec.data.value())
             {

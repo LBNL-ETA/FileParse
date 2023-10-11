@@ -21,6 +21,10 @@ namespace FileParse
         Child(std::initializer_list<std::string> nodeNames, T & data, size_t index = 0u) :
             nodeNames(nodeNames), data(data), index(index)
         {}
+
+        Child(const std::vector<std::string> & nodeNames, T & data, size_t index = 0u) :
+            nodeNames(nodeNames), data(data), index(index)
+        {}
     };
 
     template<typename NodeAdapter, typename T>
