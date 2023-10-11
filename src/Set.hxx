@@ -12,20 +12,11 @@ namespace FileParse
         if(value.nodeNames.empty() || value.data.empty())
             return node;
 
-        // Navigate to the second-to-last node
-        NodeAdapter secondToLastNode = node;
-        for(size_t i = 0; i < value.nodeNames.size() - 1; ++i)
-        {
-            secondToLastNode = secondToLastNode.addChild(value.nodeNames[i]);
-        }
+        auto secondToLastNode{insertAllButLastChild(node, value.nodeNames)};
 
-        // Name of the last node where items should be attached
-        const auto & lastNodeName = value.nodeNames.back();
-
-        // For each item in vec.data, add the last node and serialize the item to it.
         for(const auto & item : value.data)
         {
-            NodeAdapter lastNode = secondToLastNode.addChild(lastNodeName);
+            NodeAdapter lastNode = secondToLastNode.addChild(value.nodeNames.back());
             lastNode << item;
         }
 
@@ -40,23 +31,19 @@ namespace FileParse
         if(!node.hasChildNode(vec.nodeNames.front()))
             return node;
 
-        // Dive into the nested structure until the second-to-last node
-        NodeAdapter currentNode = node;
-        for(size_t j = 0; j < vec.nodeNames.size() - 1; ++j)
-        {
-            currentNode = currentNode.getChildNode(vec.nodeNames[j]);
-        }
+        auto currentNode{findParentOfLastTag(node, vec.nodeNames)};
 
-        const auto & targetNodeName = vec.nodeNames.back();
-        int childCount = currentNode.nChildNode(targetNodeName);
-        for(int i = 0; i < childCount; ++i)
+        if(currentNode.has_value())
         {
-            NodeAdapter activeNode = currentNode.getChildNode(targetNodeName, i);
-            T item;
-            activeNode >> item;
-            vec.data.insert(item);
+            for(int i = 0; i < currentNode.value().nChildNode(vec.nodeNames.back()); ++i)
+            {
+                NodeAdapter activeNode = currentNode.value().getChildNode(vec.nodeNames.back(), i);
+                T item;
+                activeNode >> item;
+                vec.data.insert(item);
+            }
         }
 
         return node;
     }
-}
+}   // namespace FileParse

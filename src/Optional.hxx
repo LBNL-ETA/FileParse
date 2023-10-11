@@ -11,11 +11,7 @@ namespace FileParse
     {
         if(child.data.has_value())
         {
-            for(const auto & nodeName : child.nodeNames)
-            {
-                node = node.addChild(nodeName);
-            }
-            node << child.data;
+            node << Child{child.nodeNames, child.data.value()};
         }
         return node;
     }
