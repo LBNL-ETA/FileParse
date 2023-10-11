@@ -1,6 +1,8 @@
 #pragma once
 
 #include <set>
+#include <functional>
+#include <stdexcept>
 
 #include "Common.hxx"
 
@@ -74,6 +76,63 @@ namespace FileParse
             {
                 auto tableNode = currentNode.addChild(opt_vec.nodeNames.back());
                 tableNode << item;
+            }
+        }
+
+        return node;
+    }
+
+    template<typename NodeAdapter, typename EnumType>
+    NodeAdapter serializeEnumSet(NodeAdapter node,
+                                 const std::vector<std::string> & tags,
+                                 const std::set<EnumType> & vec,
+                                 std::function<std::string(EnumType)> converter)
+    {
+        if(tags.empty())
+        {
+            throw std::invalid_argument("Tag vector is empty");
+        }
+
+        auto currentNode{insertAllButLastChild(node, tags)};
+
+        for(const auto & value : vec)
+        {
+            NodeAdapter childNode = currentNode.addChild(tags.back());
+            childNode.addText(converter(value));
+        }
+
+        return node;
+    }
+
+
+    template<typename NodeAdapter, typename EnumType>
+    NodeAdapter deserializeEnumSet(const NodeAdapter & node,
+                                   const std::vector<std::string> & tags,
+                                   std::set<EnumType> & vec,
+                                   std::function<EnumType(std::string_view)> converter)
+    {
+        static_assert(std::is_enum_v<EnumType>, "Provided type is not an enum!");
+
+        vec.clear();
+
+        if(tags.empty())
+        {
+            throw std::invalid_argument("Tag vector is empty");
+        }
+
+        auto currentNode{findParentOfLastTag(node, tags)};
+
+        if(currentNode.has_value())
+        {
+            int totalNodes = currentNode.value().nChildNode(tags.back());
+            for(int i = 0; i < totalNodes; ++i)
+            {
+                NodeAdapter childNode = currentNode.value().getChildNode(tags.back(), i);
+                if(!childNode.isEmpty())
+                {
+                    const auto text = childNode.getText();
+                    vec.insert(converter(text));
+                }
             }
         }
 
