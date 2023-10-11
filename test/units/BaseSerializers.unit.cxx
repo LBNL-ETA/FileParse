@@ -4,7 +4,7 @@
 #include "test/helper/structures/StructureBase.hxx"
 
 #include "test/helper/FileManipulation.hxx"
-#include "test/helper/serializers/BaseElementSerializers.hxx"
+#include "test/helper/serializers/SerializersBaseElement.hxx"
 
 class BaseSerializerTest : public testing::Test
 {

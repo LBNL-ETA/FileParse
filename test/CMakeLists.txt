@@ -31,14 +31,14 @@ add_executable(${PROJECT_TEST_NAME}
         helper/FileManipulation.hxx
         helper/FileManipulation.cxx
 
-		helper/serializers/BaseElementSerializers.hxx
-		helper/serializers/BaseElementSerializers.cxx
-		helper/serializers/EnumSerializers.hxx
-		helper/serializers/EnumSerializers.cxx
-		helper/serializers/SetSerializers.hxx
-		helper/serializers/SetSerializers.cxx
-		helper/serializers/VectorSerializers.hxx
-		helper/serializers/VectorSerializers.cxx
+        helper/serializers/SerializersBaseElement.hxx
+		helper/serializers/SerializersBaseElement.cxx
+		helper/serializers/SerializersEnum.hxx
+		helper/serializers/SerializersEnum.cxx
+		helper/serializers/SerializersSet.hxx
+		helper/serializers/SerializersSet.cxx
+		helper/serializers/SerializersVector.hxx
+		helper/serializers/SerializersVector.cxx
 
 		helper/structures/Enums.hxx
 		helper/structures/StructureBase.hxx

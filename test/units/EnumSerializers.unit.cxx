@@ -5,7 +5,7 @@
 #include "test/helper/files/EnumElementXML.hxx"
 #include "test/helper/structures/StructureEnum.hxx"
 
-#include "test/helper/serializers/EnumSerializers.hxx"
+#include "test/helper/serializers/SerializersEnum.hxx"
 
 class EnumSerializerTest : public testing::Test
 {
