@@ -28,6 +28,23 @@ namespace Helper
                "\t</SetElementDouble>";
     }
 
+    std::string testSetElementEmptyDatabase()
+    {
+        static const std::string rootTag{"Test"};
+        std::string fileContent{"<" + rootTag + ">\n"};
+        fileContent += setElementEmpty();
+        fileContent += "</" + rootTag + ">";
+        return fileContent;
+    }
+
+    std::string setElementEmpty()
+    {
+        return "\t<SetElementDouble>\n"
+               "\t\t<Table>\n"
+               "\t\t</Table>\n"
+               "\t</SetElementDouble>";
+    }
+
     std::string testSetElementOptionalDoubleDatabase()
     {
         static const std::string rootTag{"Test"};
@@ -53,4 +70,5 @@ namespace Helper
                "\t\t</Table>\n"
                "\t</SetElementOptionalDouble>";
     }
+
 }   // namespace Helper

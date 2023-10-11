@@ -82,12 +82,43 @@ TEST_F(SetSerializerTest, OptionalWriting)
 
     Helper::saveSetElementOptionalDouble(setEl, fileName);
 
-    const auto loadedVector{Helper::loadSetElementOptionalDouble(fileName)};
+    const auto loadedSet{Helper::loadSetElementOptionalDouble(fileName)};
 
-    EXPECT_EQ(true, loadedVector.values.has_value());
+    EXPECT_EQ(true, loadedSet.values.has_value());
 
     constexpr auto tolerance{1e-6};
-    Helper::checkSetValues(setEl.values.value(), loadedVector.values.value(), tolerance);
+    Helper::checkSetValues(setEl.values.value(), loadedSet.values.value(), tolerance);
+
+    std::remove(fileName.c_str());
+}
+
+TEST_F(SetSerializerTest, ReadingEmpty)
+{
+    const std::string fileContent{Helper::testSetElementEmptyDatabase()};
+    const std::string fileName{"TestRead.xml"};
+
+    File::createFileFromString(fileName, fileContent);
+
+    const auto setEl{Helper::loadSetElementDouble(fileName)};
+
+    EXPECT_EQ(0u, setEl.values.size());
+
+    std::remove(fileName.c_str());
+}
+
+TEST_F(SetSerializerTest, WritingEmpty)
+{
+    Helper::SetElementDouble setEl;
+
+    const std::string fileName{"TestWrite.xml"};
+
+    std::remove(fileName.c_str());
+
+    Helper::saveSetElementDouble(setEl, fileName);
+
+    const auto loadedSet{Helper::loadSetElementDouble(fileName)};
+
+    EXPECT_EQ(setEl.values.size(), loadedSet.values.size());
 
     std::remove(fileName.c_str());
 }
