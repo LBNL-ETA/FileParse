@@ -66,4 +66,24 @@ namespace Helper
         }
     }
 
+    template<typename T, typename ConverterFunction>
+    void checkSetEquality(const std::set<T> & expected, const std::set<T> & actual, ConverterFunction converter)
+    {
+        ASSERT_EQ(expected.size(), actual.size())
+          << "Sets have different sizes: expected " << expected.size() << ", but got " << actual.size();
+
+        auto expectedIt = expected.begin();
+        auto actualIt = actual.begin();
+        size_t i = 0;
+
+        while(expectedIt != expected.end() && actualIt != actual.end())
+        {
+            EXPECT_EQ(*expectedIt, *actualIt)
+              << "At position " << i << ": expected " << converter(*expectedIt) << ", but got " << converter(*actualIt);
+            ++expectedIt;
+            ++actualIt;
+            ++i;
+        }
+    }
+
 }   // namespace Helper

@@ -71,4 +71,30 @@ namespace Helper
                "\t</SetElementOptionalDouble>";
     }
 
+    std::string testSetElementEnumDatabase()
+    {
+        static const std::string rootTag{"Test"};
+        std::string fileContent{"<" + rootTag + ">\n"};
+        fileContent += setElementEnum();
+        fileContent += "</" + rootTag + ">";
+        return fileContent;
+    }
+
+    std::string setElementEnum()
+    {
+        return "\t<SetElementEnum>\n"
+               "\t\t<Table>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\tWednesday\n"
+               "\t\t\t</Value>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\tFriday\n"
+               "\t\t\t</Value>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\tSunday\n"
+               "\t\t\t</Value>\n"
+               "\t\t</Table>\n"
+               "\t</SetElementEnum>";
+    }
+
 }   // namespace Helper

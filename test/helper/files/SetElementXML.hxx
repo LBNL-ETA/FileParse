@@ -12,4 +12,7 @@ namespace Helper
 
     std::string testSetElementOptionalDoubleDatabase();
     std::string setElementOptionalDouble();
+
+    std::string testSetElementEnumDatabase();
+    std::string setElementEnum();
 }

@@ -122,3 +122,37 @@ TEST_F(SetSerializerTest, WritingEmpty)
 
     std::remove(fileName.c_str());
 }
+
+TEST_F(SetSerializerTest, ReadingEnum)
+{
+    const std::string fileContent{Helper::testSetElementEnumDatabase()};
+    const std::string fileName{"TestRead.xml"};
+
+    File::createFileFromString(fileName, fileContent);
+
+    const auto setEl{Helper::loadSetElementEnum(fileName)};
+
+    const std::set<Helper::Day> correct{Helper::Day::Wednesday, Helper::Day::Friday, Helper::Day::Sunday};
+    Helper::checkSetEquality(correct, setEl.days, Helper::toDayString);
+
+    std::remove(fileName.c_str());
+}
+
+TEST_F(SetSerializerTest, WritingEnum)
+{
+    Helper::SetElementEnum setEl;
+    using Helper::Day;
+    setEl.days = {Day::Monday, Day::Tuesday, Day::Thursday, Day::Sunday};
+
+    const std::string fileName{"TestWrite.xml"};
+
+    std::remove(fileName.c_str());
+
+    Helper::saveSetElementEnum(setEl, fileName);
+
+    const auto loadedSet{Helper::loadSetElementEnum(fileName)};
+
+    Helper::checkSetEquality(setEl.days, loadedSet.days, Helper::toDayString);
+
+    std::remove(fileName.c_str());
+}
