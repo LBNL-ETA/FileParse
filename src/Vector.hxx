@@ -36,22 +36,18 @@ namespace FileParse
         if(!node.hasChildNode(vec.nodeNames.front()))
             return node;
 
-        // Dive into the nested structure until the second-to-last node
-        NodeAdapter currentNode = node;
-        for(size_t j = 0; j < vec.nodeNames.size() - 1; ++j)
+        auto currentNode{findParentOfLastTag(node, vec.nodeNames)};
+        if(currentNode.has_value())
         {
-            currentNode = currentNode.getChildNode(vec.nodeNames[j]);
-        }
-
-        const auto & targetNodeName = vec.nodeNames.back();
-        int childCount = currentNode.nChildNode(targetNodeName);
-        vec.data.reserve(childCount);
-        for(int i = 0; i < childCount; ++i)
-        {
-            NodeAdapter activeNode = currentNode.getChildNode(targetNodeName, i);
-            T item;
-            activeNode >> item;
-            vec.data.push_back(item);
+            int childCount = currentNode.value().nChildNode(vec.nodeNames.back());
+            vec.data.reserve(childCount);
+            for(int i = 0; i < childCount; ++i)
+            {
+                NodeAdapter activeNode = currentNode.value().getChildNode(vec.nodeNames.back(), i);
+                T item;
+                activeNode >> item;
+                vec.data.push_back(item);
+            }
         }
 
         return node;
@@ -101,12 +97,7 @@ namespace FileParse
             throw std::invalid_argument("Tag vector is empty");
         }
 
-        NodeAdapter currentNode = node;
-
-        for(size_t i = 0; i < tags.size() - 1; ++i)
-        {
-            currentNode = currentNode.addChild(tags[i]);
-        }
+        auto currentNode{insertAllButLastChild(node, tags)};
 
         for(const auto & value : vec)
         {
@@ -126,31 +117,26 @@ namespace FileParse
     {
         static_assert(std::is_enum_v<EnumType>, "Provided type is not an enum!");
 
+        vec.clear();
+
         if(tags.empty())
         {
             throw std::invalid_argument("Tag vector is empty");
         }
 
-        NodeAdapter currentNode = node;
+        auto currentNode{findParentOfLastTag(node, tags)};
 
-        for(size_t i = 0; i < tags.size() - 1; ++i)
+        if(currentNode.has_value())
         {
-            currentNode = currentNode.getChildNode(tags[i]);
-            if(currentNode.isEmpty())
+            int totalNodes = currentNode.value().nChildNode(tags.back());
+            for(int i = 0; i < totalNodes; ++i)
             {
-                throw std::runtime_error("Failed to navigate XML using provided tags");
-            }
-        }
-
-        vec.clear();
-        int totalNodes = currentNode.nChildNode(tags.back());
-        for(int i = 0; i < totalNodes; ++i)
-        {
-            NodeAdapter childNode = currentNode.getChildNode(tags.back(), i);
-            if(!childNode.isEmpty())
-            {
-                const auto text = childNode.getText();
-                vec.emplace_back(converter(text));
+                NodeAdapter childNode = currentNode.value().getChildNode(tags.back(), i);
+                if(!childNode.isEmpty())
+                {
+                    const auto text = childNode.getText();
+                    vec.emplace_back(converter(text));
+                }
             }
         }
 
