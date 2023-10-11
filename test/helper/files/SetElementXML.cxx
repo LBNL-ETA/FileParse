@@ -2,7 +2,8 @@
 
 namespace Helper
 {
-    std::string testSetElementDoubleDatabase() {
+    std::string testSetElementDoubleDatabase()
+    {
         static const std::string rootTag{"Test"};
         std::string fileContent{"<" + rootTag + ">\n"};
         fileContent += setElementDouble();
@@ -10,7 +11,8 @@ namespace Helper
         return fileContent;
     }
 
-    std::string setElementDouble() {
+    std::string setElementDouble()
+    {
         return "\t<SetElementDouble>\n"
                "\t\t<Table>\n"
                "\t\t\t<Value>\n"
@@ -25,4 +27,30 @@ namespace Helper
                "\t\t</Table>\n"
                "\t</SetElementDouble>";
     }
-}
+
+    std::string testSetElementOptionalDoubleDatabase()
+    {
+        static const std::string rootTag{"Test"};
+        std::string fileContent{"<" + rootTag + ">\n"};
+        fileContent += setElementOptionalDouble();
+        fileContent += "</" + rootTag + ">";
+        return fileContent;
+    }
+
+    std::string setElementOptionalDouble()
+    {
+        return "\t<SetElementOptionalDouble>\n"
+               "\t\t<Table>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\t43.215483\n"
+               "\t\t\t</Value>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\t76.842907\n"
+               "\t\t\t</Value>\n"
+               "\t\t\t<Value>\n"
+               "\t\t\t\t12.689342\n"
+               "\t\t\t</Value>\n"
+               "\t\t</Table>\n"
+               "\t</SetElementOptionalDouble>";
+    }
+}   // namespace Helper

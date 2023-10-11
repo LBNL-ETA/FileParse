@@ -27,6 +27,26 @@ namespace Helper
         return xmlNode;
     }
 
+    XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, SetElementOptionalDouble & element)
+    {
+        using FileParse::Child;
+        using FileParse::operator>>;
+
+        xmlNode >> Child{{"Table", "Value"}, element.values};
+
+        return xmlNode;
+    }
+
+    XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const SetElementOptionalDouble & element)
+    {
+        using FileParse::Child;
+        using FileParse::operator<<;
+
+        xmlNode << Child{{"Table", "Value"}, element.values};
+
+        return xmlNode;
+    }
+
     SetElementDouble loadSetElementDouble(std::string_view fileName)
     {
         using FileParse::Child;
@@ -46,6 +66,29 @@ namespace Helper
         XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
 
         xmlNode << Child{"SetElementDouble", element};
+
+        xmlNode.writeToFile(fileName);
+    }
+
+    SetElementOptionalDouble loadSetElementOptionalDouble(std::string_view fileName)
+    {
+        using FileParse::Child;
+
+        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+
+        SetElementOptionalDouble element;
+        xmlNode >> Child{"SetElementOptionalDouble", element};
+
+        return element;
+    }
+
+    void saveSetElementOptionalDouble(const SetElementOptionalDouble & element, std::string_view fileName)
+    {
+        using FileParse::Child;
+
+        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+
+        xmlNode << Child{"SetElementOptionalDouble", element};
 
         xmlNode.writeToFile(fileName);
     }
