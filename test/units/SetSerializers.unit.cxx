@@ -6,7 +6,7 @@
 #include "test/helper/structures/StructureSet.hxx"
 
 #include "test/helper/FileManipulation.hxx"
-#include "test/helper/serializers/SetSerializers.hxx"
+#include "test/helper/serializers/SerializersSet.hxx"
 
 class SetSerializerTest : public testing::Test
 {
