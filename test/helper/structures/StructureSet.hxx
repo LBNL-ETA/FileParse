@@ -3,6 +3,8 @@
 #include <set>
 #include <optional>
 
+#include "Enums.hxx"
+
 namespace Helper
 {
     struct SetElementDouble
@@ -13,5 +15,10 @@ namespace Helper
     struct SetElementOptionalDouble
     {
         std::optional<std::set<double>> values;
+    };
+
+    struct SetElementEnum
+    {
+        std::set<Day> days;
     };
 }

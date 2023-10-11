@@ -90,7 +90,7 @@ namespace FileParse
     {
         if(tags.empty())
         {
-            throw std::invalid_argument("Tag vector is empty");
+            throw std::invalid_argument("Tag set is empty");
         }
 
         auto currentNode{insertAllButLastChild(node, tags)};
@@ -117,7 +117,7 @@ namespace FileParse
 
         if(tags.empty())
         {
-            throw std::invalid_argument("Tag vector is empty");
+            throw std::invalid_argument("Tag set is empty");
         }
 
         auto currentNode{findParentOfLastTag(node, tags)};

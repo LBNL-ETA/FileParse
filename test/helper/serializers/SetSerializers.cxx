@@ -47,6 +47,21 @@ namespace Helper
         return xmlNode;
     }
 
+    XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, SetElementEnum & element)
+    {
+        FileParse::deserializeEnumSet<XMLNodeAdapter, Helper::Day>(xmlNode, {"Table", "Value"}, element.days, toDay);
+
+        return xmlNode;
+    }
+
+    XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const SetElementEnum & element)
+    {
+        FileParse::serializeEnumSet<XMLNodeAdapter, Helper::Day>(
+          xmlNode, {"Table", "Value"}, element.days, toDayString);
+
+        return xmlNode;
+    }
+
     SetElementDouble loadSetElementDouble(std::string_view fileName)
     {
         using FileParse::Child;
@@ -89,6 +104,29 @@ namespace Helper
         XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
 
         xmlNode << Child{"SetElementOptionalDouble", element};
+
+        xmlNode.writeToFile(fileName);
+    }
+
+    SetElementEnum loadSetElementEnum(std::string_view fileName)
+    {
+        using FileParse::Child;
+
+        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+
+        SetElementEnum element;
+        xmlNode >> Child{"SetElementEnum", element};
+
+        return element;
+    }
+
+    void saveSetElementEnum(const SetElementEnum & element, std::string_view fileName)
+    {
+        using FileParse::Child;
+
+        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+
+        xmlNode << Child{"SetElementEnum", element};
 
         xmlNode.writeToFile(fileName);
     }

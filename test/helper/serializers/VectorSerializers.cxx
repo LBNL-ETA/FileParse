@@ -50,13 +50,13 @@ namespace Helper
     XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, EnumVectorElement & element)
     {
         FileParse::deserializeEnumVector<XMLNodeAdapter, Helper::Day>(xmlNode, {"Table", "Value"}, element.days, toDay);
-
         return xmlNode;
     }
 
     XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const EnumVectorElement & element)
     {
-        FileParse::serializeEnumVector<XMLNodeAdapter, Helper::Day>(xmlNode, {"Table", "Value"}, element.days, toDayString);
+        FileParse::serializeEnumVector<XMLNodeAdapter, Helper::Day>(
+          xmlNode, {"Table", "Value"}, element.days, toDayString);
         return xmlNode;
     }
 
