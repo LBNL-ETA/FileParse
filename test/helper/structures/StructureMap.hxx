@@ -27,4 +27,9 @@ namespace Helper
     {
         std::map<Helper::Day, std::string> days;
     };
+
+    struct MapElementEnumDouble
+    {
+        std::map<Helper::Day, double> days;
+    };
 }   // namespace Helper

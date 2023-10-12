@@ -52,7 +52,7 @@ namespace FileParse
         if(map.empty())
             return node;
 
-        std::map<std::string, std::string> mapToSerialize;
+        std::map<std::string, Value> mapToSerialize;
         for(const auto & [enumKey, mapValue] : map)
         {
             mapToSerialize[converter(enumKey)] = mapValue;
