@@ -2,6 +2,7 @@
 
 #include <string>
 #include <optional>
+#include <map>
 
 namespace FileParse
 {
@@ -130,6 +131,34 @@ namespace FileParse
     {
         const auto text{node.getText()};
         value = std::stoul(text);
+        return node;
+    }
+
+    template<typename NodeAdapter, typename Value>
+    inline NodeAdapter operator<<(NodeAdapter node, const std::map<std::string, Value> & map)
+    {
+        for(const auto & [key, val] : map)
+        {
+            NodeAdapter lastNode = node.addChild(key);
+            lastNode << val;
+        }
+
+        return node;
+    }
+
+    template<typename NodeAdapter, typename Value>
+    inline NodeAdapter operator>>(NodeAdapter node, std::map<std::string, Value> & map)
+    {
+        for(int i = 0; i < node.nChildNode(); ++i)
+        {
+            auto childNode{node.getChildNode(i)};
+            std::string key = childNode.getCurrentTag();
+
+            Value val;
+            childNode >> val;
+            map[key] = val;
+        }
+
         return node;
     }
 
