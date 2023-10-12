@@ -64,7 +64,7 @@ add_executable(${PROJECT_TEST_NAME}
 
 		units/BaseSerializers.unit.cxx
 		units/EnumSerializers.unit.cxx
-		units/MapSerializers.unit.cxx
+		units/StringMapSerializers.unit.cxx
 		units/SetSerializers.unit.cxx
 		units/VectorSerializers.unit.cxx
 		main.cpp)
