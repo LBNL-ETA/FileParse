@@ -16,6 +16,9 @@ namespace Helper
     std::string testMapElementEmptyStringDatabase();
     std::string mapElementEmptyString();
 
-    std::string testMapElementDayAsKeyDatabase();
-    std::string mapElementDayAsKey();
+    std::string testMapElementDayStringDatabase();
+    std::string mapElementDayString();
+
+    std::string testMapElementDayDoubleDatabase();
+    std::string mapElementDayDouble();
 }

@@ -43,7 +43,7 @@ TEST_F(StringMapSerializerTest, WritingStringMap)
 
     std::remove(fileName.c_str());
 
-    Helper::saveSetElementDouble(mapEl, fileName);
+    Helper::saveMapElementDouble(mapEl, fileName);
 
     const auto loadedMap{Helper::loadMapElementString(fileName)};
 
@@ -80,7 +80,7 @@ TEST_F(StringMapSerializerTest, WritingOptionalStringMap)
 
     std::remove(fileName.c_str());
 
-    Helper::saveSetElementOptionalDouble(mapEl, fileName);
+    Helper::saveMapElementOptionalDouble(mapEl, fileName);
 
     const auto loadedMap{Helper::loadMapElementOptionalString(fileName)};
 
@@ -113,7 +113,7 @@ TEST_F(StringMapSerializerTest, WritingEmpty)
 
     std::remove(fileName.c_str());
 
-    Helper::saveSetElementDouble(mapEl, fileName);
+    Helper::saveMapElementDouble(mapEl, fileName);
 
     const auto loadedVector{Helper::loadMapElementString(fileName)};
 

@@ -17,15 +17,21 @@ namespace Helper
     inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::MapElementDouble & element);
     inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::MapElementDouble & element);
 
+    inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::MapElementEnumDouble & element);
+    inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::MapElementEnumDouble & element);
+
     MapElementString loadMapElementString(std::string_view fileName);
-    void saveSetElementDouble(const MapElementString& element, std::string_view fileName);
+    void saveMapElementDouble(const MapElementString& element, std::string_view fileName);
 
     MapElementOptionalString loadMapElementOptionalString(std::string_view fileName);
-    void saveSetElementOptionalDouble(const MapElementOptionalString& element, std::string_view fileName);
+    void saveMapElementOptionalDouble(const MapElementOptionalString& element, std::string_view fileName);
 
     MapElementEnum loadMapElementEnum(std::string_view fileName);
-    void saveSetElementEnum(const MapElementEnum& element, std::string_view fileName);
+    void saveMapElementEnum(const MapElementEnum& element, std::string_view fileName);
 
     MapElementDouble loadMapElementDouble(std::string_view fileName);
-    void saveSetElementDouble(const MapElementDouble& element, std::string_view fileName);
+    void saveMapElementDouble(const MapElementDouble& element, std::string_view fileName);
+
+    MapElementEnumDouble loadMapElementEnumDouble(std::string_view fileName);
+    void saveMapElementEnumDouble(const MapElementEnumDouble& element, std::string_view fileName);
 }

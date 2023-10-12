@@ -18,9 +18,9 @@ protected:
     {}
 };
 
-TEST_F(EnumMapSerializerTest, ReadingEnumAsKey)
+TEST_F(EnumMapSerializerTest, ReadingEnumAsKey_String)
 {
-    const std::string fileContent{Helper::testMapElementDayAsKeyDatabase()};
+    const std::string fileContent{Helper::testMapElementDayStringDatabase()};
     const std::string fileName{"TestRead.xml"};
 
     File::createFileFromString(fileName, fileContent);
@@ -37,7 +37,7 @@ TEST_F(EnumMapSerializerTest, ReadingEnumAsKey)
     std::remove(fileName.c_str());
 }
 
-TEST_F(EnumMapSerializerTest, WritingEnumAsKey)
+TEST_F(EnumMapSerializerTest, WritingEnumAsKey_String)
 {
     using Helper::Day;
     Helper::MapElementEnum mapEl;
@@ -51,9 +51,51 @@ TEST_F(EnumMapSerializerTest, WritingEnumAsKey)
 
     std::remove(fileName.c_str());
 
-    Helper::saveSetElementEnum(mapEl, fileName);
+    Helper::saveMapElementEnum(mapEl, fileName);
 
     const auto loadedMap{Helper::loadMapElementEnum(fileName)};
+
+    Helper::checkMapEquality(mapEl.days, loadedMap.days);
+
+    std::remove(fileName.c_str());
+}
+
+TEST_F(EnumMapSerializerTest, ReadingEnumAsKey_Double)
+{
+    const std::string fileContent{Helper::testMapElementDayDoubleDatabase()};
+    const std::string fileName{"TestRead.xml"};
+
+    File::createFileFromString(fileName, fileContent);
+
+    const auto mapEl{Helper::loadMapElementEnumDouble(fileName)};
+
+    using Helper::Day;
+
+    const std::map<Day, double> correct{
+      {Day::Monday, 47.8621}, {Day::Thursday, 83.2934}, {Day::Saturday, 12.7845}};
+
+    Helper::checkMapEquality(correct, mapEl.days);
+
+    std::remove(fileName.c_str());
+}
+
+TEST_F(EnumMapSerializerTest, WritingEnumAsKey_Double)
+{
+    using Helper::Day;
+    Helper::MapElementEnumDouble mapEl;
+    mapEl.days = {{Day::Monday, 21.5394},
+                  {Day::Tuesday, 76.2843},
+                  {Day::Wednesday, 43.9172},
+                  {Day::Thursday, 95.0328},
+                  {Day::Friday, 58.4627}};
+
+    const std::string fileName{"TestWrite.xml"};
+
+    std::remove(fileName.c_str());
+
+    Helper::saveMapElementEnumDouble(mapEl, fileName);
+
+    const auto loadedMap{Helper::loadMapElementEnumDouble(fileName)};
 
     Helper::checkMapEquality(mapEl.days, loadedMap.days);
 
