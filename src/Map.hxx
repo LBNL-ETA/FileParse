@@ -3,6 +3,7 @@
 #include <map>
 #include <functional>
 
+#include "StringConversion.hxx"
 #include "Common.hxx"
 
 namespace FileParse
@@ -43,9 +44,9 @@ namespace FileParse
         return node;
     }
 
-    template<typename NodeAdapter, typename EnumType>
+    template<typename NodeAdapter, typename EnumType, typename Value>
     NodeAdapter serializeEnumMap(NodeAdapter node,
-                                 const std::map<EnumType, std::string> & map,
+                                 const std::map<EnumType, Value> & map,
                                  std::function<std::string(EnumType)> converter)
     {
         if(map.empty())
@@ -62,9 +63,9 @@ namespace FileParse
         return node;
     }
 
-    template<typename NodeAdapter, typename EnumType>
+    template<typename NodeAdapter, typename EnumType, typename Value>
     NodeAdapter deserializeEnumMap(const NodeAdapter & node,
-                                   std::map<EnumType, std::string> & map,
+                                   std::map<EnumType, Value> & map,
                                    std::function<EnumType(std::string_view)> converter)
     {
         int totalNodes = node.nChildNode();
@@ -75,7 +76,7 @@ namespace FileParse
             {
                 const auto text = childNode.getText();
                 const auto key = childNode.getCurrentTag();
-                map[converter(key)] = text;
+                map[converter(key)] = from_string_helper<Value>(text);
             }
         }
 

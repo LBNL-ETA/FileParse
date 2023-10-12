@@ -18,7 +18,7 @@ protected:
     {}
 };
 
-TEST_F(EnumMapSerializerTest, Reading)
+TEST_F(EnumMapSerializerTest, ReadingEnumAsKey)
 {
     const std::string fileContent{Helper::testMapElementDayAsKeyDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -37,7 +37,7 @@ TEST_F(EnumMapSerializerTest, Reading)
     std::remove(fileName.c_str());
 }
 
-TEST_F(EnumMapSerializerTest, Writing)
+TEST_F(EnumMapSerializerTest, WritingEnumAsKey)
 {
     using Helper::Day;
     Helper::MapElementEnum mapEl;
