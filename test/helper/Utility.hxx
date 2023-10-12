@@ -89,16 +89,14 @@ namespace Helper
     template<typename K, typename V>
     void checkMapEquality(const std::map<K, V> & expected, const std::map<K, V> & actual)
     {
-        ASSERT_EQ(expected.size(), actual.size())
-          << "Maps have different sizes: expected " << expected.size() << ", but got " << actual.size();
+        ASSERT_EQ(expected.size(), actual.size());
 
         for(const auto & [expectedKey, expectedValue] : expected)
         {
             auto actualIter = actual.find(expectedKey);
-            ASSERT_NE(actualIter, actual.end()) << "Expected key " << expectedKey << " not found in actual map.";
+            ASSERT_NE(actualIter, actual.end());
 
-            EXPECT_EQ(expectedValue, actualIter->second) << "For key " << expectedKey << ": expected value "
-                                                         << expectedValue << ", but got " << actualIter->second;
+            EXPECT_EQ(expectedValue, actualIter->second);
         }
     }
 }   // namespace Helper

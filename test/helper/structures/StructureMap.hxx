@@ -4,6 +4,8 @@
 #include <map>
 #include <optional>
 
+#include "Enums.hxx"
+
 namespace Helper
 {
     struct MapElementString
@@ -14,5 +16,10 @@ namespace Helper
     struct MapElementOptionalString
     {
         std::optional<std::map<std::string, std::string>> values;
+    };
+
+    struct MapElementEnum
+    {
+        std::map<Helper::Day, std::string> days;
     };
 }   // namespace Helper

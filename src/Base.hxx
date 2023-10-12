@@ -31,6 +31,23 @@ namespace FileParse
     }
 
     template<typename NodeAdapter>
+    std::optional<NodeAdapter> findLastTag(NodeAdapter node, const std::vector<std::string> & nodeNames)
+    {
+        NodeAdapter currentNode = node;
+
+        for(size_t i = 0; i < nodeNames.size(); ++i)
+        {
+            currentNode = currentNode.getChildNode(nodeNames[i]);
+            if(currentNode.isEmpty())
+            {
+                return std::nullopt;
+            }
+        }
+
+        return currentNode;
+    }
+
+    template<typename NodeAdapter>
     std::optional<NodeAdapter> findParentOfLastTag(NodeAdapter node, const std::vector<std::string> & nodeNames)
     {
         NodeAdapter currentNode = node;
