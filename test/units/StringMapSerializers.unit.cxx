@@ -8,7 +8,7 @@
 #include "test/helper/FileManipulation.hxx"
 #include "test/helper/serializers/SerializersMap.hxx"
 
-class MapSerializerTest : public testing::Test
+class StringMapSerializerTest : public testing::Test
 {
 protected:
     void SetUp() override
@@ -18,7 +18,7 @@ protected:
     {}
 };
 
-TEST_F(MapSerializerTest, ReadingStringMap)
+TEST_F(StringMapSerializerTest, ReadingStringMap)
 {
     const std::string fileContent{Helper::testMapElementStringDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -34,7 +34,7 @@ TEST_F(MapSerializerTest, ReadingStringMap)
     std::remove(fileName.c_str());
 }
 
-TEST_F(MapSerializerTest, WritingStringMap)
+TEST_F(StringMapSerializerTest, WritingStringMap)
 {
     Helper::MapElementString mapEl;
     mapEl.values = {{"1", "Value1"}, {"2", "Value2"}, {"3", "Value3"}, {"4", "Value4"}, {"5", "Value5"}};
@@ -52,7 +52,7 @@ TEST_F(MapSerializerTest, WritingStringMap)
     std::remove(fileName.c_str());
 }
 
-TEST_F(MapSerializerTest, ReadingOptionalStringMap)
+TEST_F(StringMapSerializerTest, ReadingOptionalStringMap)
 {
     const std::string fileContent{Helper::testMapElementOptionalStringDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -71,7 +71,7 @@ TEST_F(MapSerializerTest, ReadingOptionalStringMap)
     std::remove(fileName.c_str());
 }
 
-TEST_F(MapSerializerTest, WritingOptionalStringMap)
+TEST_F(StringMapSerializerTest, WritingOptionalStringMap)
 {
     Helper::MapElementOptionalString mapEl;
     mapEl.values = {{"o1", "1"}, {"o2", "2"}, {"o3", "3"}, {"o4", "4"}, {"o5", "5"}};
