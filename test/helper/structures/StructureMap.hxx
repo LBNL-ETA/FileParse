@@ -13,6 +13,11 @@ namespace Helper
         std::map<std::string, std::string> values;
     };
 
+    struct MapElementDouble
+    {
+        std::map<std::string, double> values;
+    };
+
     struct MapElementOptionalString
     {
         std::optional<std::map<std::string, std::string>> values;

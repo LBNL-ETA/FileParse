@@ -14,6 +14,9 @@ namespace Helper
     inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::MapElementEnum & element);
     inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::MapElementEnum & element);
 
+    inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::MapElementDouble & element);
+    inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::MapElementDouble & element);
+
     MapElementString loadMapElementString(std::string_view fileName);
     void saveSetElementDouble(const MapElementString& element, std::string_view fileName);
 
@@ -22,4 +25,7 @@ namespace Helper
 
     MapElementEnum loadMapElementEnum(std::string_view fileName);
     void saveSetElementEnum(const MapElementEnum& element, std::string_view fileName);
+
+    MapElementDouble loadMapElementDouble(std::string_view fileName);
+    void saveSetElementDouble(const MapElementDouble& element, std::string_view fileName);
 }

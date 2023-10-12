@@ -55,6 +55,24 @@ XMLNodeAdapter Helper::operator<<(XMLNodeAdapter xmlNode, const Helper::MapEleme
     return xmlNode;
 }
 
+XMLNodeAdapter Helper::operator>>(const XMLNodeAdapter & xmlNode, Helper::MapElementDouble & element)
+{
+    using FileParse::operator>>;
+
+    xmlNode >> element.values;
+
+    return xmlNode;
+}
+
+XMLNodeAdapter Helper::operator<<(XMLNodeAdapter xmlNode, const Helper::MapElementDouble & element)
+{
+    using FileParse::operator<<;
+
+    xmlNode << element.values;
+
+    return xmlNode;
+}
+
 Helper::MapElementString Helper::loadMapElementString(std::string_view fileName)
 {
     using FileParse::Child;
@@ -118,5 +136,27 @@ void Helper::saveSetElementEnum(const Helper::MapElementEnum & element, std::str
     XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
 
     xmlNode << Child{"EnumMap", element};
+    xmlNode.writeToFile(fileName);
+}
+
+Helper::MapElementDouble Helper::loadMapElementDouble(std::string_view fileName)
+{
+    using FileParse::Child;
+
+    XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+
+    MapElementDouble element;
+    xmlNode >> Child{"DoubleMap", element};
+
+    return element;
+}
+
+void Helper::saveSetElementDouble(const Helper::MapElementDouble & element, std::string_view fileName)
+{
+    using FileParse::Child;
+
+    XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+
+    xmlNode << Child{"DoubleMap", element};
     xmlNode.writeToFile(fileName);
 }

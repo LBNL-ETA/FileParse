@@ -99,4 +99,18 @@ namespace Helper
             EXPECT_EQ(expectedValue, actualIter->second);
         }
     }
+
+    template<typename K, typename V>
+    void checkMapValues(const std::map<K, V> & expected, const std::map<K, V> & actual, V tolerance)
+    {
+        ASSERT_EQ(expected.size(), actual.size());
+
+        for(const auto & [expectedKey, expectedValue] : expected)
+        {
+            auto actualIter = actual.find(expectedKey);
+            ASSERT_NE(actualIter, actual.end());
+            EXPECT_NEAR(expectedValue, actualIter->second, tolerance);
+        }
+    }
+
 }   // namespace Helper
