@@ -63,6 +63,7 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/Utility.hxx
 
 		units/BaseSerializers.unit.cxx
+		units/DoubleMapSerializers.unit.cxx
 		units/EnumSerializers.unit.cxx
 		units/EnumMapSerializers.unit.cxx
 		units/StringMapSerializers.unit.cxx

@@ -18,6 +18,24 @@ std::string Helper::mapElementString()
            "\t</StringMap>\n";
 }
 
+std::string Helper::testMapElementDoubleDatabase()
+{
+    static const std::string rootTag{"Test"};
+    std::string fileContent{"<" + rootTag + ">\n"};
+    fileContent += mapElementDouble();
+    fileContent += "</" + rootTag + ">";
+    return fileContent;
+}
+
+std::string Helper::mapElementDouble()
+{
+    return "\t<DoubleMap>\n"
+           "\t\t<Key1>37.582914</Key1>\n"
+           "\t\t<Key2>92.143057</Key2>\n"
+           "\t\t<Key3>15.907634</Key3>\n"
+           "\t</DoubleMap>\n";
+}
+
 std::string Helper::testMapElementOptionalStringDatabase()
 {
     static const std::string rootTag{"Test"};
