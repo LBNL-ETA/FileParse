@@ -4,6 +4,7 @@ add_library( ${LIB_NAME}
 		Base.hxx
 		Common.hxx
 		Enum.hxx
+		Map.hxx
 		Optional.hxx
 		Set.hxx
 		Variant.hxx

@@ -35,6 +35,8 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/serializers/SerializersBaseElement.cxx
 		helper/serializers/SerializersEnum.hxx
 		helper/serializers/SerializersEnum.cxx
+		helper/serializers/SerializersMap.hxx
+		helper/serializers/SerializersMap.cxx
 		helper/serializers/SerializersSet.hxx
 		helper/serializers/SerializersSet.cxx
 		helper/serializers/SerializersVector.hxx
@@ -44,6 +46,7 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/structures/StructureBase.hxx
 		helper/structures/StructureEnum.hxx
 		helper/structures/StructureSet.hxx
+		helper/structures/StructureMap.hxx
 		helper/structures/StructureVector.hxx
 
 		helper/files/BaseElementXML.hxx
@@ -54,11 +57,14 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/files/SetElementXML.cxx
 		helper/files/EnumElementXML.hxx
 		helper/files/EnumElementXML.cxx
+		helper/files/MapElementXML.hxx
+		helper/files/MapElementXML.cxx
 
 		helper/Utility.hxx
 
 		units/BaseSerializers.unit.cxx
 		units/EnumSerializers.unit.cxx
+		units/MapSerializers.unit.cxx
 		units/SetSerializers.unit.cxx
 		units/VectorSerializers.unit.cxx
 		main.cpp)
