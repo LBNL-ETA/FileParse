@@ -9,4 +9,10 @@ namespace Helper
 
     std::string testMapElementOptionalStringDatabase();
     std::string mapElementOptionalString();
+
+    std::string testMapElementEmptyStringDatabase();
+    std::string mapElementEmptyString();
+
+    std::string testMapElementDayAsKeyDatabase();
+    std::string mapElementDayAsKey();
 }

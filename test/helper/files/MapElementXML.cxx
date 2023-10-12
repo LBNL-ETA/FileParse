@@ -18,7 +18,8 @@ std::string Helper::mapElementString()
            "\t</StringMap>\n";
 }
 
-std::string Helper::testMapElementOptionalStringDatabase() {
+std::string Helper::testMapElementOptionalStringDatabase()
+{
     static const std::string rootTag{"Test"};
     std::string fileContent{"<" + rootTag + ">\n"};
     fileContent += mapElementOptionalString();
@@ -26,10 +27,44 @@ std::string Helper::testMapElementOptionalStringDatabase() {
     return fileContent;
 }
 
-std::string Helper::mapElementOptionalString() {
+std::string Helper::mapElementOptionalString()
+{
     return "\t<OptionalStringMap>\n"
            "\t\t<Key1>Optional1</Key1>\n"
            "\t\t<Key2>Optional2</Key2>\n"
            "\t\t<Key3>Optional3</Key3>\n"
            "\t</OptionalStringMap>\n";
+}
+
+std::string Helper::testMapElementEmptyStringDatabase()
+{
+    static const std::string rootTag{"Test"};
+    std::string fileContent{"<" + rootTag + ">\n"};
+    fileContent += mapElementEmptyString();
+    fileContent += "</" + rootTag + ">";
+    return fileContent;
+}
+
+std::string Helper::mapElementEmptyString()
+{
+    return "\t<OptionalStringMap>\n"
+           "\t</OptionalStringMap>\n";
+}
+
+std::string Helper::testMapElementDayAsKeyDatabase()
+{
+    static const std::string rootTag{"Test"};
+    std::string fileContent{"<" + rootTag + ">\n"};
+    fileContent += mapElementDayAsKey();
+    fileContent += "</" + rootTag + ">";
+    return fileContent;
+}
+
+std::string Helper::mapElementDayAsKey()
+{
+    return "\t<EnumMap>\n"
+           "\t\t<Friday>Happy</Friday>\n"
+           "\t\t<Saturday>Relax</Saturday>\n"
+           "\t\t<Monday>Back to Work</Monday>\n"
+           "\t</EnumMap>\n";
 }

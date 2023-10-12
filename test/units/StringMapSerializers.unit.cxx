@@ -90,3 +90,34 @@ TEST_F(StringMapSerializerTest, WritingOptionalStringMap)
 
     std::remove(fileName.c_str());
 }
+
+TEST_F(StringMapSerializerTest, ReadingEmpty)
+{
+    const std::string fileContent{Helper::testMapElementEmptyStringDatabase()};
+    const std::string fileName{"TestRead.xml"};
+
+    File::createFileFromString(fileName, fileContent);
+
+    const auto mapEl{Helper::loadMapElementString(fileName)};
+
+    EXPECT_EQ(0u, mapEl.values.size());
+
+    std::remove(fileName.c_str());
+}
+
+TEST_F(StringMapSerializerTest, WritingEmpty)
+{
+    Helper::MapElementString mapEl;
+
+    const std::string fileName{"TestWrite.xml"};
+
+    std::remove(fileName.c_str());
+
+    Helper::saveSetElementDouble(mapEl, fileName);
+
+    const auto loadedVector{Helper::loadMapElementString(fileName)};
+
+    EXPECT_EQ(mapEl.values.size(), loadedVector.values.size());
+
+    std::remove(fileName.c_str());
+}
