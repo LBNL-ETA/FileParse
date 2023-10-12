@@ -7,6 +7,7 @@ add_library( ${LIB_NAME}
 		Map.hxx
 		Optional.hxx
 		Set.hxx
+		StringConversion.hxx
 		Variant.hxx
 		Vector.hxx
 		XMLNodeAdapter.cxx
