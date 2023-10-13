@@ -6,18 +6,15 @@
 
 #include "Common.hxx"
 
-namespace FileParse
-{
+namespace FileParse {
     template<typename NodeAdapter, typename T>
-    inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::set<T>> & value)
-    {
-        if(value.nodeNames.empty() || value.data.empty())
+    inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::set<T>> &value) {
+        if (value.nodeNames.empty() || value.data.empty())
             return node;
 
         auto secondToLastNode{insertAllButLastChild(node, value.nodeNames)};
 
-        for(const auto & item : value.data)
-        {
+        for (const auto &item: value.data) {
             NodeAdapter lastNode = secondToLastNode.addChild(value.nodeNames.back());
             lastNode << item;
         }
@@ -26,19 +23,14 @@ namespace FileParse
     }
 
     template<typename NodeAdapter, typename T>
-    inline NodeAdapter operator>>(const NodeAdapter & node, const Child<std::set<T>> & vec)
-    {
+    inline NodeAdapter operator>>(const NodeAdapter &node, const Child<std::set<T>> &vec) {
         vec.data.clear();
 
-        if(!node.hasChildNode(vec.nodeNames.front()))
+        if (!node.hasChildNode(vec.nodeNames.front()))
             return node;
 
-        auto currentNode{findParentOfLastTag(node, vec.nodeNames)};
-
-        if(currentNode.has_value())
-        {
-            for(int i = 0; i < currentNode.value().nChildNode(vec.nodeNames.back()); ++i)
-            {
+        if (auto currentNode{findParentOfLastTag(node, vec.nodeNames)}; currentNode.has_value()) {
+            for (int i = 0; i < currentNode.value().nChildNode(vec.nodeNames.back()); ++i) {
                 NodeAdapter activeNode = currentNode.value().getChildNode(vec.nodeNames.back(), i);
                 T item;
                 activeNode >> item;
@@ -50,12 +42,12 @@ namespace FileParse
     }
 
     template<typename NodeAdapter, typename T>
-    inline NodeAdapter operator>>(const NodeAdapter & node, const Child<std::optional<std::set<T>>> & opt_vec)
-    {
-        auto childNode{findParentOfLastTag(node, opt_vec.nodeNames)};
+    inline NodeAdapter operator>>(const NodeAdapter &node, const Child<std::optional<std::set<T>>> &opt_vec) {
 
-        if(!childNode.has_value() || childNode.value().nChildNode(opt_vec.nodeNames.back()) == 0)
-        {
+
+        if (auto childNode{findParentOfLastTag(node, opt_vec.nodeNames)}; !childNode.has_value() ||
+                                                                          childNode.value().nChildNode(
+                                                                                  opt_vec.nodeNames.back()) == 0) {
             return node;
         }
 
@@ -66,14 +58,11 @@ namespace FileParse
     }
 
     template<typename NodeAdapter, typename T>
-    inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::optional<std::set<T>>> & opt_vec)
-    {
-        if(opt_vec.data.has_value())
-        {
+    inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::optional<std::set<T>>> &opt_vec) {
+        if (opt_vec.data.has_value()) {
             auto currentNode{insertAllButLastChild(node, opt_vec.nodeNames)};
 
-            for(const auto & item : opt_vec.data.value())
-            {
+            for (const auto &item: opt_vec.data.value()) {
                 auto tableNode = currentNode.addChild(opt_vec.nodeNames.back());
                 tableNode << item;
             }
@@ -84,19 +73,16 @@ namespace FileParse
 
     template<typename NodeAdapter, typename EnumType>
     NodeAdapter serializeEnumSet(NodeAdapter node,
-                                 const std::vector<std::string> & tags,
-                                 const std::set<EnumType> & vec,
-                                 std::function<std::string(EnumType)> converter)
-    {
-        if(tags.empty())
-        {
+                                 const std::vector<std::string> &tags,
+                                 const std::set<EnumType> &vec,
+                                 std::function<std::string(EnumType)> converter) {
+        if (tags.empty()) {
             throw std::invalid_argument("Tag set is empty");
         }
 
         auto currentNode{insertAllButLastChild(node, tags)};
 
-        for(const auto & value : vec)
-        {
+        for (const auto &value: vec) {
             NodeAdapter childNode = currentNode.addChild(tags.back());
             childNode.addText(converter(value));
         }
@@ -106,30 +92,23 @@ namespace FileParse
 
 
     template<typename NodeAdapter, typename EnumType>
-    NodeAdapter deserializeEnumSet(const NodeAdapter & node,
-                                   const std::vector<std::string> & tags,
-                                   std::set<EnumType> & vec,
-                                   std::function<EnumType(std::string_view)> converter)
-    {
+    NodeAdapter deserializeEnumSet(const NodeAdapter &node,
+                                   const std::vector<std::string> &tags,
+                                   std::set<EnumType> &vec,
+                                   std::function<EnumType(std::string_view)> converter) {
         static_assert(std::is_enum_v<EnumType>, "Provided type is not an enum!");
 
         vec.clear();
 
-        if(tags.empty())
-        {
+        if (tags.empty()) {
             throw std::invalid_argument("Tag set is empty");
         }
 
-        auto currentNode{findParentOfLastTag(node, tags)};
-
-        if(currentNode.has_value())
-        {
+        if (auto currentNode{findParentOfLastTag(node, tags)}; currentNode.has_value()) {
             int totalNodes = currentNode.value().nChildNode(tags.back());
-            for(int i = 0; i < totalNodes; ++i)
-            {
+            for (int i = 0; i < totalNodes; ++i) {
                 NodeAdapter childNode = currentNode.value().getChildNode(tags.back(), i);
-                if(!childNode.isEmpty())
-                {
+                if (!childNode.isEmpty()) {
                     const auto text = childNode.getText();
                     vec.insert(converter(text));
                 }
