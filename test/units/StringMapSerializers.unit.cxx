@@ -27,9 +27,11 @@ TEST_F(StringMapSerializerTest, ReadingStringMap)
 
     const auto mapEl{Helper::loadMapElementString(fileName)};
 
-    const std::map<std::string, std::string> correct{{"Key1", "Value1"}, {"Key2", "Value2"}, {"Key3", "Value3"}};
+    const std::map<std::string, std::string> correctOrdered{{"Key1", "Value1"}, {"Key2", "Value2"}, {"Key3", "Value3"}};
+    const std::unordered_map<std::string, std::string> correctUnordered{{"K1", "V1"}, {"K2", "V2"}, {"K3", "V3"}};
 
-    Helper::checkMapEquality(correct, mapEl.values);
+    Helper::checkMapEquality(correctOrdered, mapEl.ordered);
+    Helper::checkMapEquality(correctUnordered, mapEl.unordered);
 
     std::remove(fileName.c_str());
 }
@@ -37,7 +39,7 @@ TEST_F(StringMapSerializerTest, ReadingStringMap)
 TEST_F(StringMapSerializerTest, WritingStringMap)
 {
     Helper::MapElementString mapEl;
-    mapEl.values = {{"1", "Value1"}, {"2", "Value2"}, {"3", "Value3"}, {"4", "Value4"}, {"5", "Value5"}};
+    mapEl.ordered = {{"1", "Value1"}, {"2", "Value2"}, {"3", "Value3"}, {"4", "Value4"}, {"5", "Value5"}};
 
     const std::string fileName{"TestWrite.xml"};
 
@@ -47,7 +49,7 @@ TEST_F(StringMapSerializerTest, WritingStringMap)
 
     const auto loadedMap{Helper::loadMapElementString(fileName)};
 
-    Helper::checkMapEquality(mapEl.values, loadedMap.values);
+    Helper::checkMapEquality(mapEl.ordered, loadedMap.ordered);
 
     std::remove(fileName.c_str());
 }
@@ -100,7 +102,7 @@ TEST_F(StringMapSerializerTest, ReadingEmpty)
 
     const auto mapEl{Helper::loadMapElementString(fileName)};
 
-    EXPECT_EQ(0u, mapEl.values.size());
+    EXPECT_EQ(0u, mapEl.ordered.size());
 
     std::remove(fileName.c_str());
 }
@@ -117,7 +119,7 @@ TEST_F(StringMapSerializerTest, WritingEmpty)
 
     const auto loadedVector{Helper::loadMapElementString(fileName)};
 
-    EXPECT_EQ(mapEl.values.size(), loadedVector.values.size());
+    EXPECT_EQ(mapEl.ordered.size(), loadedVector.ordered.size());
 
     std::remove(fileName.c_str());
 }

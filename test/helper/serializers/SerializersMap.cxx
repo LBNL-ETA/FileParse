@@ -7,18 +7,22 @@
 
 XMLNodeAdapter Helper::operator>>(const XMLNodeAdapter & xmlNode, Helper::MapElementString & element)
 {
+    using FileParse::Child;
     using FileParse::operator>>;
 
-    xmlNode >> element.values;
+    xmlNode >> Child{"OrderedMap", element.ordered};
+    xmlNode >> Child{"UnorderedMap", element.unordered};
 
     return xmlNode;
 }
 
 XMLNodeAdapter Helper::operator<<(XMLNodeAdapter xmlNode, const Helper::MapElementString & element)
 {
+    using FileParse::Child;
     using FileParse::operator<<;
 
-    xmlNode << element.values;
+    xmlNode << Child{"OrderedMap", element.ordered};
+    xmlNode << Child{"UnorderedMap", element.unordered};
 
     return xmlNode;
 }
@@ -94,7 +98,7 @@ Helper::MapElementString Helper::loadMapElementString(std::string_view fileName)
     XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
 
     MapElementString element;
-    xmlNode >> Child{"StringMap", element};
+    xmlNode >> element;
 
     return element;
 }
@@ -105,7 +109,7 @@ void Helper::saveMapElementDouble(const MapElementString &element, std::string_v
 
     XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
 
-    xmlNode << Child{"StringMap", element};
+    xmlNode << element;
     xmlNode.writeToFile(fileName);
 }
 

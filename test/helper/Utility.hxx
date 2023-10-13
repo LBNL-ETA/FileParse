@@ -86,8 +86,20 @@ namespace Helper
         }
     }
 
+    template<typename T>
+    struct is_valid_map : std::false_type
+    {};
+
     template<typename K, typename V>
-    void checkMapEquality(const std::map<K, V> & expected, const std::map<K, V> & actual)
+    struct is_valid_map<std::map<K, V>> : std::true_type
+    {};
+
+    template<typename K, typename V>
+    struct is_valid_map<std::unordered_map<K, V>> : std::true_type
+    {};
+
+    template<typename MapType>
+    std::enable_if_t<is_valid_map<MapType>::value> checkMapEquality(const MapType & expected, const MapType & actual)
     {
         ASSERT_EQ(expected.size(), actual.size());
 
@@ -100,8 +112,9 @@ namespace Helper
         }
     }
 
-    template<typename K, typename V>
-    void checkMapValues(const std::map<K, V> & expected, const std::map<K, V> & actual, V tolerance)
+    template<typename MapType, typename ValueType>
+    std::enable_if_t<is_valid_map<MapType>::value>
+      checkMapValues(const MapType & expected, const MapType & actual, ValueType tolerance)
     {
         ASSERT_EQ(expected.size(), actual.size());
 
@@ -112,5 +125,6 @@ namespace Helper
             EXPECT_NEAR(expectedValue, actualIter->second, tolerance);
         }
     }
+
 
 }   // namespace Helper
