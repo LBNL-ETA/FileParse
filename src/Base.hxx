@@ -10,9 +10,9 @@ namespace FileParse
     NodeAdapter insertAllChilds(NodeAdapter node, const std::vector<std::string> & nodeNames)
     {
         NodeAdapter lastNode = node;
-        for(size_t i = 0; i < nodeNames.size(); ++i)
+        for(const auto & nodeName : nodeNames)
         {
-            lastNode = lastNode.addChild(nodeNames[i]);
+            lastNode = lastNode.addChild(nodeName);
         }
 
         return lastNode;
@@ -35,11 +35,9 @@ namespace FileParse
     {
         NodeAdapter currentNode = node;
 
-        for(size_t i = 0; i < nodeNames.size(); ++i)
-        {
-            currentNode = currentNode.getChildNode(nodeNames[i]);
-            if(currentNode.isEmpty())
-            {
+        for (const auto& nodeName : nodeNames) {
+            currentNode = currentNode.getChildNode(nodeName);
+            if (currentNode.isEmpty()) {
                 return std::nullopt;
             }
         }
