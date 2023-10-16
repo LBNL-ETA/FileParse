@@ -3,6 +3,7 @@
 #include <string>
 #include <optional>
 #include <map>
+#include <unordered_map>
 
 namespace FileParse
 {
@@ -149,8 +150,28 @@ namespace FileParse
         return node;
     }
 
-    template<typename NodeAdapter, typename Value>
-    inline NodeAdapter operator<<(NodeAdapter node, const std::map<std::string, Value> & map)
+    template<template<typename...> class Template, typename T>
+    struct is_instance_of : std::false_type
+    {};
+
+    template<template<typename...> class Template, typename... Args>
+    struct is_instance_of<Template, Template<Args...>> : std::true_type
+    {};
+
+    template<typename T>
+    struct is_valid_map : std::false_type
+    {};
+
+    template<typename K, typename V>
+    struct is_valid_map<std::map<K, V>> : std::true_type
+    {};
+
+    template<typename K, typename V>
+    struct is_valid_map<std::unordered_map<K, V>> : std::true_type
+    {};
+
+    template<typename NodeAdapter, typename MapType>
+    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter> operator<<(NodeAdapter node, const MapType & map)
     {
         for(const auto & [key, val] : map)
         {
@@ -161,15 +182,15 @@ namespace FileParse
         return node;
     }
 
-    template<typename NodeAdapter, typename Value>
-    inline NodeAdapter operator>>(NodeAdapter node, std::map<std::string, Value> & map)
+    template<typename NodeAdapter, typename MapType>
+    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter> operator>>(NodeAdapter node, MapType & map)
     {
         for(int i = 0; i < node.nChildNode(); ++i)
         {
-            auto childNode{node.getChildNode(i)};
+            auto childNode = node.getChildNode(i);
             std::string key = childNode.getCurrentTag();
 
-            Value val;
+            typename MapType::mapped_type val;
             childNode >> val;
             map[key] = val;
         }

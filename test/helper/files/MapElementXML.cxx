@@ -11,11 +11,16 @@ std::string Helper::testMapElementStringDatabase()
 
 std::string Helper::mapElementString()
 {
-    return "\t<StringMap>\n"
+    return "\t<OrderedMap>\n"
            "\t\t<Key1>Value1</Key1>\n"
            "\t\t<Key2>Value2</Key2>\n"
            "\t\t<Key3>Value3</Key3>\n"
-           "\t</StringMap>\n";
+           "\t</OrderedMap>\n"
+           "\t<UnorderedMap>\n"
+           "\t\t<K1>V1</K1>\n"
+           "\t\t<K2>V2</K2>\n"
+           "\t\t<K3>V3</K3>\n"
+           "\t</UnorderedMap>\n";
 }
 
 std::string Helper::testMapElementDoubleDatabase()
