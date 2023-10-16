@@ -1,7 +1,8 @@
 #pragma once
 
-#include <unordered_map>
+#include <array>
 #include <string>
+#include <algorithm>
 
 namespace Helper
 {
@@ -17,33 +18,20 @@ namespace Helper
         Sunday
     };
 
-    const std::unordered_map<Day, std::string> DayToString{{Day::Monday, "Monday"},
-                                                           {Day::Tuesday, "Tuesday"},
-                                                           {Day::Wednesday, "Wednesday"},
-                                                           {Day::Thursday, "Thursday"},
-                                                           {Day::Friday, "Friday"},
-                                                           {Day::Saturday, "Saturday"},
-                                                           {Day::Sunday, "Sunday"}};
-
-    const std::unordered_map<std::string, Day> StringToDay = []() {
-        std::unordered_map<std::string, Day> map;
-        for(const auto & [key, value] : DayToString)
-            map[value] = key;
-        return map;
-    }();
+    constexpr std::array<std::string_view, 8> DayToString
+      = {"None", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     inline std::string toDayString(Day day)
     {
-        if(DayToString.count(day) == 0)
-            return "";
-        return DayToString.at(day);
+        return std::string{DayToString[static_cast<int>(day)]};
     }
 
     inline Day toDay(std::string_view str)
     {
-        if(StringToDay.count(str.data()) == 0)
-            return Day::None;
-        return StringToDay.at(str.data());
+        if(auto it = std::find(DayToString.begin(), DayToString.end(), str);
+           it != DayToString.end())
+            return static_cast<Day>(std::distance(DayToString.begin(), it));
+        return Day::None;
     }
 
     enum class Color
@@ -54,27 +42,18 @@ namespace Helper
         Blue
     };
 
-    const std::unordered_map<Color, std::string> ColorToString{
-      {Color::Red, "Red"}, {Color::Green, "Green"}, {Color::Blue, "Blue"}};
-
-    const std::unordered_map<std::string, Color> StringToColor = []() {
-        std::unordered_map<std::string, Color> map;
-        for(const auto & [key, value] : ColorToString)
-            map[value] = key;
-        return map;
-    }();
+    constexpr std::array<std::string_view, 4> ColorToString = {"None", "Red", "Green", "Blue"};
 
     inline std::string toColorString(Color color)
     {
-        if(ColorToString.count(color) == 0)
-            return "";
-        return ColorToString.at(color);
+        return std::string{ColorToString[static_cast<int>(color)]};
     }
 
     inline Color toColor(std::string_view str)
     {
-        if(StringToColor.count(str.data()) == 0)
-            return Color::None;
-        return StringToColor.at(str.data());
+        if(auto it = std::find(ColorToString.begin(), ColorToString.end(), str);
+           it != ColorToString.end())
+            return static_cast<Color>(std::distance(ColorToString.begin(), it));
+        return Color::None;
     }
-}
+}   // namespace Helper

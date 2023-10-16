@@ -10,7 +10,8 @@ namespace Helper
 {
     struct MapElementString
     {
-        std::map<std::string, std::string> values;
+        std::map<std::string, std::string> ordered;
+        std::unordered_map<std::string, std::string> unordered;
     };
 
     struct MapElementDouble

@@ -31,12 +31,12 @@ BraceWrapping:
   SplitEmptyFunction: false
   SplitEmptyRecord: false
   SplitEmptyNamespace: false
-BreakBeforeBinaryOperators: 'NonAssignment' 
+BreakBeforeBinaryOperators: All
 BreakBeforeBraces: 'Custom'
 BreakBeforeInheritanceComma: false
 BreakBeforeTernaryOperators: true 
 BreakConstructorInitializers: 'AfterColon'
-ColumnLimit: 120
+ColumnLimit: 100
 #CommentPragmas: '^ IWYU pragma:'
 CompactNamespaces: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
