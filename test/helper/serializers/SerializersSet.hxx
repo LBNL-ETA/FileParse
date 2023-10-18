@@ -63,22 +63,11 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node,
-                                     const Helper::SetElementEnum & element)
+    inline NodeAdapter operator<<(NodeAdapter node, const Helper::SetElementEnum & element)
     {
         FileParse::serializeEnumSet<NodeAdapter, Helper::Day>(
           node, {"Table", "Value"}, element.days, toDayString);
 
         return node;
     }
-
-    SetElementDouble loadSetElementDouble(std::string_view fileName);
-    void saveSetElementDouble(const SetElementDouble & element, std::string_view fileName);
-
-    SetElementOptionalDouble loadSetElementOptionalDouble(std::string_view fileName);
-    void saveSetElementOptionalDouble(const SetElementOptionalDouble & element,
-                                      std::string_view fileName);
-
-    SetElementEnum loadSetElementEnum(std::string_view fileName);
-    void saveSetElementEnum(const SetElementEnum & element, std::string_view fileName);
 }   // namespace Helper

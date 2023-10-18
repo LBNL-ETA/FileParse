@@ -24,7 +24,4 @@ namespace Helper
 
         return xmlNode;
     }
-
-    EnumElement loadEnumElement(std::string_view fileName);
-    void saveEnumElement(const EnumElement& element, std::string_view fileName);
 }   // namespace Helper

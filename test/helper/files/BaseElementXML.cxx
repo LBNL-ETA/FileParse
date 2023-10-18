@@ -1,5 +1,11 @@
 #include "BaseElementXML.hxx"
 
+#include "test/helper/structures/StructureBase.hxx"
+#include "../serializers/SerializersBaseElement.hxx"
+
+#include "xmlParser.h"
+#include "XMLNodeAdapter.hxx"
+
 namespace Helper
 {
     std::string testBaseElementDatabase()
@@ -25,5 +31,28 @@ namespace Helper
                "\t\t<OptionalBoolean>false</OptionalBoolean>"
                "\t\t<VariantString>VariantText</VariantString>"
                "\t</BaseElement>";
+    }
+
+    BaseElement loadBaseElement(std::string_view fileName)
+    {
+        using FileParse::Child;
+
+        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+
+        BaseElement base;
+        xmlNode >> Child{"BaseElement", base};
+
+        return base;
+    }
+
+    void saveBaseElement(const BaseElement & base, std::string_view fileName)
+    {
+        using FileParse::Child;
+
+        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+
+        xmlNode << Child{"BaseElement", base};
+
+        xmlNode.writeToFile(fileName);
     }
 }   // namespace Helper

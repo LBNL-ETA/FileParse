@@ -8,7 +8,7 @@
 
 namespace Helper
 {
-    template <typename NodeAdapter>
+    template<typename NodeAdapter>
     inline NodeAdapter operator>>(const NodeAdapter & node, Helper::BaseElement & base)
     {
         using FileParse::Child;
@@ -30,7 +30,7 @@ namespace Helper
         return node;
     }
 
-    template <typename NodeAdapter>
+    template<typename NodeAdapter>
     inline NodeAdapter operator<<(NodeAdapter node, const Helper::BaseElement & base)
     {
         using FileParse::Child;
@@ -51,7 +51,4 @@ namespace Helper
 
         return node;
     }
-
-    BaseElement loadBaseElement(std::string_view fileName);
-    void saveBaseElement(const BaseElement & base, std::string_view fileName);
 }   // namespace Helper
