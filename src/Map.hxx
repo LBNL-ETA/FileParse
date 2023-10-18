@@ -2,7 +2,6 @@
 
 #include <functional>
 
-#include "StringConversion.hxx"
 #include "Common.hxx"
 
 namespace FileParse
