@@ -1,14 +1,27 @@
 #pragma once
 
-#include "test/helper/structures/StructureEnum.hxx"
+#include "Common.hxx"
+#include "Enum.hxx"
 
-#include "XMLNodeAdapter.hxx"
+#include "test/helper/structures/StructureEnum.hxx"
 
 namespace Helper
 {
-    inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::EnumElement & element);
-    inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::EnumElement & element);
+    template<typename NodeAdapter>
+    inline NodeAdapter operator>>(const NodeAdapter & xmlNode, Helper::EnumElement & element)
+    {
+        FileParse::deserializeEnum<NodeAdapter, Helper::Day>(xmlNode, "Day", element.day, Helper::toDay);
+        FileParse::deserializeEnum<NodeAdapter, Helper::Color>(xmlNode, "Color", element.color, Helper::toColor);
 
-    EnumElement loadEnumElement(std::string_view fileName);
-    void saveEnumElement(const EnumElement& element, std::string_view fileName);
+        return xmlNode;
+    }
+
+    template<typename NodeAdapter>
+    inline NodeAdapter operator<<(NodeAdapter xmlNode, const Helper::EnumElement & element)
+    {
+        FileParse::serializeEnum<NodeAdapter, Helper::Day>(xmlNode, "Day", element.day, Helper::toDayString);
+        FileParse::serializeEnum<NodeAdapter, Helper::Color>(xmlNode, "Color", element.color, Helper::toColorString);
+
+        return xmlNode;
+    }
 }   // namespace Helper
