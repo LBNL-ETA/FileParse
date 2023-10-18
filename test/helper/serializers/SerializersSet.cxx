@@ -1,67 +1,10 @@
 #include "SerializersSet.hxx"
 
-#include "Common.hxx"
-#include "Set.hxx"
-
+#include "XMLNodeAdapter.hxx"
 #include "xmlParser.h"
 
 namespace Helper
 {
-    XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, SetElementDouble & element)
-    {
-        using FileParse::Child;
-        using FileParse::operator>>;
-
-        xmlNode >> Child{{"Table", "Value"}, element.values};
-
-        return xmlNode;
-    }
-
-    XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const SetElementDouble & element)
-    {
-        using FileParse::Child;
-        using FileParse::operator<<;
-
-        xmlNode << Child{{"Table", "Value"}, element.values};
-
-        return xmlNode;
-    }
-
-    XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, SetElementOptionalDouble & element)
-    {
-        using FileParse::Child;
-        using FileParse::operator>>;
-
-        xmlNode >> Child{{"Table", "Value"}, element.values};
-
-        return xmlNode;
-    }
-
-    XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const SetElementOptionalDouble & element)
-    {
-        using FileParse::Child;
-        using FileParse::operator<<;
-
-        xmlNode << Child{{"Table", "Value"}, element.values};
-
-        return xmlNode;
-    }
-
-    XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, SetElementEnum & element)
-    {
-        FileParse::deserializeEnumSet<XMLNodeAdapter, Helper::Day>(xmlNode, {"Table", "Value"}, element.days, toDay);
-
-        return xmlNode;
-    }
-
-    XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const SetElementEnum & element)
-    {
-        FileParse::serializeEnumSet<XMLNodeAdapter, Helper::Day>(
-          xmlNode, {"Table", "Value"}, element.days, toDayString);
-
-        return xmlNode;
-    }
-
     SetElementDouble loadSetElementDouble(std::string_view fileName)
     {
         using FileParse::Child;

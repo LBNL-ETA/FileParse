@@ -1,65 +1,10 @@
 #include "SerializersVector.hxx"
 
-#include "Common.hxx"
-#include "Vector.hxx"
-
 #include "xmlParser.h"
+#include "XMLNodeAdapter.hxx"
 
 namespace Helper
 {
-    XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::VectorElement & element)
-    {
-        using FileParse::Child;
-        using FileParse::operator>>;
-
-        xmlNode >> Child{{"Table", "Value"}, element.values};
-
-        return xmlNode;
-    }
-
-    XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::VectorElement & element)
-    {
-        using FileParse::Child;
-        using FileParse::operator<<;
-
-        xmlNode << Child{{"Table", "Value"}, element.values};
-
-        return xmlNode;
-    }
-
-    XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, OptionalVectorElement & element)
-    {
-        using FileParse::Child;
-        using FileParse::operator>>;
-
-        xmlNode >> Child{{"Table", "Value"}, element.values};
-
-        return xmlNode;
-    }
-
-    XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const OptionalVectorElement & element)
-    {
-        using FileParse::Child;
-        using FileParse::operator<<;
-
-        xmlNode << Child{{"Table", "Value"}, element.values};
-
-        return xmlNode;
-    }
-
-    XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, EnumVectorElement & element)
-    {
-        FileParse::deserializeEnumVector<XMLNodeAdapter, Helper::Day>(xmlNode, {"Table", "Value"}, element.days, toDay);
-        return xmlNode;
-    }
-
-    XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const EnumVectorElement & element)
-    {
-        FileParse::serializeEnumVector<XMLNodeAdapter, Helper::Day>(
-          xmlNode, {"Table", "Value"}, element.days, toDayString);
-        return xmlNode;
-    }
-
     VectorElement loadVectorElement(std::string_view fileName)
     {
         using FileParse::Child;
