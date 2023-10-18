@@ -1,37 +1,111 @@
 #pragma once
 
+#include "StringConversion.hxx"
+
+#include "Common.hxx"
+#include "Map.hxx"
+
 #include "test/helper/structures/StructureMap.hxx"
-#include "XMLNodeAdapter.hxx"
 
 namespace Helper
 {
-    inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::MapElementString & element);
-    inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::MapElementString & element);
+    template<typename NodeAdapter>
+    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::MapElementString & element)
+    {
+        using FileParse::Child;
+        using FileParse::operator>>;
 
-    inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::MapElementOptionalString & element);
-    inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::MapElementOptionalString & element);
+        node >> Child{"OrderedMap", element.ordered};
+        node >> Child{"UnorderedMap", element.unordered};
 
-    inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::MapElementEnum & element);
-    inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::MapElementEnum & element);
+        return node;
+    }
 
-    inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::MapElementDouble & element);
-    inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::MapElementDouble & element);
+    template<typename NodeAdapter>
+    inline NodeAdapter operator<<(NodeAdapter node, const Helper::MapElementString & element)
+    {
+        using FileParse::Child;
+        using FileParse::operator<<;
 
-    inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::MapElementEnumDouble & element);
-    inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::MapElementEnumDouble & element);
+        node << Child{"OrderedMap", element.ordered};
+        node << Child{"UnorderedMap", element.unordered};
 
-    MapElementString loadMapElementString(std::string_view fileName);
-    void saveMapElementDouble(const MapElementString& element, std::string_view fileName);
+        return node;
+    }
 
-    MapElementOptionalString loadMapElementOptionalString(std::string_view fileName);
-    void saveMapElementOptionalDouble(const MapElementOptionalString& element, std::string_view fileName);
+    template<typename NodeAdapter>
+    inline NodeAdapter operator>>(const NodeAdapter & node,
+                                  Helper::MapElementOptionalString & element)
+    {
+        using FileParse::operator>>;
 
-    MapElementEnum loadMapElementEnum(std::string_view fileName);
-    void saveMapElementEnum(const MapElementEnum& element, std::string_view fileName);
+        node >> element.values;
 
-    MapElementDouble loadMapElementDouble(std::string_view fileName);
-    void saveMapElementDouble(const MapElementDouble& element, std::string_view fileName);
+        return node;
+    }
 
-    MapElementEnumDouble loadMapElementEnumDouble(std::string_view fileName);
-    void saveMapElementEnumDouble(const MapElementEnumDouble& element, std::string_view fileName);
-}
+    template<typename NodeAdapter>
+    inline NodeAdapter operator<<(NodeAdapter node,
+                                  const Helper::MapElementOptionalString & element)
+    {
+        using FileParse::operator<<;
+
+        node << element.values;
+
+        return node;
+    }
+
+    template<typename NodeAdapter>
+    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::MapElementEnum & element)
+    {
+        FileParse::deserializeEnumMap<NodeAdapter, Helper::Day>(node, element.days, Helper::toDay);
+
+        return node;
+    }
+
+    template<typename NodeAdapter>
+    inline NodeAdapter operator<<(NodeAdapter node, const Helper::MapElementEnum & element)
+    {
+        FileParse::serializeEnumMap<NodeAdapter, Helper::Day>(
+          node, element.days, Helper::toDayString);
+
+        return node;
+    }
+
+    template<typename NodeAdapter>
+    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::MapElementDouble & element)
+    {
+        using FileParse::operator>>;
+
+        node >> element.values;
+
+        return node;
+    }
+
+    template<typename NodeAdapter>
+    inline NodeAdapter operator<<(NodeAdapter node, const Helper::MapElementDouble & element)
+    {
+        using FileParse::operator<<;
+
+        node << element.values;
+
+        return node;
+    }
+
+    template<typename NodeAdapter>
+    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::MapElementEnumDouble & element)
+    {
+        FileParse::deserializeEnumMap<NodeAdapter, Helper::Day>(node, element.days, Helper::toDay);
+
+        return node;
+    }
+
+    template<typename NodeAdapter>
+    inline NodeAdapter operator<<(NodeAdapter xmlNode, const Helper::MapElementEnumDouble & element)
+    {
+        FileParse::serializeEnumMap<NodeAdapter, Helper::Day>(
+          xmlNode, element.days, Helper::toDayString);
+
+        return xmlNode;
+    }
+}   // namespace Helper

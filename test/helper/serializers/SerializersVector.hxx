@@ -1,28 +1,69 @@
 #pragma once
 
-#include "test/helper/structures/StructureVector.hxx"
+#include "Common.hxx"
+#include "Vector.hxx"
 
-#include "XMLNodeAdapter.hxx"
+#include "test/helper/structures/StructureVector.hxx"
 
 namespace Helper
 {
-    inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::VectorElement & element);
-    inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::VectorElement & element);
+    template<typename NodeAdapter>
+    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::VectorElement & element)
+    {
+        using FileParse::Child;
+        using FileParse::operator>>;
 
-    inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::OptionalVectorElement & element);
-    inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::OptionalVectorElement & element);
+        node >> Child{{"Table", "Value"}, element.values};
 
-    inline XMLNodeAdapter operator>>(const XMLNodeAdapter & xmlNode, Helper::EnumVectorElement & element);
-    inline XMLNodeAdapter operator<<(XMLNodeAdapter xmlNode, const Helper::EnumVectorElement & element);
+        return node;
+    }
 
-    VectorElement loadVectorElement(std::string_view fileName);
-    void saveVectorElement(const VectorElement& element, std::string_view fileName);
+    template<typename NodeAdapter>
+    inline NodeAdapter operator<<(NodeAdapter node, const Helper::VectorElement & element)
+    {
+        using FileParse::Child;
+        using FileParse::operator<<;
 
-    OptionalVectorElement loadOptionalVectorElement(std::string_view fileName);
-    void saveOptionalVectorElement(const OptionalVectorElement& element, std::string_view fileName);
+        node << Child{{"Table", "Value"}, element.values};
 
-    EnumVectorElement loadEnumVectorElement(std::string_view fileName);
-    void saveEnumVectorElement(const EnumVectorElement& element, std::string_view fileName);
+        return node;
+    }
 
-        
+    template<typename NodeAdapter>
+    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::OptionalVectorElement & element)
+    {
+        using FileParse::Child;
+        using FileParse::operator>>;
+
+        node >> Child{{"Table", "Value"}, element.values};
+
+        return node;
+    }
+
+    template<typename NodeAdapter>
+    inline NodeAdapter operator<<(NodeAdapter node, const Helper::OptionalVectorElement & element)
+    {
+        using FileParse::Child;
+        using FileParse::operator<<;
+
+        node << Child{{"Table", "Value"}, element.values};
+
+        return node;
+    }
+
+    template<typename NodeAdapter>
+    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::EnumVectorElement & element)
+    {
+        FileParse::deserializeEnumVector<NodeAdapter, Helper::Day>(
+          node, {"Table", "Value"}, element.days, toDay);
+        return node;
+    }
+
+    template<typename NodeAdapter>
+    inline NodeAdapter operator<<(NodeAdapter node, const Helper::EnumVectorElement & element)
+    {
+        FileParse::serializeEnumVector<NodeAdapter, Helper::Day>(
+          node, {"Table", "Value"}, element.days, toDayString);
+        return node;
+    }
 }   // namespace Helper
