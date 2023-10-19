@@ -18,5 +18,6 @@ namespace Helper
         std::optional<int> optional_int;
         std::optional<double> optional_double;
         std::variant<double, std::string> variant_field{0.0};
+        std::optional<std::variant<std::string, int>> optional_variant{22};
     };
 }

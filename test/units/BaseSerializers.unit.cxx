@@ -49,6 +49,18 @@ TEST_F(BaseSerializerTest, TestReadingBaseElement)
         FAIL();
     }
 
+    ASSERT_EQ(true, base.optional_variant.has_value());
+    if(auto str_ptr = std::get_if<std::string>(&base.optional_variant.value()))
+    {
+        EXPECT_EQ("VariantText1", *str_ptr);
+    }
+    else
+    {
+        std::cerr << "optional_variant_field does not hold a string value" << std::endl;
+        FAIL();
+    }
+
+
     std::remove(fileName.c_str());
 }
 

@@ -30,6 +30,7 @@ namespace Helper
                "\t\t<OptionalDouble>4.1415926</OptionalDouble>"
                "\t\t<OptionalBoolean>false</OptionalBoolean>"
                "\t\t<VariantString>VariantText</VariantString>"
+               "\t\t<VariantString1>VariantText1</VariantString1>"
                "\t</BaseElement>";
     }
 
