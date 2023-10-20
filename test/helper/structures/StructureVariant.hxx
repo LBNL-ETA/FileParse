@@ -3,6 +3,7 @@
 #include <string>
 #include <variant>
 #include <vector>
+#include <optional>
 
 namespace Helper
 {
@@ -22,6 +23,7 @@ namespace Helper
     {
         std::string name;
         std::variant<ElementTemperature, ElementHumidity> value;
+        std::optional<std::string> optionalString;
     };
 
     // All variations of the above structure should be stored here

@@ -27,6 +27,9 @@ namespace Helper
                "\t\t<Temperature>\n"
                "\t\t\t23.15\n"
                "\t\t</Temperature>\n"
+               "\t\t<OptionalString>\n"
+               "\t\t\ttest optional\n"
+               "\t\t</OptionalString>\n"
                "\t</VariantParentTemperature>\n";
     }
 
