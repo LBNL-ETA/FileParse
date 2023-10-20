@@ -5,6 +5,7 @@
 #include "Common.hxx"
 #include "Vector.hxx"
 #include "Variant.hxx"
+#include "Optional.hxx"
 
 #include "test/helper/structures/StructureVariant.hxx"
 
@@ -66,6 +67,7 @@ namespace Helper
         using FileParse::deserializeVariant;
 
         node >> Child{"Name", element.name};
+        node >> Child{"OptionalString", element.optionalString};
 
         std::map<std::string, std::function<void(const NodeAdapter &, Helper::VariantParent &)>>
           handlers
@@ -98,6 +100,8 @@ namespace Helper
         using FileParse::serializeVariant;
 
         node << Child{"Name", element.name};
+        node << Child{"OptionalString", element.optionalString};
+
         node << element.value;
 
         return node;
