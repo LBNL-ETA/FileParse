@@ -4,7 +4,6 @@
 #include "../serializers/SerializersSet.hxx"
 
 #include "XMLNodeAdapter.hxx"
-#include "xmlParser.h"
 
 namespace Helper
 {
@@ -107,10 +106,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         SetElementDouble element;
-        xmlNode >> Child{"SetElementDouble", element};
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> Child{"SetElementDouble", element};
+        }
 
         return element;
     }
@@ -119,7 +121,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};
 
         xmlNode << Child{"SetElementDouble", element};
 
@@ -130,10 +132,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         SetElementOptionalDouble element;
-        xmlNode >> Child{"SetElementOptionalDouble", element};
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> Child{"SetElementOptionalDouble", element};
+        }
 
         return element;
     }
@@ -143,7 +148,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};;
 
         xmlNode << Child{"SetElementOptionalDouble", element};
 
@@ -154,10 +159,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         SetElementEnum element;
-        xmlNode >> Child{"SetElementEnum", element};
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> Child{"SetElementEnum", element};
+        }
 
         return element;
     }
@@ -166,7 +174,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};
 
         xmlNode << Child{"SetElementEnum", element};
 
