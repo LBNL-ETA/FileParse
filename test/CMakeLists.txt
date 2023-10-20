@@ -35,6 +35,7 @@ add_executable(${PROJECT_TEST_NAME}
         helper/serializers/SerializersEnum.hxx
 		helper/serializers/SerializersMap.hxx
 		helper/serializers/SerializersSet.hxx
+		helper/serializers/SerializersVariant.hxx
 		helper/serializers/SerializersVector.hxx
 
 		helper/structures/Enums.hxx
@@ -42,18 +43,21 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/structures/StructureEnum.hxx
 		helper/structures/StructureSet.hxx
 		helper/structures/StructureMap.hxx
+		helper/structures/StructureVariant.hxx
 		helper/structures/StructureVector.hxx
 
 		helper/files/BaseElementXML.hxx
 		helper/files/BaseElementXML.cxx
-		helper/files/VectorElementXML.hxx
-		helper/files/VectorElementXML.cxx
 		helper/files/SetElementXML.hxx
 		helper/files/SetElementXML.cxx
 		helper/files/EnumElementXML.hxx
 		helper/files/EnumElementXML.cxx
 		helper/files/MapElementXML.hxx
 		helper/files/MapElementXML.cxx
+		helper/files/VariantElementXML.hxx
+		helper/files/VariantElementXML.cxx
+		helper/files/VectorElementXML.hxx
+		helper/files/VectorElementXML.cxx
 
 		helper/Utility.hxx
 
@@ -63,6 +67,7 @@ add_executable(${PROJECT_TEST_NAME}
 		units/EnumMapSerializers.unit.cxx
 		units/StringMapSerializers.unit.cxx
 		units/SetSerializers.unit.cxx
+		units/VariantSerializers.unit.cxx
 		units/VectorSerializers.unit.cxx
 		main.cpp)
 
