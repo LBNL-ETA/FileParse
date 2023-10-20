@@ -3,7 +3,6 @@
 #include "test/helper/structures/StructureEnum.hxx"
 #include "../serializers/SerializersEnum.hxx"
 
-#include "xmlParser.h"
 #include "XMLNodeAdapter.hxx"
 
 namespace Helper
@@ -49,10 +48,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         EnumElement enumEl;
-        xmlNode >> Child{"EnumElement", enumEl};
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> Child{"EnumElement", enumEl};
+        }
 
         return enumEl;
     }
@@ -61,7 +63,8 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};
+
         xmlNode << Child{"EnumElement", element};
 
         xmlNode.writeToFile(fileName);

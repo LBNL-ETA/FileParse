@@ -3,7 +3,6 @@
 #include "test/helper/structures/StructureBase.hxx"
 #include "../serializers/SerializersBaseElement.hxx"
 
-#include "xmlParser.h"
 #include "XMLNodeAdapter.hxx"
 
 namespace Helper
@@ -38,10 +37,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         BaseElement base;
-        xmlNode >> Child{"BaseElement", base};
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> Child{"BaseElement", base};
+        }
 
         return base;
     }
@@ -50,7 +52,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};
 
         xmlNode << Child{"BaseElement", base};
 

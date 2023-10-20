@@ -4,7 +4,6 @@
 #include "../serializers/SerializersMap.hxx"
 
 #include "XMLNodeAdapter.hxx"
-#include "xmlParser.h"
 
 namespace Helper
 {
@@ -123,10 +122,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         MapElementString element;
-        xmlNode >> element;
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> element;
+        }
 
         return element;
     }
@@ -135,7 +137,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};
 
         xmlNode << element;
         xmlNode.writeToFile(fileName);
@@ -145,10 +147,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         MapElementOptionalString element;
-        xmlNode >> Child{"OptionalStringMap", element};
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> Child{"OptionalStringMap", element};
+        }
 
         return element;
     }
@@ -158,7 +163,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};
         xmlNode << Child{"OptionalStringMap", element};
 
         xmlNode.writeToFile(fileName);
@@ -168,10 +173,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         MapElementEnum element;
-        xmlNode >> Child{"EnumMap", element};
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> Child{"EnumMap", element};
+        }
 
         return element;
     }
@@ -180,7 +188,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};
 
         xmlNode << Child{"EnumMap", element};
         xmlNode.writeToFile(fileName);
@@ -190,10 +198,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         MapElementDouble element;
-        xmlNode >> Child{"DoubleMap", element};
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> Child{"DoubleMap", element};
+        }
 
         return element;
     }
@@ -202,7 +213,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};
 
         xmlNode << Child{"DoubleMap", element};
         xmlNode.writeToFile(fileName);
@@ -212,10 +223,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         MapElementEnumDouble element;
-        xmlNode >> Child{"EnumDoubleMap", element};
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> Child{"EnumDoubleMap", element};
+        }
 
         return element;
     }
@@ -224,7 +238,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};
 
         xmlNode << Child{"EnumDoubleMap", element};
 

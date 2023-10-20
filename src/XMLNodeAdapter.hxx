@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <optional>
 
 namespace XMLParser
 {
@@ -22,13 +23,16 @@ public:
     [[nodiscard]] XMLNodeAdapter getChildNode(std::string_view name, int i = 0) const;
     [[nodiscard]] int nChildNode(std::string_view name) const;
     [[nodiscard]] bool hasChildNode(std::string_view name) const;
-    XMLNodeAdapter addChild(std::string_view name);
-    XMLNodeAdapter addChild(const XMLNodeAdapter & node);
-    void addText(std::string_view text);
-    int writeToUTF8(std::string_view outString);
+    XMLNodeAdapter addChild(std::string_view name) const;
+    XMLNodeAdapter addChild(const XMLNodeAdapter & node) const;
+    void addText(std::string_view text) const;
+    int writeToUTF8(std::string_view outString) const;
     int writeToFile(std::string_view outString) const;
 
 private:
     struct Impl;
     std::shared_ptr<Impl> pimpl_;
 };
+
+XMLNodeAdapter createTopNode(std::string_view topNodeName);
+std::optional<XMLNodeAdapter> getTopNode(std::string_view fileName, std::string_view topNodeName);

@@ -4,7 +4,6 @@
 #include "../serializers/SerializersVector.hxx"
 
 #include "XMLNodeAdapter.hxx"
-#include "xmlParser.h"
 
 namespace Helper
 {
@@ -108,10 +107,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         VectorElement element;
-        xmlNode >> Child{"VectorElement", element};
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> Child{"VectorElement", element};
+        }
 
         return element;
     }
@@ -120,7 +122,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};
 
         xmlNode << Child{"VectorElement", element};
 
@@ -131,10 +133,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         OptionalVectorElement element;
-        xmlNode >> Child{"OptionalVectorElement", element};
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> Child{"OptionalVectorElement", element};
+        }
 
         return element;
     }
@@ -143,7 +148,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};
 
         xmlNode << Child{"OptionalVectorElement", element};
 
@@ -154,10 +159,13 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::openFileHelper(fileName.data(), "Test")};
+        auto xmlNode{getTopNode(fileName, "Test")};
 
         EnumVectorElement element;
-        xmlNode >> Child{"EnumVectorElement", element};
+        if(xmlNode.has_value())
+        {
+            xmlNode.value() >> Child{"EnumVectorElement", element};
+        }
 
         return element;
     }
@@ -166,7 +174,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        XMLNodeAdapter xmlNode{XMLParser::XMLNode::createXMLTopNode("Test")};
+        auto xmlNode{createTopNode("Test")};
 
         xmlNode << Child{"EnumVectorElement", element};
 
