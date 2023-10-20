@@ -12,34 +12,34 @@ namespace Helper
     {
         static const std::string rootTag{"Test"};
         std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += variantParentString();
-        fileContent += variantParentDouble();
+        fileContent += variantParentTemperature();
+        fileContent += variantParentHumidity();
         fileContent += "</" + rootTag + ">";
         return fileContent;
     }
 
-    std::string variantParentString()
+    std::string variantParentTemperature()
     {
-        return "\t<VariantParentString>\n"
+        return "\t<VariantParentTemperature>\n"
                "\t\t<Name>\n"
-               "\t\t\tString Parent\n"
+               "\t\t\tParent Temperature\n"
                "\t\t</Name>\n"
-               "\t\t<StringValue>\n"
-               "\t\t\tThis is a test\n"
-               "\t\t</StringValue>\n"
-               "\t</VariantParentString>\n";
+               "\t\t<Temperature>\n"
+               "\t\t\t23.15\n"
+               "\t\t</Temperature>\n"
+               "\t</VariantParentTemperature>\n";
     }
 
-    std::string variantParentDouble()
+    std::string variantParentHumidity()
     {
-        return "\t<VariantParentDouble>\n"
+        return "\t<VariantParentHumidity>\n"
                "\t\t<Name>\n"
-               "\t\t\tDouble Parent\n"
+               "\t\t\tParent Humidity\n"
                "\t\t</Name>\n"
-               "\t\t<DoubleValue>\n"
+               "\t\t<Humidity>\n"
                "\t\t\t9.493743\n"
-               "\t\t</DoubleValue>\n"
-               "\t</VariantParentDouble>\n";
+               "\t\t</Humidity>\n"
+               "\t</VariantParentHumidity>\n";
     }
 
     VariantsAll loadVariantAll(std::string_view fileName)

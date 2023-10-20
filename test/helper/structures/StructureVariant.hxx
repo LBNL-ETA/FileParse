@@ -6,12 +6,22 @@
 
 namespace Helper
 {
+    struct ElementTemperature
+    {
+        double temperature{0};
+    };
+
+    struct ElementHumidity
+    {
+        std::string humidity;
+    };
+
     // This is example when the entire tag structure is loaded
     // and then part of the object are determined to be a variant.
     struct VariantParent
     {
         std::string name;
-        std::variant<std::string, double> value;
+        std::variant<ElementTemperature, ElementHumidity> value;
     };
 
     // All variations of the above structure should be stored here
