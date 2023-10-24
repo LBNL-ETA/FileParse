@@ -2,10 +2,10 @@
 
 #include <typeindex>
 
-#include "Common.hxx"
-#include "Vector.hxx"
-#include "Variant.hxx"
-#include "Optional.hxx"
+#include "FP_Common.hxx"
+#include "FP_Vector.hxx"
+#include "FP_Variant.hxx"
+#include "FP_Optional.hxx"
 
 #include "test/helper/structures/StructureVariant.hxx"
 

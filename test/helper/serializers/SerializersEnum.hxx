@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Common.hxx"
-#include "Enum.hxx"
+#include "FP_Common.hxx"
+#include "FP_Enum.hxx"
 
 #include "test/helper/structures/StructureEnum.hxx"
 
