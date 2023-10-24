@@ -1,17 +1,17 @@
 set( CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON )
 
 add_library( ${LIB_NAME}
-		Base.hxx
-		Common.hxx
-		Enum.hxx
-		Map.hxx
-		Optional.hxx
-		Set.hxx
-		StringConversion.hxx
-		Variant.hxx
-		Vector.hxx
-		XMLNodeAdapter.cxx
-		XMLNodeAdapter.hxx)
+        FP_Base.hxx
+		FP_Common.hxx
+		FP_Enum.hxx
+		FP_Map.hxx
+		FP_Optional.hxx
+		FP_Set.hxx
+		FP_StringConversion.hxx
+		FP_Variant.hxx
+		FP_Vector.hxx
+		FP_XMLNodeAdapter.cxx
+		FP_XMLNodeAdapter.hxx)
 
 if(NOT "${fPIC}")
   set(fPIC ON)

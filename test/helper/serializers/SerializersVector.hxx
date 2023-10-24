@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Common.hxx"
-#include "Vector.hxx"
+#include "FP_Common.hxx"
+#include "FP_Vector.hxx"
 
 #include "test/helper/structures/StructureVector.hxx"
 

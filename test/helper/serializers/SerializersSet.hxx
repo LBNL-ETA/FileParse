@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Common.hxx"
-#include "Set.hxx"
+#include "FP_Common.hxx"
+#include "FP_Set.hxx"
 
 #include "test/helper/structures/StructureSet.hxx"
 

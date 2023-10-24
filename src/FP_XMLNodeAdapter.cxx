@@ -1,4 +1,4 @@
-#include "XMLNodeAdapter.hxx"
+#include "FP_XMLNodeAdapter.hxx"
 
 #include "xmlParser/xmlParser.h"
 
