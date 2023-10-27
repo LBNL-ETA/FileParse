@@ -1,12 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "test/helper/Utility.hxx"
-
 #include "test/helper/files/VariantElementXML.hxx"
 #include "test/helper/structures/StructureVariant.hxx"
 
 #include "test/helper/FileManipulation.hxx"
-#include "test/helper/serializers/SerializersVariant.hxx"
 
 class VariantSerializerTest : public testing::Test
 {
