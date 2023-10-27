@@ -6,7 +6,6 @@
 #include "test/helper/structures/StructureMap.hxx"
 
 #include "test/helper/FileManipulation.hxx"
-#include "test/helper/serializers/SerializersMap.hxx"
 
 class StringMapSerializerTest : public testing::Test
 {

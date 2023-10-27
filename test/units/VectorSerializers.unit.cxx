@@ -6,7 +6,6 @@
 #include "test/helper/structures/StructureVector.hxx"
 
 #include "test/helper/FileManipulation.hxx"
-#include "test/helper/serializers/SerializersVector.hxx"
 
 class VectorSerializerTest : public testing::Test
 {
