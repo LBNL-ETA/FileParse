@@ -9,6 +9,7 @@ namespace Helper
     struct MapElementEnum;
     struct MapElementDouble;
     struct MapElementEnumDouble;
+    struct CMAElement;
 
     std::string testMapElementStringDatabase();
     std::string mapElementString();
@@ -28,6 +29,10 @@ namespace Helper
     std::string testMapElementDayDoubleDatabase();
     std::string mapElementDayDouble();
 
+    std::string testCMAElementDatabase();
+    std::string cmaElement1();
+    std::string cmaElement2();
+
     MapElementString loadMapElementString(std::string_view fileName);
     void saveMapElementDouble(const MapElementString & element, std::string_view fileName);
 
@@ -43,4 +48,7 @@ namespace Helper
 
     MapElementEnumDouble loadMapElementEnumDouble(std::string_view fileName);
     void saveMapElementEnumDouble(const MapElementEnumDouble & element, std::string_view fileName);
+
+    CMAElement loadCMAElement(std::string_view fileName);
+    void saveCMAElement(const CMAElement & element, std::string_view fileName);
 }
