@@ -7,8 +7,8 @@
 namespace FileParse
 {
     template<typename NodeAdapter, typename MapType>
-    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter> operator<<(NodeAdapter node,
-                                                                                  const Child<const MapType> & value)
+    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter>
+      operator<<(NodeAdapter node, const Child<const MapType> & value)
     {
         if(value.nodeNames.empty() || value.data.empty())
             return node;
@@ -21,8 +21,8 @@ namespace FileParse
     }
 
     template<typename NodeAdapter, typename MapType>
-    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter> operator>>(NodeAdapter node,
-                                                                                  Child<const MapType> & value)
+    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter>
+      operator>>(NodeAdapter node, Child<const MapType> & value)
     {
         if(value.nodeNames.empty())
         {
@@ -40,6 +40,46 @@ namespace FileParse
         }
 
         parentNode >> value.data;
+
+        return node;
+    }
+
+    template<typename NodeAdapter, typename MapType>
+    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter>
+      serializeMapAsChilds(NodeAdapter node, std::string_view childNodeName, const MapType & map)
+    {
+        if(map.empty())
+            return node;
+
+        for(const auto & [enumKey, mapValue] : map)
+        {
+            auto childNode{node.addChild(childNodeName)};
+            childNode << enumKey;
+            childNode << mapValue;
+        }
+
+        return node;
+    }
+
+    template<typename NodeAdapter, typename MapType>
+    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter>
+      deserializeMapAsChilds(NodeAdapter node, std::string_view childNodeName, MapType & map)
+    {
+        int childCount = node.nChildNode(childNodeName.data());
+        for(int i = 0; i < childCount; ++i)
+        {
+            auto childNode = node.getChildNode(childNodeName.data(), i);
+
+            // Assuming key and value types have default constructors and
+            // have the appropriate `>>` operators overloaded.
+            typename MapType::key_type key;
+            typename MapType::mapped_type value;
+
+            childNode >> key;
+            childNode >> value;
+
+            map[key] = value;
+        }
 
         return node;
     }

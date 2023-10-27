@@ -38,6 +38,7 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/serializers/SerializersVariant.hxx
 		helper/serializers/SerializersVector.hxx
 
+		helper/structures/CMAOptionsHash.hxx
 		helper/structures/Enums.hxx
 		helper/structures/StructureBase.hxx
 		helper/structures/StructureEnum.hxx
@@ -66,6 +67,7 @@ add_executable(${PROJECT_TEST_NAME}
 		units/EnumSerializers.unit.cxx
 		units/EnumMapSerializers.unit.cxx
 		units/StringMapSerializers.unit.cxx
+		units/StructureMapSerializers.unit.cxx
 		units/SetSerializers.unit.cxx
 		units/VariantSerializers.unit.cxx
 		units/VectorSerializers.unit.cxx
