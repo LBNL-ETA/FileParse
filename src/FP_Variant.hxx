@@ -27,7 +27,7 @@ namespace FileParse
                             std::variant<Ts...> & variantValue)
     {
         bool deserialized = false;
-        int index = 0;
+        size_t index{0u};
 
         auto try_deserialize_variant = [&](auto dummyType) {
             using Type = decltype(dummyType);
@@ -66,7 +66,7 @@ namespace FileParse
     {
         std::variant<Ts...> variantValue;
         bool successfullyDeserialized = false;
-        int index{0};
+        size_t index{0u};
 
         auto try_deserialize_variant = [&](auto dummyType) {
             using Type = decltype(dummyType);
