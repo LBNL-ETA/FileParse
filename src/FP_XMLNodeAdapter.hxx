@@ -24,7 +24,6 @@ public:
     [[nodiscard]] int nChildNode(std::string_view name) const;
     [[nodiscard]] bool hasChildNode(std::string_view name) const;
     XMLNodeAdapter addChild(std::string_view name) const;
-    XMLNodeAdapter addChild(const XMLNodeAdapter & node) const;
     void addText(std::string_view text) const;
     int writeToUTF8(std::string_view outString) const;
     int writeToFile(std::string_view outString) const;

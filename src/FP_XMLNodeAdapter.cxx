@@ -52,11 +52,6 @@ void XMLNodeAdapter::addText(std::string_view text) const
     pimpl_->node_.addText(text.data());
 }
 
-XMLNodeAdapter XMLNodeAdapter::addChild(const XMLNodeAdapter & node) const
-{
-    return XMLNodeAdapter(pimpl_->node_.addChild(node.pimpl_->node_));
-}
-
 int XMLNodeAdapter::writeToUTF8(std::string_view outString) const
 {
     return static_cast<int>(pimpl_->node_.writeToUTF8(outString.data()));
