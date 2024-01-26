@@ -65,7 +65,8 @@ TEST_F(StructureMapSerializerTest, Writing)
                                       "\t</Element>\n"
                                       "</Test>\n"};
 
-    Helper::saveCMAElement(knownElement, fileName());
+    const auto result{Helper::saveCMAElement(knownElement, fileName())};
+    EXPECT_EQ(result, 0) << "Error saving CMAElement!";
 
     const std::string serializedContent{File::loadToString(fileName())};
 

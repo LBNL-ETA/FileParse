@@ -74,10 +74,12 @@ TEST_F(BaseSerializerTest, TestWritingBaseElement)
 
     const std::string fileName{"TestWrite.xml"};
 
-    // Sometimes in debug mode the above file was not removed from the previous run. This is to ensure deletion.
+    // Sometimes in debug mode the above file was not removed from the previous run. This is to
+    // ensure deletion.
     std::remove(fileName.c_str());
 
-    Helper::saveBaseElement(base, fileName);
+    const auto result{Helper::saveBaseElement(base, fileName)};
+    EXPECT_EQ(0, result);
 
     Helper::BaseElement loadedBase{Helper::loadBaseElement(fileName)};
 
@@ -91,7 +93,8 @@ TEST_F(BaseSerializerTest, TestWritingBaseElement)
     }
     else
     {
-        EXPECT_EQ(base.optional_double.has_value(), loadedBase.optional_double.has_value());   // Both should be nullopt
+        EXPECT_EQ(base.optional_double.has_value(),
+                  loadedBase.optional_double.has_value());   // Both should be nullopt
     }
 
     EXPECT_EQ(base.boolean_optional, loadedBase.boolean_optional);
@@ -102,19 +105,26 @@ TEST_F(BaseSerializerTest, TestWritingBaseElement)
     }
     else
     {
-        EXPECT_EQ(base.optional_double.has_value(), loadedBase.optional_double.has_value());   // Both should be nullopt
+        EXPECT_EQ(base.optional_double.has_value(),
+                  loadedBase.optional_double.has_value());   // Both should be nullopt
     }
 
-    EXPECT_NEAR(base.double_number, loadedBase.double_number, tolerance);   // Assuming double_number is not optional
+    EXPECT_NEAR(base.double_number,
+                loadedBase.double_number,
+                tolerance);   // Assuming double_number is not optional
 
-    if(std::holds_alternative<double>(base.variant_field) && std::holds_alternative<double>(loadedBase.variant_field))
+    if(std::holds_alternative<double>(base.variant_field)
+       && std::holds_alternative<double>(loadedBase.variant_field))
     {
-        EXPECT_NEAR(std::get<double>(base.variant_field), std::get<double>(loadedBase.variant_field), tolerance);
+        EXPECT_NEAR(std::get<double>(base.variant_field),
+                    std::get<double>(loadedBase.variant_field),
+                    tolerance);
     }
     else if(std::holds_alternative<std::string>(base.variant_field)
             && std::holds_alternative<std::string>(loadedBase.variant_field))
     {
-        EXPECT_EQ(std::get<std::string>(base.variant_field), std::get<std::string>(loadedBase.variant_field));
+        EXPECT_EQ(std::get<std::string>(base.variant_field),
+                  std::get<std::string>(loadedBase.variant_field));
     }
     else
     {

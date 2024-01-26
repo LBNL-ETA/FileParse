@@ -26,8 +26,10 @@ TEST_F(StringMapSerializerTest, ReadingStringMap)
 
     const auto mapEl{Helper::loadMapElementString(fileName)};
 
-    const std::map<std::string, std::string> correctOrdered{{"Key1", "Value1"}, {"Key2", "Value2"}, {"Key3", "Value3"}};
-    const std::unordered_map<std::string, std::string> correctUnordered{{"K1", "V1"}, {"K2", "V2"}, {"K3", "V3"}};
+    const std::map<std::string, std::string> correctOrdered{
+      {"Key1", "Value1"}, {"Key2", "Value2"}, {"Key3", "Value3"}};
+    const std::unordered_map<std::string, std::string> correctUnordered{
+      {"K1", "V1"}, {"K2", "V2"}, {"K3", "V3"}};
 
     Helper::checkMapEquality(correctOrdered, mapEl.ordered);
     Helper::checkMapEquality(correctUnordered, mapEl.unordered);
@@ -38,13 +40,15 @@ TEST_F(StringMapSerializerTest, ReadingStringMap)
 TEST_F(StringMapSerializerTest, WritingStringMap)
 {
     Helper::MapElementString mapEl;
-    mapEl.ordered = {{"1", "Value1"}, {"2", "Value2"}, {"3", "Value3"}, {"4", "Value4"}, {"5", "Value5"}};
+    mapEl.ordered
+      = {{"1", "Value1"}, {"2", "Value2"}, {"3", "Value3"}, {"4", "Value4"}, {"5", "Value5"}};
 
     const std::string fileName{"TestWrite.xml"};
 
     std::remove(fileName.c_str());
 
-    Helper::saveMapElementDouble(mapEl, fileName);
+    const auto result{Helper::saveMapElementDouble(mapEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedMap{Helper::loadMapElementString(fileName)};
 
@@ -81,7 +85,8 @@ TEST_F(StringMapSerializerTest, WritingOptionalStringMap)
 
     std::remove(fileName.c_str());
 
-    Helper::saveMapElementOptionalDouble(mapEl, fileName);
+    const auto result{Helper::saveMapElementOptionalDouble(mapEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedMap{Helper::loadMapElementOptionalString(fileName)};
 
@@ -114,7 +119,8 @@ TEST_F(StringMapSerializerTest, WritingEmpty)
 
     std::remove(fileName.c_str());
 
-    Helper::saveMapElementDouble(mapEl, fileName);
+    const auto result{Helper::saveMapElementDouble(mapEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadMapElementString(fileName)};
 

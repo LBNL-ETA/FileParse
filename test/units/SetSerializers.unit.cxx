@@ -42,7 +42,8 @@ TEST_F(SetSerializerTest, Writing)
 
     std::remove(fileName.c_str());
 
-    Helper::saveSetElementDouble(setEl, fileName);
+    const auto result{Helper::saveSetElementDouble(setEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadSetElementDouble(fileName)};
 
@@ -79,7 +80,8 @@ TEST_F(SetSerializerTest, OptionalWriting)
 
     std::remove(fileName.c_str());
 
-    Helper::saveSetElementOptionalDouble(setEl, fileName);
+    const auto result{Helper::saveSetElementOptionalDouble(setEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedSet{Helper::loadSetElementOptionalDouble(fileName)};
 
@@ -113,7 +115,8 @@ TEST_F(SetSerializerTest, WritingEmpty)
 
     std::remove(fileName.c_str());
 
-    Helper::saveSetElementDouble(setEl, fileName);
+    const auto result{Helper::saveSetElementDouble(setEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedSet{Helper::loadSetElementDouble(fileName)};
 
@@ -131,7 +134,8 @@ TEST_F(SetSerializerTest, ReadingEnum)
 
     const auto setEl{Helper::loadSetElementEnum(fileName)};
 
-    const std::set<Helper::Day> correct{Helper::Day::Wednesday, Helper::Day::Friday, Helper::Day::Sunday};
+    const std::set<Helper::Day> correct{
+      Helper::Day::Wednesday, Helper::Day::Friday, Helper::Day::Sunday};
     Helper::checkSetEquality(correct, setEl.days, Helper::toDayString);
 
     std::remove(fileName.c_str());
@@ -147,7 +151,8 @@ TEST_F(SetSerializerTest, WritingEnum)
 
     std::remove(fileName.c_str());
 
-    Helper::saveSetElementEnum(setEl, fileName);
+    const auto result{Helper::saveSetElementEnum(setEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedSet{Helper::loadSetElementEnum(fileName)};
 

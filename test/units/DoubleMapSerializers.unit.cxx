@@ -47,7 +47,8 @@ TEST_F(DoubleMapSerializerTest, Writing)
 
     std::remove(fileName.c_str());
 
-    Helper::saveMapElementDouble(mapEl, fileName);
+    const auto result{Helper::saveMapElementDouble(mapEl, fileName)};
+    EXPECT_EQ(result, 0);
     const auto loadedMap{Helper::loadMapElementDouble(fileName)};
 
     constexpr auto tolerance{1e-6};

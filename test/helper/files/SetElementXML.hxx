@@ -8,25 +8,26 @@ namespace Helper
     struct SetElementOptionalDouble;
     struct SetElementEnum;
 
-    std::string testSetElementDoubleDatabase();
-    std::string setElementDouble();
+    [[nodiscard]] std::string testSetElementDoubleDatabase();
+    [[nodiscard]] std::string setElementDouble();
 
-    std::string testSetElementEmptyDatabase();
-    std::string setElementEmpty();
+    [[nodiscard]] std::string testSetElementEmptyDatabase();
+    [[nodiscard]] std::string setElementEmpty();
 
-    std::string testSetElementOptionalDoubleDatabase();
-    std::string setElementOptionalDouble();
+    [[nodiscard]] std::string testSetElementOptionalDoubleDatabase();
+    [[nodiscard]] std::string setElementOptionalDouble();
 
-    std::string testSetElementEnumDatabase();
-    std::string setElementEnum();
+    [[nodiscard]] std::string testSetElementEnumDatabase();
+    [[nodiscard]] std::string setElementEnum();
 
-    SetElementDouble loadSetElementDouble(std::string_view fileName);
-    void saveSetElementDouble(const SetElementDouble & element, std::string_view fileName);
+    [[nodiscard]] SetElementDouble loadSetElementDouble(std::string_view fileName);
+    [[nodiscard]] int saveSetElementDouble(const SetElementDouble & element,
+                                           std::string_view fileName);
 
-    SetElementOptionalDouble loadSetElementOptionalDouble(std::string_view fileName);
-    void saveSetElementOptionalDouble(const SetElementOptionalDouble & element,
+    [[nodiscard]] SetElementOptionalDouble loadSetElementOptionalDouble(std::string_view fileName);
+    [[nodiscard]] int saveSetElementOptionalDouble(const SetElementOptionalDouble & element,
                                       std::string_view fileName);
 
-    SetElementEnum loadSetElementEnum(std::string_view fileName);
-    void saveSetElementEnum(const SetElementEnum & element, std::string_view fileName);
+    [[nodiscard]] SetElementEnum loadSetElementEnum(std::string_view fileName);
+    [[nodiscard]] int saveSetElementEnum(const SetElementEnum & element, std::string_view fileName);
 }   // namespace Helper

@@ -6,12 +6,12 @@ namespace Helper
 {
     struct EnumElement;
 
-    std::string testEnumDatabase();
-    std::string enumElement();
+    [[nodiscard]] std::string testEnumDatabase();
+    [[nodiscard]] std::string enumElement();
 
-    std::string testEnumDatabaseOptionalMissing();
-    std::string enumElementOptionalMissing();
+    [[nodiscard]] std::string testEnumDatabaseOptionalMissing();
+    [[nodiscard]] std::string enumElementOptionalMissing();
 
-    EnumElement loadEnumElement(std::string_view fileName);
-    void saveEnumElement(const EnumElement& element, std::string_view fileName);
+    [[nodiscard]] EnumElement loadEnumElement(std::string_view fileName);
+    [[nodiscard]] int saveEnumElement(const EnumElement& element, std::string_view fileName);
 }
