@@ -24,8 +24,8 @@ public:
     [[nodiscard]] XMLNodeAdapter getChildNode(std::string_view name, int i) const override;
     [[nodiscard]] int nChildNode(std::string_view name) const override;
     [[nodiscard]] bool hasChildNode(std::string_view name) const override;
-    [[nodiscard]] XMLNodeAdapter addChild(std::string_view name) const override;
-    void addText(std::string_view text) const override;
+    [[nodiscard]] XMLNodeAdapter addChild(std::string_view name) override;
+    void addText(std::string_view text) override;
 
     [[nodiscard]] int writeToUTF8(std::string_view outString) const;
     [[nodiscard]] int writeToFile(std::string_view outString) const;
