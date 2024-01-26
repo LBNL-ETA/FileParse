@@ -50,7 +50,8 @@ TEST_F(EnumMapSerializerTest, WritingEnumAsKey_String)
 
     std::remove(fileName.c_str());
 
-    Helper::saveMapElementEnum(mapEl, fileName);
+    const auto result{Helper::saveMapElementEnum(mapEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedMap{Helper::loadMapElementEnum(fileName)};
 
@@ -92,7 +93,8 @@ TEST_F(EnumMapSerializerTest, WritingEnumAsKey_Double)
 
     std::remove(fileName.c_str());
 
-    Helper::saveMapElementEnumDouble(mapEl, fileName);
+    const auto result{Helper::saveMapElementEnumDouble(mapEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedMap{Helper::loadMapElementEnumDouble(fileName)};
 

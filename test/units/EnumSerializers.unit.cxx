@@ -6,14 +6,7 @@
 #include "test/helper/structures/StructureEnum.hxx"
 
 class EnumSerializerTest : public testing::Test
-{
-protected:
-    void SetUp() override
-    {}
-
-    void TearDown() override
-    {}
-};
+{};
 
 TEST_F(EnumSerializerTest, TestReading)
 {
@@ -40,10 +33,13 @@ TEST_F(EnumSerializerTest, TestWriting)
 
     const std::string fileName{"TestWrite.xml"};
 
-    // Sometimes in debug mode the above file was not removed from the previous run. This is to ensure deletion.
+    // Sometimes in debug mode the above file was not removed from the previous run. This is to
+    // ensure deletion.
     std::remove(fileName.c_str());
 
-    Helper::saveEnumElement(enumEl, fileName);
+    const auto result{Helper::saveEnumElement(enumEl, fileName)};
+
+    EXPECT_EQ(0, result);
 
     const auto loadedEnum{Helper::loadEnumElement(fileName)};
 
@@ -79,7 +75,9 @@ TEST_F(EnumSerializerTest, TestWritingOptionalMissing)
 
     std::remove(fileName.c_str());
 
-    Helper::saveEnumElement(enumEl, fileName);
+    const auto result{Helper::saveEnumElement(enumEl, fileName)};
+
+    EXPECT_EQ(0, result);
 
     const auto loadedEnum{Helper::loadEnumElement(fileName)};
 

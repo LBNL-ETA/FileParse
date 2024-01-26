@@ -23,10 +23,10 @@ public:
     [[nodiscard]] XMLNodeAdapter getChildNode(std::string_view name, int i = 0) const;
     [[nodiscard]] int nChildNode(std::string_view name) const;
     [[nodiscard]] bool hasChildNode(std::string_view name) const;
-    XMLNodeAdapter addChild(std::string_view name) const;
+    [[nodiscard]] XMLNodeAdapter addChild(std::string_view name) const;
     void addText(std::string_view text) const;
-    int writeToUTF8(std::string_view outString) const;
-    int writeToFile(std::string_view outString) const;
+    [[nodiscard]] int writeToUTF8(std::string_view outString) const;
+    [[nodiscard]] int writeToFile(std::string_view outString) const;
 
 private:
     struct Impl;

@@ -60,7 +60,7 @@ namespace Helper
         return element;
     }
 
-    void saveVariantAll(const VariantsAll & element, std::string_view fileName)
+    int saveVariantAll(const VariantsAll & element, std::string_view fileName)
     {
         using FileParse::Child;
 
@@ -68,6 +68,6 @@ namespace Helper
 
         xmlNode << element;
 
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 }

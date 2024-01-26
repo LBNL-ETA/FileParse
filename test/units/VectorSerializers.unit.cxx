@@ -40,10 +40,12 @@ TEST_F(VectorSerializerTest, Writing)
 
     const std::string fileName{"TestWrite.xml"};
 
-    // Sometimes in debug mode the above file was not removed from the previous run. This is to ensure deletion.
+    // Sometimes in debug mode the above file was not removed from the previous run. This is to
+    // ensure deletion.
     std::remove(fileName.c_str());
 
-    Helper::saveVectorElement(vectorEl, fileName);
+    const auto result{Helper::saveVectorElement(vectorEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadVectorElement(fileName)};
 
@@ -92,7 +94,8 @@ TEST_F(VectorSerializerTest, WritingOptional)
 
     std::remove(fileName.c_str());
 
-    Helper::saveOptionalVectorElement(vectorEl, fileName);
+    const auto result{Helper::saveOptionalVectorElement(vectorEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadOptionalVectorElement(fileName)};
 
@@ -110,7 +113,8 @@ TEST_F(VectorSerializerTest, WritingOptionalEmpty)
 
     std::remove(fileName.c_str());
 
-    Helper::saveOptionalVectorElement(vectorEl, fileName);
+    const auto result{Helper::saveOptionalVectorElement(vectorEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadOptionalVectorElement(fileName)};
 
@@ -139,10 +143,12 @@ TEST_F(VectorSerializerTest, WritingEmpty)
 
     const std::string fileName{"TestWrite.xml"};
 
-    // Sometimes in debug mode the above file was not removed from the previous run. This is to ensure deletion.
+    // Sometimes in debug mode the above file was not removed from the previous run. This is to
+    // ensure deletion.
     std::remove(fileName.c_str());
 
-    Helper::saveVectorElement(vectorEl, fileName);
+    const auto result{Helper::saveVectorElement(vectorEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadVectorElement(fileName)};
 
@@ -160,7 +166,8 @@ TEST_F(VectorSerializerTest, ReadingEnum)
 
     const auto vectorEl{Helper::loadEnumVectorElement(fileName)};
 
-    const std::vector<Helper::Day> correct{Helper::Day::Friday, Helper::Day::Saturday, Helper::Day::Sunday};
+    const std::vector<Helper::Day> correct{
+      Helper::Day::Friday, Helper::Day::Saturday, Helper::Day::Sunday};
     Helper::checkVectorEquality(correct, vectorEl.days, Helper::toDayString);
 
     std::remove(fileName.c_str());
@@ -176,7 +183,8 @@ TEST_F(VectorSerializerTest, WritingEnum)
 
     std::remove(fileName.c_str());
 
-    Helper::saveEnumVectorElement(vectorEl, fileName);
+    const auto result{Helper::saveEnumVectorElement(vectorEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadEnumVectorElement(fileName)};
 

@@ -7,10 +7,10 @@ namespace Helper
     struct VariantParent;
     struct VariantsAll;
 
-    std::string testVariantParent();
-    std::string variantParentTemperature();
-    std::string variantParentHumidity();
+    [[nodiscard]] std::string testVariantParent();
+    [[nodiscard]] std::string variantParentTemperature();
+    [[nodiscard]] std::string variantParentHumidity();
 
-    VariantsAll loadVariantAll(std::string_view fileName);
-    void saveVariantAll(const VariantsAll & element, std::string_view fileName);
+    [[nodiscard]] VariantsAll loadVariantAll(std::string_view fileName);
+    [[nodiscard]] int saveVariantAll(const VariantsAll & element, std::string_view fileName);
 }

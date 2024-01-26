@@ -59,7 +59,7 @@ namespace Helper
         return enumEl;
     }
 
-    void saveEnumElement(const EnumElement & element, std::string_view fileName)
+    int saveEnumElement(const EnumElement & element, std::string_view fileName)
     {
         using FileParse::Child;
 
@@ -67,7 +67,7 @@ namespace Helper
 
         xmlNode << Child{"EnumElement", element};
 
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 
 }   // namespace Helper
