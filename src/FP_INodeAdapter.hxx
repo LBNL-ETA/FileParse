@@ -17,6 +17,6 @@ public:
     [[nodiscard]] virtual AdapterType getChildNode(std::string_view name, int i) const = 0;
     [[nodiscard]] virtual int nChildNode(std::string_view name) const = 0;
     [[nodiscard]] virtual bool hasChildNode(std::string_view name) const = 0;
-    [[nodiscard]] virtual AdapterType addChild(std::string_view name) const = 0;
-    virtual void addText(std::string_view text) const = 0;
+    [[nodiscard]] virtual AdapterType addChild(std::string_view name) = 0;
+    virtual void addText(std::string_view text) = 0;
 };
