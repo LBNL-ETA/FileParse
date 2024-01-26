@@ -53,7 +53,7 @@ namespace FileParse
 
         for(size_t i = 0; i < nodeNames.size() - 1; ++i)
         {
-            currentNode = currentNode.getChildNode(nodeNames[i]);
+            currentNode = currentNode.getChildNode(nodeNames[i], 0);
             if(currentNode.isEmpty())
             {
                 return std::nullopt;

@@ -44,7 +44,7 @@ namespace FileParse
     {
         for(const auto & nodeName : child.nodeNames)
         {
-            auto childNode = node.getChildNode(nodeName);
+            auto childNode = node.getChildNode(nodeName, 0);
             if(!childNode.isEmpty())
             {
                 childNode >> child.data;

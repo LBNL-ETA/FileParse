@@ -27,7 +27,7 @@ namespace FileParse {
         static_assert(std::is_enum_v<EnumType>, "Provided type is not an enum!");
 
 
-        if (auto childNode{node.getChildNode(tag)}; !childNode.isEmpty()) {
+        if (auto childNode{node.getChildNode(tag, 0)}; !childNode.isEmpty()) {
             const auto text = childNode.getText();
             e = converter(text);
         }
@@ -53,7 +53,7 @@ namespace FileParse {
                                 std::function<EnumType(std::string_view)> converter) {
         static_assert(std::is_enum_v<EnumType>, "Provided type is not an enum!");
 
-        if (auto childNode = node.getChildNode(tag); !childNode.isEmpty()) {
+        if (auto childNode = node.getChildNode(tag, 0); !childNode.isEmpty()) {
             const auto text = childNode.getText();
             e_opt = converter(text);
         }
