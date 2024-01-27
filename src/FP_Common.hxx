@@ -28,7 +28,7 @@ namespace FileParse
     };
 
     template<typename NodeAdapter, typename T>
-    inline NodeAdapter operator<<(NodeAdapter node, const Child<T> & child)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Child<T> & child)
     {
         auto childNode = node;
         for(const auto & nodeName : child.nodeNames)
@@ -40,7 +40,7 @@ namespace FileParse
     }
 
     template<typename NodeAdapter, typename T>
-    inline NodeAdapter operator>>(const NodeAdapter & node, const Child<T> & child)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, const Child<T> & child)
     {
         for(const auto & nodeName : child.nodeNames)
         {
