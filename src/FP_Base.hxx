@@ -8,9 +8,9 @@
 namespace FileParse
 {
     template<typename NodeAdapter>
-    NodeAdapter & insertAllChilds(NodeAdapter & node, const std::vector<std::string> & nodeNames)
+    NodeAdapter insertAllChilds(NodeAdapter & node, const std::vector<std::string> & nodeNames)
     {
-        NodeAdapter & lastNode = node;
+        NodeAdapter lastNode = node;
         for(const auto & nodeName : nodeNames)
         {
             lastNode = lastNode.addChild(nodeName);
@@ -20,9 +20,9 @@ namespace FileParse
     }
 
     template<typename NodeAdapter>
-    NodeAdapter & insertAllButLastChild(NodeAdapter & node, const std::vector<std::string> & nodeNames)
+    NodeAdapter insertAllButLastChild(NodeAdapter & node, const std::vector<std::string> & nodeNames)
     {
-        NodeAdapter & secondToLastNode = node;
+        NodeAdapter secondToLastNode = node;
         for(size_t i = 0; i < nodeNames.size() - 1; ++i)
         {
             secondToLastNode = secondToLastNode.addChild(nodeNames[i]);
