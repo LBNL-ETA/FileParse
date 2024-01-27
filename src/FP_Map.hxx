@@ -7,8 +7,8 @@
 namespace FileParse
 {
     template<typename NodeAdapter, typename MapType>
-    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter>
-      operator<<(NodeAdapter node, const Child<const MapType> & value)
+    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter &>
+      operator<<(NodeAdapter & node, const Child<const MapType> & value)
     {
         if(value.nodeNames.empty() || value.data.empty())
             return node;
@@ -21,8 +21,8 @@ namespace FileParse
     }
 
     template<typename NodeAdapter, typename MapType>
-    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter>
-      operator>>(NodeAdapter node, Child<const MapType> & value)
+    inline std::enable_if_t<is_valid_map<MapType>::value, const NodeAdapter &>
+      operator>>(const NodeAdapter & node, Child<const MapType> & value)
     {
         if(value.nodeNames.empty())
         {
@@ -45,8 +45,8 @@ namespace FileParse
     }
 
     template<typename NodeAdapter, typename MapType>
-    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter>
-      serializeMapAsChilds(NodeAdapter node, std::string_view childNodeName, const MapType & map)
+    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter &>
+      serializeMapAsChilds(NodeAdapter & node, std::string_view childNodeName, const MapType & map)
     {
         if(map.empty())
             return node;
@@ -62,8 +62,8 @@ namespace FileParse
     }
 
     template<typename NodeAdapter, typename MapType>
-    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter>
-      deserializeMapAsChilds(NodeAdapter node, std::string_view childNodeName, MapType & map)
+    inline std::enable_if_t<is_valid_map<MapType>::value, const NodeAdapter &>
+      deserializeMapAsChilds(const NodeAdapter & node, std::string_view childNodeName, MapType & map)
     {
         int childCount = node.nChildNode(childNodeName.data());
         for(int i = 0; i < childCount; ++i)
@@ -87,8 +87,8 @@ namespace FileParse
     template<typename NodeAdapter, typename EnumType, typename ValueType>
     inline std::enable_if_t<is_valid_map<std::map<EnumType, ValueType>>::value
                               || is_valid_map<std::unordered_map<EnumType, ValueType>>::value,
-                            NodeAdapter>
-      serializeEnumMap(NodeAdapter node,
+                            NodeAdapter &>
+      serializeEnumMap(NodeAdapter & node,
                        const std::map<EnumType, ValueType> & map,
                        std::function<std::string(EnumType)> converter)
     {
@@ -109,7 +109,7 @@ namespace FileParse
     template<typename NodeAdapter, typename EnumType, typename ValueType>
     inline std::enable_if_t<is_valid_map<std::map<EnumType, ValueType>>::value
                               || is_valid_map<std::unordered_map<EnumType, ValueType>>::value,
-                            NodeAdapter>
+                            const NodeAdapter &>
       deserializeEnumMap(const NodeAdapter & node,
                          std::map<EnumType, ValueType> & map,
                          std::function<EnumType(std::string_view)> converter)

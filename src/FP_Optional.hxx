@@ -7,7 +7,7 @@
 namespace FileParse
 {
     template<typename NodeAdapter, typename T>
-    inline NodeAdapter operator<<(NodeAdapter node, const Child<const std::optional<T>> & child)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Child<const std::optional<T>> & child)
     {
         if(child.data.has_value())
         {

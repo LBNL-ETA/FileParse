@@ -8,9 +8,9 @@
 namespace FileParse
 {
     template<typename NodeAdapter>
-    NodeAdapter insertAllChilds(NodeAdapter node, const std::vector<std::string> & nodeNames)
+    NodeAdapter & insertAllChilds(NodeAdapter & node, const std::vector<std::string> & nodeNames)
     {
-        NodeAdapter lastNode = node;
+        NodeAdapter & lastNode = node;
         for(const auto & nodeName : nodeNames)
         {
             lastNode = lastNode.addChild(nodeName);
@@ -20,9 +20,9 @@ namespace FileParse
     }
 
     template<typename NodeAdapter>
-    NodeAdapter insertAllButLastChild(NodeAdapter node, const std::vector<std::string> & nodeNames)
+    NodeAdapter & insertAllButLastChild(NodeAdapter & node, const std::vector<std::string> & nodeNames)
     {
-        NodeAdapter secondToLastNode = node;
+        NodeAdapter & secondToLastNode = node;
         for(size_t i = 0; i < nodeNames.size() - 1; ++i)
         {
             secondToLastNode = secondToLastNode.addChild(nodeNames[i]);
@@ -32,7 +32,7 @@ namespace FileParse
     }
 
     template<typename NodeAdapter>
-    std::optional<NodeAdapter> findLastTag(NodeAdapter node, const std::vector<std::string> & nodeNames)
+    std::optional<NodeAdapter> findLastTag(NodeAdapter & node, const std::vector<std::string> & nodeNames)
     {
         NodeAdapter currentNode = node;
 
@@ -64,7 +64,7 @@ namespace FileParse
     }
 
     template<typename NodeAdapter>
-    int numberOfChilds(NodeAdapter node, const std::vector<std::string> & nodeNames)
+    int numberOfChilds(NodeAdapter & node, const std::vector<std::string> & nodeNames)
     {
         auto currentNode{findParentOfLastTag(node, nodeNames)};
 
@@ -77,28 +77,28 @@ namespace FileParse
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const std::string & text)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const std::string & text)
     {
         node.addText(text);
         return node;
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, std::string & text)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, std::string & text)
     {
         text = node.getText();
         return node;
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, bool value)
+    inline NodeAdapter & operator<<(NodeAdapter & node, bool value)
     {
         node.addText(value ? "true" : "false");
         return node;
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, bool & value)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, bool & value)
     {
         const auto text{node.getText()};
         value = (text == "true");
@@ -106,14 +106,14 @@ namespace FileParse
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, int value)
+    inline NodeAdapter & operator<<(NodeAdapter & node, int value)
     {
         node.addText(std::to_string(value));
         return node;
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, int & value)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, int & value)
     {
         const auto text{node.getText()};
         value = std::stoi(text);
@@ -121,14 +121,14 @@ namespace FileParse
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, double value)
+    inline NodeAdapter & operator<<(NodeAdapter & node, double value)
     {
         node.addText(std::to_string(value));
         return node;
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, double & value)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, double & value)
     {
         const auto text{node.getText()};
         value = std::stod(text);
@@ -136,14 +136,14 @@ namespace FileParse
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, size_t value)
+    inline NodeAdapter & operator<<(NodeAdapter & node, size_t value)
     {
         node.addText(std::to_string(value));
         return node;
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, size_t & value)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, size_t & value)
     {
         const auto text{node.getText()};
         value = std::stoul(text);
@@ -171,7 +171,7 @@ namespace FileParse
     {};
 
     template<typename NodeAdapter, typename MapType>
-    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter> operator<<(NodeAdapter node, const MapType & map)
+    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter &> operator<<(NodeAdapter & node, const MapType & map)
     {
         for(const auto & [key, val] : map)
         {
@@ -183,7 +183,7 @@ namespace FileParse
     }
 
     template<typename NodeAdapter, typename MapType>
-    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter> operator>>(NodeAdapter node, MapType & map)
+    inline std::enable_if_t<is_valid_map<MapType>::value, const NodeAdapter &> operator>>( const NodeAdapter & node, MapType & map)
     {
         for(int i = 0; i < node.nChildNode(); ++i)
         {
@@ -199,7 +199,7 @@ namespace FileParse
     }
 
     template<typename NodeAdapter, typename T>
-    inline NodeAdapter operator<<(NodeAdapter node, const std::optional<T> & opt)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const std::optional<T> & opt)
     {
         if(opt.has_value())
         {
@@ -209,7 +209,7 @@ namespace FileParse
     }
 
     template<typename NodeAdapter, typename T>
-    inline NodeAdapter operator>>(const NodeAdapter & node, std::optional<T> & opt)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, std::optional<T> & opt)
     {
         if(!node.isEmpty())
         {

@@ -96,7 +96,7 @@ namespace FileParse
     }
 
     template<typename T, typename NodeAdapter, typename... Ts>
-    inline NodeAdapter operator<<(NodeAdapter node, const std::variant<T, Ts...> & v)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const std::variant<T, Ts...> & v)
     {
         std::visit([&](auto && arg) { node << arg; }, v);
         return node;
