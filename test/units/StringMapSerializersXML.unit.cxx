@@ -7,17 +7,10 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-class StringMapSerializerTest : public testing::Test
-{
-protected:
-    void SetUp() override
-    {}
+class StringMapSerializerXMLTest : public testing::Test
+{};
 
-    void TearDown() override
-    {}
-};
-
-TEST_F(StringMapSerializerTest, ReadingStringMap)
+TEST_F(StringMapSerializerXMLTest, ReadingStringMap)
 {
     const std::string fileContent{Helper::testMapElementStringDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -37,7 +30,7 @@ TEST_F(StringMapSerializerTest, ReadingStringMap)
     std::remove(fileName.c_str());
 }
 
-TEST_F(StringMapSerializerTest, WritingStringMap)
+TEST_F(StringMapSerializerXMLTest, WritingStringMap)
 {
     Helper::MapElementString mapEl;
     mapEl.ordered
@@ -57,7 +50,7 @@ TEST_F(StringMapSerializerTest, WritingStringMap)
     std::remove(fileName.c_str());
 }
 
-TEST_F(StringMapSerializerTest, ReadingOptionalStringMap)
+TEST_F(StringMapSerializerXMLTest, ReadingOptionalStringMap)
 {
     const std::string fileContent{Helper::testMapElementOptionalStringDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -76,7 +69,7 @@ TEST_F(StringMapSerializerTest, ReadingOptionalStringMap)
     std::remove(fileName.c_str());
 }
 
-TEST_F(StringMapSerializerTest, WritingOptionalStringMap)
+TEST_F(StringMapSerializerXMLTest, WritingOptionalStringMap)
 {
     Helper::MapElementOptionalString mapEl;
     mapEl.values = {{"o1", "1"}, {"o2", "2"}, {"o3", "3"}, {"o4", "4"}, {"o5", "5"}};
@@ -97,7 +90,7 @@ TEST_F(StringMapSerializerTest, WritingOptionalStringMap)
     std::remove(fileName.c_str());
 }
 
-TEST_F(StringMapSerializerTest, ReadingEmpty)
+TEST_F(StringMapSerializerXMLTest, ReadingEmpty)
 {
     const std::string fileContent{Helper::testMapElementEmptyStringDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -111,7 +104,7 @@ TEST_F(StringMapSerializerTest, ReadingEmpty)
     std::remove(fileName.c_str());
 }
 
-TEST_F(StringMapSerializerTest, WritingEmpty)
+TEST_F(StringMapSerializerXMLTest, WritingEmpty)
 {
     Helper::MapElementString mapEl;
 

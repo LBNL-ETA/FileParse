@@ -7,17 +7,10 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-class VectorSerializerTest : public testing::Test
-{
-protected:
-    void SetUp() override
-    {}
+class VectorSerializerXMLTest : public testing::Test
+{};
 
-    void TearDown() override
-    {}
-};
-
-TEST_F(VectorSerializerTest, Reading)
+TEST_F(VectorSerializerXMLTest, Reading)
 {
     const std::string fileContent{Helper::testVectorElementDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -33,7 +26,7 @@ TEST_F(VectorSerializerTest, Reading)
     std::remove(fileName.c_str());
 }
 
-TEST_F(VectorSerializerTest, Writing)
+TEST_F(VectorSerializerXMLTest, Writing)
 {
     Helper::VectorElement vectorEl;
     vectorEl.values = {1, 2, 3, 4, 5};
@@ -55,7 +48,7 @@ TEST_F(VectorSerializerTest, Writing)
     std::remove(fileName.c_str());
 }
 
-TEST_F(VectorSerializerTest, ReadingOptional)
+TEST_F(VectorSerializerXMLTest, ReadingOptional)
 {
     const std::string fileContent{Helper::testVectorElementDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -71,7 +64,7 @@ TEST_F(VectorSerializerTest, ReadingOptional)
     std::remove(fileName.c_str());
 }
 
-TEST_F(VectorSerializerTest, ReadingOptionalEmpty)
+TEST_F(VectorSerializerXMLTest, ReadingOptionalEmpty)
 {
     const std::string fileContent{Helper::testVectorElementEmptyOptionalDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -85,7 +78,7 @@ TEST_F(VectorSerializerTest, ReadingOptionalEmpty)
     std::remove(fileName.c_str());
 }
 
-TEST_F(VectorSerializerTest, WritingOptional)
+TEST_F(VectorSerializerXMLTest, WritingOptional)
 {
     Helper::OptionalVectorElement vectorEl;
     vectorEl.values = {0.342561, 2.673412, 6.895461, 7.012345, 8.567890};
@@ -105,7 +98,7 @@ TEST_F(VectorSerializerTest, WritingOptional)
     std::remove(fileName.c_str());
 }
 
-TEST_F(VectorSerializerTest, WritingOptionalEmpty)
+TEST_F(VectorSerializerXMLTest, WritingOptionalEmpty)
 {
     Helper::OptionalVectorElement vectorEl;
 
@@ -123,7 +116,7 @@ TEST_F(VectorSerializerTest, WritingOptionalEmpty)
     std::remove(fileName.c_str());
 }
 
-TEST_F(VectorSerializerTest, ReadingEmpty)
+TEST_F(VectorSerializerXMLTest, ReadingEmpty)
 {
     const std::string fileContent{Helper::testEmptyVectorElementDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -137,7 +130,7 @@ TEST_F(VectorSerializerTest, ReadingEmpty)
     std::remove(fileName.c_str());
 }
 
-TEST_F(VectorSerializerTest, WritingEmpty)
+TEST_F(VectorSerializerXMLTest, WritingEmpty)
 {
     Helper::VectorElement vectorEl;
 
@@ -157,7 +150,7 @@ TEST_F(VectorSerializerTest, WritingEmpty)
     std::remove(fileName.c_str());
 }
 
-TEST_F(VectorSerializerTest, ReadingEnum)
+TEST_F(VectorSerializerXMLTest, ReadingEnum)
 {
     const std::string fileContent{Helper::testDayVectorElementDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -173,7 +166,7 @@ TEST_F(VectorSerializerTest, ReadingEnum)
     std::remove(fileName.c_str());
 }
 
-TEST_F(VectorSerializerTest, WritingEnum)
+TEST_F(VectorSerializerXMLTest, WritingEnum)
 {
     Helper::EnumVectorElement vectorEl;
     using Helper::Day;

@@ -5,17 +5,10 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-class BaseSerializerTest : public testing::Test
-{
-protected:
-    void SetUp() override
-    {}
+class BaseSerializerXMLTest : public testing::Test
+{};
 
-    void TearDown() override
-    {}
-};
-
-TEST_F(BaseSerializerTest, TestReadingBaseElement)
+TEST_F(BaseSerializerXMLTest, TestReadingBaseElement)
 {
     const std::string fileContent{Helper::testBaseElementDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -63,7 +56,7 @@ TEST_F(BaseSerializerTest, TestReadingBaseElement)
     std::remove(fileName.c_str());
 }
 
-TEST_F(BaseSerializerTest, TestWritingBaseElement)
+TEST_F(BaseSerializerXMLTest, TestWritingBaseElement)
 {
     Helper::BaseElement base;
     base.text = "Some example text";

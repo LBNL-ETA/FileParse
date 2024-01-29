@@ -5,10 +5,10 @@
 #include "test/helper/files/EnumElementXML.hxx"
 #include "test/helper/structures/StructureEnum.hxx"
 
-class EnumSerializerTest : public testing::Test
+class EnumSerializerXMLTest : public testing::Test
 {};
 
-TEST_F(EnumSerializerTest, TestReading)
+TEST_F(EnumSerializerXMLTest, TestReading)
 {
     const std::string fileContent{Helper::testEnumDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -25,7 +25,7 @@ TEST_F(EnumSerializerTest, TestReading)
     std::remove(fileName.c_str());
 }
 
-TEST_F(EnumSerializerTest, TestWriting)
+TEST_F(EnumSerializerXMLTest, TestWriting)
 {
     Helper::EnumElement enumEl;
     enumEl.day = Helper::Day::Friday;
@@ -50,7 +50,7 @@ TEST_F(EnumSerializerTest, TestWriting)
     std::remove(fileName.c_str());
 }
 
-TEST_F(EnumSerializerTest, TestReadingOptionalMissing)
+TEST_F(EnumSerializerXMLTest, TestReadingOptionalMissing)
 {
     const std::string fileContent{Helper::testEnumDatabaseOptionalMissing()};
     const std::string fileName{"TestRead.xml"};
@@ -66,7 +66,7 @@ TEST_F(EnumSerializerTest, TestReadingOptionalMissing)
     std::remove(fileName.c_str());
 }
 
-TEST_F(EnumSerializerTest, TestWritingOptionalMissing)
+TEST_F(EnumSerializerXMLTest, TestWritingOptionalMissing)
 {
     Helper::EnumElement enumEl;
     enumEl.day = Helper::Day::Friday;
