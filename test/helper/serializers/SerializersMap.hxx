@@ -75,9 +75,10 @@ namespace Helper
     template<typename NodeAdapter>
     inline NodeAdapter operator>>(const NodeAdapter & node, Helper::MapElementDouble & element)
     {
+        using FileParse::Child;
         using FileParse::operator>>;
 
-        node >> element.values;
+        node >> Child{"DoubleMap", element.values};
 
         return node;
     }
@@ -85,9 +86,10 @@ namespace Helper
     template<typename NodeAdapter>
     inline NodeAdapter operator<<(NodeAdapter node, const Helper::MapElementDouble & element)
     {
+        using FileParse::Child;
         using FileParse::operator<<;
 
-        node << element.values;
+        node << Child{"DoubleMap", element.values};
 
         return node;
     }

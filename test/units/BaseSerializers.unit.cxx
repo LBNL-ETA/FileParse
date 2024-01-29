@@ -59,7 +59,15 @@ TEST_F(BaseSerializerTest, SerializeText)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "SampleText", "Text to test");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 ///////////////////////////////////////////
@@ -94,7 +102,15 @@ TEST_F(BaseSerializerTest, SerializeInteger)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Integer", "123");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 ///////////////////////////////////////////
@@ -148,7 +164,15 @@ TEST_F(BaseSerializerTest, SerializeOptionalInteger)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "OptionalInteger", "314");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 TEST_F(BaseSerializerTest, SerializeOptionalIntegerEmpty)
@@ -160,7 +184,13 @@ TEST_F(BaseSerializerTest, SerializeOptionalIntegerEmpty)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 ///////////////////////////////////////////
@@ -189,13 +219,21 @@ TEST_F(BaseSerializerTest, DeserializeDouble)
 TEST_F(BaseSerializerTest, SerializeDouble)
 {
     Helper::DoubleNumberElement element;
-    element.double_number = 99.9;
+    element.double_number = 99.913;
 
     Helper::MockNode elementNode("BaseElement");
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Double", "99.913000");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 ///////////////////////////////////////////
@@ -250,7 +288,15 @@ TEST_F(BaseSerializerTest, SerializeOptionalDouble)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "OptionalDouble", "123.450000");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 TEST_F(BaseSerializerTest, SerializeOptionalDoubleEmpty)
@@ -261,6 +307,12 @@ TEST_F(BaseSerializerTest, SerializeOptionalDoubleEmpty)
     Helper::MockNode elementNode("BaseElement");
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        return node;
+    };
 
     EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
 }
@@ -308,17 +360,25 @@ TEST_F(BaseSerializerTest, SerializeBoolean)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Boolean", "false");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 ///////////////////////////////////////////
 /// Optional Boolean field
 ///////////////////////////////////////////
 
-Helper::MockNode createOptionalBooleanElement(const std::optional<bool>& value)
+Helper::MockNode createOptionalBooleanElement(const std::optional<bool> & value)
 {
     Helper::MockNode node{"BaseElement"};
-    if (value.has_value())
+    if(value.has_value())
     {
         addChildNode(node, "OptionalBoolean", value.value() ? "true" : "false");
     }
@@ -370,7 +430,15 @@ TEST_F(BaseSerializerTest, SerializeOptionalBoolean)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "OptionalBoolean", "true");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 TEST_F(BaseSerializerTest, SerializeOptionalBooleanEmpty)
@@ -382,7 +450,13 @@ TEST_F(BaseSerializerTest, SerializeOptionalBooleanEmpty)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 ///////////////////////////////////////////
@@ -417,17 +491,25 @@ TEST_F(BaseSerializerTest, SerializeSizeT)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Size_t", "67890");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 ///////////////////////////////////////////
 /// Optional SizeT field
 ///////////////////////////////////////////
 
-Helper::MockNode createOptionalSizeTElement(const std::optional<size_t>& value)
+Helper::MockNode createOptionalSizeTElement(const std::optional<size_t> & value)
 {
     Helper::MockNode node{"BaseElement"};
-    if (value.has_value())
+    if(value.has_value())
     {
         addChildNode(node, "OptionalSize_t", std::to_string(value.value()));
     }
@@ -467,7 +549,15 @@ TEST_F(BaseSerializerTest, SerializeOptionalSizeT)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "OptionalSize_t", "98765");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 TEST_F(BaseSerializerTest, SerializeOptionalSizeTEmpty)
@@ -479,7 +569,13 @@ TEST_F(BaseSerializerTest, SerializeOptionalSizeTEmpty)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 ///////////////////////////////////////////
@@ -494,7 +590,7 @@ Helper::MockNode createVariantFieldElementAsDouble(double value)
     return node;
 }
 
-Helper::MockNode createVariantFieldElementAsString(const std::string& value)
+Helper::MockNode createVariantFieldElementAsString(const std::string & value)
 {
     Helper::MockNode node{"BaseElement"};
     addChildNode(node, "String", value);
@@ -535,7 +631,15 @@ TEST_F(BaseSerializerTest, SerializeVariantFieldAsDouble)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Double", "678.900000");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 TEST_F(BaseSerializerTest, SerializeVariantFieldAsString)
@@ -547,17 +651,25 @@ TEST_F(BaseSerializerTest, SerializeVariantFieldAsString)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "String", "world");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 ///////////////////////////////////////////
 /// Optional Variant field (String and Int)
 ///////////////////////////////////////////
 
-Helper::MockNode createOptionalVariantFieldElementAsString(const std::optional<std::string>& value)
+Helper::MockNode createOptionalVariantFieldElementAsString(const std::optional<std::string> & value)
 {
     Helper::MockNode node{"BaseElement"};
-    if (value.has_value())
+    if(value.has_value())
     {
         addChildNode(node, "VariantString", value.value());
     }
@@ -565,10 +677,10 @@ Helper::MockNode createOptionalVariantFieldElementAsString(const std::optional<s
     return node;
 }
 
-Helper::MockNode createOptionalVariantFieldElementAsInt(const std::optional<int>& value)
+Helper::MockNode createOptionalVariantFieldElementAsInt(const std::optional<int> & value)
 {
     Helper::MockNode node{"BaseElement"};
-    if (value.has_value())
+    if(value.has_value())
     {
         addChildNode(node, "VariantInt", std::to_string(value.value()));
     }
@@ -627,7 +739,15 @@ TEST_F(BaseSerializerTest, SerializeOptionalVariantFieldAsString)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "VariantString", "example");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 TEST_F(BaseSerializerTest, SerializeOptionalVariantFieldAsInt)
@@ -639,7 +759,15 @@ TEST_F(BaseSerializerTest, SerializeOptionalVariantFieldAsInt)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "VariantInt", "123");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 TEST_F(BaseSerializerTest, SerializeOptionalVariantFieldEmpty)
@@ -651,7 +779,13 @@ TEST_F(BaseSerializerTest, SerializeOptionalVariantFieldEmpty)
     Helper::MockNodeAdapter adapter{&elementNode};
     adapter << element;
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 ///////////////////////////////////////////
