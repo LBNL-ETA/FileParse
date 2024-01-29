@@ -233,7 +233,7 @@ namespace Helper
         MapElementDouble element;
         if(xmlNode.has_value())
         {
-            xmlNode.value() >> Child{"DoubleMap", element};
+            xmlNode.value() >> element;
         }
 
         return element;
@@ -245,7 +245,8 @@ namespace Helper
 
         auto xmlNode{createTopNode("Test")};
 
-        xmlNode << Child{"DoubleMap", element};
+        xmlNode << element;
+
         return xmlNode.writeToFile(fileName);
     }
 

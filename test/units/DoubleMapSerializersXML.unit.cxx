@@ -19,7 +19,8 @@ TEST_F(DoubleMapSerializerXMLTest, Reading)
 
     const auto mapEl{Helper::loadMapElementDouble(fileName)};
 
-    const std::map<std::string, double> correct{{"Key1", 37.582914}, {"Key2", 92.143057}, {"Key3", 15.907634}};
+    const std::map<std::string, double> correct{
+      {"Key1", 37.582914}, {"Key2", 92.143057}, {"Key3", 15.907634}};
 
     constexpr auto tolerance{1e-6};
     Helper::checkMapValues(correct, mapEl.values, tolerance);
