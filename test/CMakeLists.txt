@@ -30,6 +30,8 @@ add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
 add_executable(${PROJECT_TEST_NAME}
         helper/FileManipulation.hxx
         helper/FileManipulation.cxx
+        helper/MockNodeAdapter.hxx
+        helper/MockNodeAdapter.cxx
 
         helper/serializers/SerializersBaseElement.hxx
         helper/serializers/SerializersEnum.hxx
@@ -62,6 +64,7 @@ add_executable(${PROJECT_TEST_NAME}
 
 		helper/Utility.hxx
 
+        units/BaseSerializers.unit.cxx
         units/BaseSerializersXML.unit.cxx
 		units/DoubleMapSerializersXML.unit.cxx
 		units/EnumSerializersXML.unit.cxx
