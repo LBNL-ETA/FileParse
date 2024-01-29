@@ -7,17 +7,10 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-class SetSerializerTest : public testing::Test
-{
-protected:
-    void SetUp() override
-    {}
+class SetSerializerXMLTest : public testing::Test
+{};
 
-    void TearDown() override
-    {}
-};
-
-TEST_F(SetSerializerTest, Reading)
+TEST_F(SetSerializerXMLTest, Reading)
 {
     const std::string fileContent{Helper::testSetElementDoubleDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -33,7 +26,7 @@ TEST_F(SetSerializerTest, Reading)
     std::remove(fileName.c_str());
 }
 
-TEST_F(SetSerializerTest, Writing)
+TEST_F(SetSerializerXMLTest, Writing)
 {
     Helper::SetElementDouble setEl;
     setEl.values = {1, 2, 3, 4, 5};
@@ -53,7 +46,7 @@ TEST_F(SetSerializerTest, Writing)
     std::remove(fileName.c_str());
 }
 
-TEST_F(SetSerializerTest, OptionalReading)
+TEST_F(SetSerializerXMLTest, OptionalReading)
 {
     const std::string fileContent{Helper::testSetElementOptionalDoubleDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -71,7 +64,7 @@ TEST_F(SetSerializerTest, OptionalReading)
     std::remove(fileName.c_str());
 }
 
-TEST_F(SetSerializerTest, OptionalWriting)
+TEST_F(SetSerializerXMLTest, OptionalWriting)
 {
     Helper::SetElementOptionalDouble setEl;
     setEl.values = {11, 12, 13, 14, 15};
@@ -93,7 +86,7 @@ TEST_F(SetSerializerTest, OptionalWriting)
     std::remove(fileName.c_str());
 }
 
-TEST_F(SetSerializerTest, ReadingEmpty)
+TEST_F(SetSerializerXMLTest, ReadingEmpty)
 {
     const std::string fileContent{Helper::testSetElementEmptyDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -107,7 +100,7 @@ TEST_F(SetSerializerTest, ReadingEmpty)
     std::remove(fileName.c_str());
 }
 
-TEST_F(SetSerializerTest, WritingEmpty)
+TEST_F(SetSerializerXMLTest, WritingEmpty)
 {
     Helper::SetElementDouble setEl;
 
@@ -125,7 +118,7 @@ TEST_F(SetSerializerTest, WritingEmpty)
     std::remove(fileName.c_str());
 }
 
-TEST_F(SetSerializerTest, ReadingEnum)
+TEST_F(SetSerializerXMLTest, ReadingEnum)
 {
     const std::string fileContent{Helper::testSetElementEnumDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -141,7 +134,7 @@ TEST_F(SetSerializerTest, ReadingEnum)
     std::remove(fileName.c_str());
 }
 
-TEST_F(SetSerializerTest, WritingEnum)
+TEST_F(SetSerializerXMLTest, WritingEnum)
 {
     Helper::SetElementEnum setEl;
     using Helper::Day;

@@ -7,17 +7,10 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-class DoubleMapSerializerTest : public testing::Test
-{
-protected:
-    void SetUp() override
-    {}
+class DoubleMapSerializerXMLTest : public testing::Test
+{};
 
-    void TearDown() override
-    {}
-};
-
-TEST_F(DoubleMapSerializerTest, Reading)
+TEST_F(DoubleMapSerializerXMLTest, Reading)
 {
     const std::string fileContent{Helper::testMapElementDoubleDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -34,7 +27,7 @@ TEST_F(DoubleMapSerializerTest, Reading)
     std::remove(fileName.c_str());
 }
 
-TEST_F(DoubleMapSerializerTest, Writing)
+TEST_F(DoubleMapSerializerXMLTest, Writing)
 {
     Helper::MapElementDouble mapEl;
     mapEl.values = {{"Value1", 23.856912},

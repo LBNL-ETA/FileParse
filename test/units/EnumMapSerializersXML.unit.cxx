@@ -7,17 +7,10 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-class EnumMapSerializerTest : public testing::Test
-{
-protected:
-    void SetUp() override
-    {}
+class EnumMapSerializerXMLTest : public testing::Test
+{};
 
-    void TearDown() override
-    {}
-};
-
-TEST_F(EnumMapSerializerTest, ReadingEnumAsKey_String)
+TEST_F(EnumMapSerializerXMLTest, ReadingEnumAsKey_String)
 {
     const std::string fileContent{Helper::testMapElementDayStringDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -36,7 +29,7 @@ TEST_F(EnumMapSerializerTest, ReadingEnumAsKey_String)
     std::remove(fileName.c_str());
 }
 
-TEST_F(EnumMapSerializerTest, WritingEnumAsKey_String)
+TEST_F(EnumMapSerializerXMLTest, WritingEnumAsKey_String)
 {
     using Helper::Day;
     Helper::MapElementEnum mapEl;
@@ -60,7 +53,7 @@ TEST_F(EnumMapSerializerTest, WritingEnumAsKey_String)
     std::remove(fileName.c_str());
 }
 
-TEST_F(EnumMapSerializerTest, ReadingEnumAsKey_Double)
+TEST_F(EnumMapSerializerXMLTest, ReadingEnumAsKey_Double)
 {
     const std::string fileContent{Helper::testMapElementDayDoubleDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -79,7 +72,7 @@ TEST_F(EnumMapSerializerTest, ReadingEnumAsKey_Double)
     std::remove(fileName.c_str());
 }
 
-TEST_F(EnumMapSerializerTest, WritingEnumAsKey_Double)
+TEST_F(EnumMapSerializerXMLTest, WritingEnumAsKey_Double)
 {
     using Helper::Day;
     Helper::MapElementEnumDouble mapEl;

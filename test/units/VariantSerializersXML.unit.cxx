@@ -5,17 +5,10 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-class VariantSerializerTest : public testing::Test
-{
-protected:
-    void SetUp() override
-    {}
+class VariantSerializerXMLTest : public testing::Test
+{};
 
-    void TearDown() override
-    {}
-};
-
-TEST_F(VariantSerializerTest, Reading)
+TEST_F(VariantSerializerXMLTest, Reading)
 {
     const std::string fileContent{Helper::testVariantParent()};
     const std::string fileName{"TestRead.xml"};
@@ -46,7 +39,7 @@ TEST_F(VariantSerializerTest, Reading)
     std::remove(fileName.c_str());
 }
 
-TEST_F(VariantSerializerTest, Serialization)
+TEST_F(VariantSerializerXMLTest, Serialization)
 {
     const std::string fileName{"TestSerialization.xml"};
 

@@ -7,7 +7,7 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-class StructureMapSerializerTest : public testing::Test
+class StructureMapSerializerXMLTest : public testing::Test
 {
 private:
     const std::string m_FileName{"Test.xml"};
@@ -30,7 +30,7 @@ public:
     }
 };
 
-TEST_F(StructureMapSerializerTest, Reading)
+TEST_F(StructureMapSerializerXMLTest, Reading)
 {
     const std::string fileContent{Helper::testCMAElementDatabase()};
 
@@ -44,7 +44,7 @@ TEST_F(StructureMapSerializerTest, Reading)
     Helper::checkMapEquality(correct.options, mapEl.options);
 }
 
-TEST_F(StructureMapSerializerTest, Writing)
+TEST_F(StructureMapSerializerXMLTest, Writing)
 {
     const Helper::CMAElement knownElement{{{"Low", "Low"}, {12.34, 2.98}},
                                           {{"High", "High"}, {1.731, 7.39}}};
