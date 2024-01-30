@@ -9,19 +9,17 @@
 class EnumSerializerTest : public testing::Test
 {};
 
-Helper::MockNode createEnumElement()
-{
-    Helper::MockNode node{"EnumElement"};
-
-    addChildNode(node, "Day", "Monday");
-    addChildNode(node, "Color", "Blue");
-
-    return node;
-}
-
 TEST_F(EnumSerializerTest, ColorAndDayDeserialization)
 {
-    auto elementNode(createEnumElement());
+    auto mockData = []() {
+        Helper::MockNode node{"EnumElement"};
+
+        addChildNode(node, "Day", "Monday");
+        addChildNode(node, "Color", "Blue");
+
+        return node;
+    };
+    auto elementNode(mockData());
     const Helper::MockNodeAdapter adapter{&elementNode};
 
     Helper::EnumElement element;
@@ -30,7 +28,6 @@ TEST_F(EnumSerializerTest, ColorAndDayDeserialization)
     EXPECT_EQ(Helper::Day::Monday, element.day);
     EXPECT_EQ(true, element.color.has_value());
     EXPECT_EQ(Helper::Color::Blue, element.color.value());
-
 }
 
 TEST_F(EnumSerializerTest, ColorAndDaySerialization)
@@ -55,18 +52,16 @@ TEST_F(EnumSerializerTest, ColorAndDaySerialization)
     EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
-Helper::MockNode createEnumElement1()
-{
-    Helper::MockNode node{"EnumElement"};
-
-    addChildNode(node, "Day", "Friday");
-
-    return node;
-}
-
 TEST_F(EnumSerializerTest, OptionalColorMissingDeserialization)
 {
-    auto elementNode(createEnumElement1());
+    auto mockData = []() {
+        Helper::MockNode node{"EnumElement"};
+
+        addChildNode(node, "Day", "Friday");
+
+        return node;
+    };
+    auto elementNode(mockData());
     const Helper::MockNodeAdapter adapter{&elementNode};
 
     Helper::EnumElement element;
