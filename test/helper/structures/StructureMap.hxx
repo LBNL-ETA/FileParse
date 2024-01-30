@@ -39,8 +39,8 @@ namespace Helper
     // Structure to be used in map as value
     struct CMAValues
     {
-        double conductivity;
-        double filmCoefficient;
+        double conductivity{0};
+        double filmCoefficient{0};
 
         CMAValues() = default;
         CMAValues(double conductivity, double film) :

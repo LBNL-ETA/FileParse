@@ -74,6 +74,7 @@ add_executable(${PROJECT_TEST_NAME}
 		units/EnumMapSerializersXML.unit.cxx
 		units/StringMapSerializersXML.unit.cxx
 		units/StructureMapSerializersXML.unit.cxx
+		units/SetSerializers.unit.cxx
 		units/SetSerializersXML.unit.cxx
 		units/VariantSerializersXML.unit.cxx
 		units/VectorSerializersXML.unit.cxx
