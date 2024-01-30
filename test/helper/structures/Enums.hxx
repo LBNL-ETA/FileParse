@@ -34,6 +34,21 @@ namespace Helper
         return Day::None;
     }
 
+    //// This is needed by GTest so it can be compared with EXPECT_EQ
+    //inline std::ostream& operator<<(std::ostream& os, Day day) {
+    //    switch (day) {
+    //        case Day::None:     return os << "None";
+    //        case Day::Monday:   return os << "Monday";
+    //        case Day::Tuesday:  return os << "Tuesday";
+    //        case Day::Wednesday:return os << "Wednesday";
+    //        case Day::Thursday: return os << "Thursday";
+    //        case Day::Friday:   return os << "Friday";
+    //        case Day::Saturday: return os << "Saturday";
+    //        case Day::Sunday:   return os << "Sunday";
+    //        default:            return os << "Unknown Day";
+    //    }
+    //}
+
     enum class Color
     {
         None,

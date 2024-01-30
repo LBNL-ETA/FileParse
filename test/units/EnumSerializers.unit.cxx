@@ -25,9 +25,9 @@ TEST_F(EnumSerializerTest, ColorAndDayDeserialization)
     Helper::EnumElement element;
     adapter >> element;
 
-    EXPECT_EQ(Helper::Day::Monday, element.day);
+    EXPECT_EQ(static_cast<int>(Helper::Day::Monday), static_cast<int>(element.day));
     EXPECT_EQ(true, element.color.has_value());
-    EXPECT_EQ(Helper::Color::Blue, element.color.value());
+    EXPECT_EQ(static_cast<int>(Helper::Color::Blue), static_cast<int>(element.color.value()));
 }
 
 TEST_F(EnumSerializerTest, ColorAndDaySerialization)
@@ -67,7 +67,7 @@ TEST_F(EnumSerializerTest, OptionalColorMissingDeserialization)
     Helper::EnumElement element;
     adapter >> element;
 
-    EXPECT_EQ(Helper::Day::Friday, element.day);
+    EXPECT_EQ(static_cast<int>(Helper::Day::Friday), static_cast<int>(element.day));
     EXPECT_EQ(false, element.color.has_value());
 }
 
