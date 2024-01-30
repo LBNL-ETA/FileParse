@@ -58,7 +58,7 @@ namespace Helper
     template<typename NodeAdapter>
     inline NodeAdapter operator>>(const NodeAdapter & node, Helper::MapElementEnum & element)
     {
-        FileParse::deserializeEnumMap<NodeAdapter, Helper::Day>(node, element.days, Helper::toDay);
+        FileParse::deserializeEnumMap<NodeAdapter, Helper::Day, std::string>(node, element.days, Helper::toDay);
 
         return node;
     }
@@ -66,7 +66,7 @@ namespace Helper
     template<typename NodeAdapter>
     inline NodeAdapter operator<<(NodeAdapter node, const Helper::MapElementEnum & element)
     {
-        FileParse::serializeEnumMap<NodeAdapter, Helper::Day>(
+        FileParse::serializeEnumMap<NodeAdapter, Helper::Day, std::string>(
           node, element.days, Helper::toDayString);
 
         return node;
@@ -97,7 +97,7 @@ namespace Helper
     template<typename NodeAdapter>
     inline NodeAdapter operator>>(const NodeAdapter & node, Helper::MapElementEnumDouble & element)
     {
-        FileParse::deserializeEnumMap<NodeAdapter, Helper::Day>(node, element.days, Helper::toDay);
+        FileParse::deserializeEnumMap<NodeAdapter, Helper::Day, double>(node, element.days, Helper::toDay);
 
         return node;
     }
