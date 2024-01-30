@@ -8,7 +8,7 @@
 namespace Helper
 {
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::VectorElement & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::VectorElement & element)
     {
         using FileParse::Child;
         using FileParse::operator>>;
@@ -19,7 +19,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::VectorElement & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::VectorElement & element)
     {
         using FileParse::Child;
         using FileParse::operator<<;
@@ -30,7 +30,8 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::OptionalVectorElement & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::OptionalVectorElement & element)
     {
         using FileParse::Child;
         using FileParse::operator>>;
@@ -41,7 +42,8 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::OptionalVectorElement & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node,
+                                    const Helper::OptionalVectorElement & element)
     {
         using FileParse::Child;
         using FileParse::operator<<;
@@ -52,7 +54,8 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::EnumVectorElement & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::EnumVectorElement & element)
     {
         FileParse::deserializeEnumVector<NodeAdapter, Helper::Day>(
           node, {"Table", "Value"}, element.days, toDay);
@@ -60,7 +63,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::EnumVectorElement & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::EnumVectorElement & element)
     {
         FileParse::serializeEnumVector<NodeAdapter, Helper::Day>(
           node, {"Table", "Value"}, element.days, toDayString);

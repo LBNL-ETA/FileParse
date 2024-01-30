@@ -10,7 +10,8 @@
 namespace Helper
 {
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::MapElementString & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::MapElementString & element)
     {
         using FileParse::Child;
         using FileParse::operator>>;
@@ -22,7 +23,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::MapElementString & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::MapElementString & element)
     {
         using FileParse::Child;
         using FileParse::operator<<;
@@ -34,8 +35,8 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node,
-                                  Helper::MapElementOptionalString & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::MapElementOptionalString & element)
     {
         using FileParse::operator>>;
 
@@ -45,8 +46,8 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node,
-                                  const Helper::MapElementOptionalString & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node,
+                                    const Helper::MapElementOptionalString & element)
     {
         using FileParse::operator<<;
 
@@ -56,15 +57,17 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::MapElementEnum & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::MapElementEnum & element)
     {
-        FileParse::deserializeEnumMap<NodeAdapter, Helper::Day, std::string>(node, element.days, Helper::toDay);
+        FileParse::deserializeEnumMap<NodeAdapter, Helper::Day, std::string>(
+          node, element.days, Helper::toDay);
 
         return node;
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::MapElementEnum & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::MapElementEnum & element)
     {
         FileParse::serializeEnumMap<NodeAdapter, Helper::Day, std::string>(
           node, element.days, Helper::toDayString);
@@ -73,7 +76,8 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::MapElementDouble & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::MapElementDouble & element)
     {
         using FileParse::Child;
         using FileParse::operator>>;
@@ -84,7 +88,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::MapElementDouble & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::MapElementDouble & element)
     {
         using FileParse::Child;
         using FileParse::operator<<;
@@ -95,15 +99,18 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::MapElementEnumDouble & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::MapElementEnumDouble & element)
     {
-        FileParse::deserializeEnumMap<NodeAdapter, Helper::Day, double>(node, element.days, Helper::toDay);
+        FileParse::deserializeEnumMap<NodeAdapter, Helper::Day, double>(
+          node, element.days, Helper::toDay);
 
         return node;
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::MapElementEnumDouble & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node,
+                                    const Helper::MapElementEnumDouble & element)
     {
         FileParse::serializeEnumMap<NodeAdapter, Helper::Day, double>(
           node, element.days, Helper::toDayString);
@@ -112,7 +119,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::CMAValues & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::CMAValues & element)
     {
         using FileParse::Child;
         using FileParse::operator>>;
@@ -124,7 +131,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::CMAValues & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::CMAValues & element)
     {
         using FileParse::Child;
         using FileParse::operator<<;
@@ -136,7 +143,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::CMAOptions & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::CMAOptions & element)
     {
         using FileParse::Child;
         using FileParse::operator>>;
@@ -148,7 +155,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::CMAOptions & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::CMAOptions & element)
     {
         using FileParse::Child;
         using FileParse::operator<<;
@@ -160,7 +167,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::CMAElement & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::CMAElement & element)
     {
         using FileParse::Child;
 
@@ -170,7 +177,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::CMAElement & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::CMAElement & element)
     {
         using FileParse::Child;
 
