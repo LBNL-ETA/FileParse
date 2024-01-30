@@ -3,6 +3,7 @@
 #include <functional>
 
 #include "FP_Common.hxx"
+#include "FP_StringConversion.hxx"
 
 namespace FileParse
 {
