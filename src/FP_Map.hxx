@@ -64,7 +64,9 @@ namespace FileParse
 
     template<typename NodeAdapter, typename MapType>
     inline std::enable_if_t<is_valid_map<MapType>::value, const NodeAdapter &>
-      deserializeMapAsChilds(const NodeAdapter & node, std::string_view childNodeName, MapType & map)
+      deserializeMapAsChilds(const NodeAdapter & node,
+                             std::string_view childNodeName,
+                             MapType & map)
     {
         int childCount = node.nChildNode(childNodeName.data());
         for(int i = 0; i < childCount; ++i)
@@ -107,13 +109,10 @@ namespace FileParse
         return node;
     }
 
-    template<typename NodeAdapter, typename EnumType, typename ValueType>
-    inline std::enable_if_t<is_valid_map<std::map<EnumType, ValueType>>::value
-                              || is_valid_map<std::unordered_map<EnumType, ValueType>>::value,
-                            const NodeAdapter &>
-      deserializeEnumMap(const NodeAdapter & node,
-                         std::map<EnumType, ValueType> & map,
-                         std::function<EnumType(std::string_view)> converter)
+
+    template<typename NodeAdapter, typename EnumType, typename ValueType, typename MapType>
+    inline std::enable_if_t<is_valid_map<MapType>::value, const NodeAdapter &> deserializeEnumMap(
+      const NodeAdapter & node, MapType & map, std::function<EnumType(std::string_view)> converter)
     {
         int totalNodes = node.nChildNode();
         for(int i = 0; i < totalNodes; ++i)
