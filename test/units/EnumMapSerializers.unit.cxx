@@ -51,7 +51,7 @@ TEST_F(EnumMapSerializerTest, SerializingEnumAsKey_String)
     Helper::MockNode elementNode("MapElement");
     Helper::MockNodeAdapter adapter{&elementNode};
 
-    FileParse::serializeEnumMap<Helper::MockNodeAdapter, Helper::Day>(
+    FileParse::serializeEnumMap<Helper::MockNodeAdapter, Helper::Day, std::string>(
       adapter, days, Helper::toDayString);
 
     // Note that map will reorder elements according to key values
@@ -78,7 +78,7 @@ TEST_F(EnumMapSerializerTest, SerializingEmptyEnumMap)
     Helper::MockNode elementNode("MapElement");
     Helper::MockNodeAdapter adapter{&elementNode};
 
-    FileParse::serializeEnumMap<Helper::MockNodeAdapter, Day>(
+    FileParse::serializeEnumMap<Helper::MockNodeAdapter, Day, std::string>(
       adapter, emptyDays, Helper::toDayString);
 
     Helper::MockNode correctNode{"MapElement"};
@@ -130,7 +130,7 @@ TEST_F(EnumMapSerializerTest, SerializingEnumAsKey_Double)
     Helper::MockNode elementNode("MapElement");
     Helper::MockNodeAdapter adapter{&elementNode};
 
-    FileParse::serializeEnumMap<Helper::MockNodeAdapter, Helper::Color>(
+    FileParse::serializeEnumMap<Helper::MockNodeAdapter, Helper::Color, double>(
       adapter, colors, Helper::toColorString);
 
     auto correctNodes = []() {
@@ -146,7 +146,7 @@ TEST_F(EnumMapSerializerTest, SerializingEnumAsKey_Double)
     EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
-TEST_F(EnumMapSerializerTest, DeserializingUnorderedEnumMap_String)
+TEST_F(EnumMapSerializerTest, DeserializingUnorderedEnumAsKey_String)
 {
     auto mockData = []() {
         Helper::MockNode node{"MapEnumElement"};
@@ -157,7 +157,6 @@ TEST_F(EnumMapSerializerTest, DeserializingUnorderedEnumMap_String)
 
         return node;
     };
-
     auto elementNode(mockData());
     const Helper::MockNodeAdapter adapter{&elementNode};
 
@@ -171,4 +170,62 @@ TEST_F(EnumMapSerializerTest, DeserializingUnorderedEnumMap_String)
       {Day::Friday, "Happy"}, {Day::Saturday, "Relax"}, {Day::Monday, "Back to Work"}};
 
     Helper::checkMapEquality(correct, elements);
+}
+
+TEST_F(EnumMapSerializerTest, SerializingUnorderedEnumAsKey_String)
+{
+    using Helper::Day;
+    std::unordered_map<Day, std::string> days{{Day::Monday, "Value1"},
+                                              {Day::Tuesday, "Value2"},
+                                              {Day::Wednesday, "Value3"},
+                                              {Day::Thursday, "Value4"},
+                                              {Day::Friday, "Value5"}};
+
+    Helper::MockNode elementNode("MapElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+
+    FileParse::serializeEnumMap<Helper::MockNodeAdapter, Day, std::string>(
+      adapter, days, Helper::toDayString);
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"MapElement"};
+
+        addChildNode(node, "Friday", "Value5");
+        addChildNode(node, "Monday", "Value1");
+        addChildNode(node, "Thursday", "Value4");
+        addChildNode(node, "Tuesday", "Value2");
+        addChildNode(node, "Wednesday", "Value3");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
+
+TEST_F(EnumMapSerializerTest, SerializingEmptyUnorderedEnumMap)
+{
+    using Helper::Day;
+    std::unordered_map<Day, std::string> emptyDays;
+
+    Helper::MockNode elementNode("MapElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+
+    FileParse::serializeEnumMap<Helper::MockNodeAdapter, Day, std::string>(
+      adapter, emptyDays, Helper::toDayString);
+
+    Helper::MockNode correctNode{"MapElement"};
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNode));
+}
+
+TEST_F(EnumMapSerializerTest, DeserializingEmptyUnorderedEnumMap)
+{
+    Helper::MockNode emptyNode{"MapEnumElement"};
+    Helper::MockNodeAdapter adapter{&emptyNode};
+
+    std::unordered_map<Helper::Day, std::string> elements;
+    FileParse::deserializeEnumMap<Helper::MockNodeAdapter, Helper::Day, std::string>(
+      adapter, elements, Helper::toDay);
+
+    EXPECT_TRUE(elements.empty());
 }

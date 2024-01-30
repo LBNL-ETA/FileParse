@@ -105,7 +105,7 @@ namespace Helper
     template<typename NodeAdapter>
     inline NodeAdapter operator<<(NodeAdapter node, const Helper::MapElementEnumDouble & element)
     {
-        FileParse::serializeEnumMap<NodeAdapter, Helper::Day>(
+        FileParse::serializeEnumMap<NodeAdapter, Helper::Day, double>(
           node, element.days, Helper::toDayString);
 
         return node;

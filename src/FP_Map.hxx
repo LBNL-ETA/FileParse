@@ -87,12 +87,10 @@ namespace FileParse
         return node;
     }
 
-    template<typename NodeAdapter, typename EnumType, typename ValueType>
-    inline std::enable_if_t<is_valid_map<std::map<EnumType, ValueType>>::value
-                              || is_valid_map<std::unordered_map<EnumType, ValueType>>::value,
-                            NodeAdapter &>
+    template<typename NodeAdapter, typename EnumType, typename ValueType, typename MapType>
+    inline typename std::enable_if<is_valid_map<MapType>::value, NodeAdapter &>::type
       serializeEnumMap(NodeAdapter & node,
-                       const std::map<EnumType, ValueType> & map,
+                       const MapType & map,
                        std::function<std::string(EnumType)> converter)
     {
         if(map.empty())
@@ -108,7 +106,6 @@ namespace FileParse
 
         return node;
     }
-
 
     template<typename NodeAdapter, typename EnumType, typename ValueType, typename MapType>
     inline std::enable_if_t<is_valid_map<MapType>::value, const NodeAdapter &> deserializeEnumMap(
