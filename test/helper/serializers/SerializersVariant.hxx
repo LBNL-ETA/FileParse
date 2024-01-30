@@ -130,11 +130,13 @@ namespace Helper
         std::map<std::type_index, std::function<void(const Helper::VariantParent &, NodeAdapter &)>>
           serializers = {{std::type_index(typeid(Helper::ElementTemperature)),
                           [](const Helper::VariantParent & vp, NodeAdapter & aNode) {
-                              aNode.addChild("VariantParentTemperature") << vp;
+                              auto child = aNode.addChild("VariantParentTemperature");
+                              child << vp;
                           }},
                          {std::type_index(typeid(Helper::ElementHumidity)),
                           [](const Helper::VariantParent & vp, NodeAdapter & aNode) {
-                              aNode.addChild("VariantParentHumidity") << vp;
+                              auto child = aNode.addChild("VariantParentHumidity");
+                              child << vp;
                           }}};
 
         for(const auto & vp : element.values)
