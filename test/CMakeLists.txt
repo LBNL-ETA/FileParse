@@ -33,6 +33,7 @@ add_executable(${PROJECT_TEST_NAME}
         helper/MockNodeAdapter.hxx
         helper/MockNodeAdapter.cxx
 
+        helper/serializers/SerializerCMAOptions.hxx
         helper/serializers/SerializersBaseElement.hxx
         helper/serializers/SerializersEnum.hxx
 		helper/serializers/SerializersMap.hxx
@@ -40,7 +41,7 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/serializers/SerializersVariant.hxx
 		helper/serializers/SerializersVector.hxx
 
-		helper/structures/CMAOptionsHash.hxx
+		helper/structures/CMAOptions.hxx
 		helper/structures/Enums.hxx
 		helper/structures/StructureBase.hxx
 		helper/structures/StructureEnum.hxx
@@ -73,7 +74,8 @@ add_executable(${PROJECT_TEST_NAME}
 		units/EnumMapSerializers.unit.cxx
 		units/EnumMapSerializersXML.unit.cxx
 		units/StringMapSerializersXML.unit.cxx
-		units/StructureMapSerializersXML.unit.cxx
+        units/MapKeyAsStructureSerializers.unit.cxx
+        units/MapKeyAsStructureSerializersXML.unit.cxx
 		units/SetSerializers.unit.cxx
 		units/SetSerializersXML.unit.cxx
 		units/VariantSerializersXML.unit.cxx
