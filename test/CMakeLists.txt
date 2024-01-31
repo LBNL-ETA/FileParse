@@ -81,6 +81,7 @@ add_executable(${PROJECT_TEST_NAME}
 		units/SetSerializers.unit.cxx
 		units/SetSerializersXML.unit.cxx
 		units/VariantSerializersXML.unit.cxx
+		units/VectorSerializers.unit.cxx
 		units/VectorSerializersXML.unit.cxx
 		main.cpp)
 
