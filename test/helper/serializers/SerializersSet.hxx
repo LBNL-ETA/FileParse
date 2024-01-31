@@ -8,7 +8,8 @@
 namespace Helper
 {
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::SetElementDouble & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::SetElementDouble & element)
     {
         using FileParse::Child;
         using FileParse::operator>>;
@@ -19,7 +20,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::SetElementDouble & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::SetElementDouble & element)
     {
         using FileParse::Child;
         using FileParse::operator<<;
@@ -30,8 +31,8 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node,
-                                  Helper::SetElementOptionalDouble & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::SetElementOptionalDouble & element)
     {
         using FileParse::Child;
         using FileParse::operator>>;
@@ -42,8 +43,8 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node,
-                                  const Helper::SetElementOptionalDouble & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node,
+                                    const Helper::SetElementOptionalDouble & element)
     {
         using FileParse::Child;
         using FileParse::operator<<;
@@ -54,7 +55,8 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::SetElementEnum & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::SetElementEnum & element)
     {
         FileParse::deserializeEnumSet<NodeAdapter, Helper::Day>(
           node, {"Table", "Value"}, element.days, toDay);
@@ -63,7 +65,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::SetElementEnum & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::SetElementEnum & element)
     {
         FileParse::serializeEnumSet<NodeAdapter, Helper::Day>(
           node, {"Table", "Value"}, element.days, toDayString);

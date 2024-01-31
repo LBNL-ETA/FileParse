@@ -118,7 +118,7 @@ namespace Helper
         return element;
     }
 
-    void saveVectorElement(const VectorElement & element, std::string_view fileName)
+    int saveVectorElement(const VectorElement & element, std::string_view fileName)
     {
         using FileParse::Child;
 
@@ -126,7 +126,7 @@ namespace Helper
 
         xmlNode << Child{"VectorElement", element};
 
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 
     OptionalVectorElement loadOptionalVectorElement(std::string_view fileName)
@@ -144,7 +144,7 @@ namespace Helper
         return element;
     }
 
-    void saveOptionalVectorElement(const OptionalVectorElement & element, std::string_view fileName)
+    int saveOptionalVectorElement(const OptionalVectorElement & element, std::string_view fileName)
     {
         using FileParse::Child;
 
@@ -152,7 +152,7 @@ namespace Helper
 
         xmlNode << Child{"OptionalVectorElement", element};
 
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 
     EnumVectorElement loadEnumVectorElement(std::string_view fileName)
@@ -170,7 +170,7 @@ namespace Helper
         return element;
     }
 
-    void saveEnumVectorElement(const EnumVectorElement & element, std::string_view fileName)
+    int saveEnumVectorElement(const EnumVectorElement & element, std::string_view fileName)
     {
         using FileParse::Child;
 
@@ -178,6 +178,6 @@ namespace Helper
 
         xmlNode << Child{"EnumVectorElement", element};
 
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 }   // namespace Helper

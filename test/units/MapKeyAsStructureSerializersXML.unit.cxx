@@ -3,11 +3,11 @@
 #include "test/helper/Utility.hxx"
 
 #include "test/helper/files/MapElementXML.hxx"
-#include "test/helper/structures/StructureMap.hxx"
+#include "test/helper/structures/CMAStringOptions.hxx"
 
 #include "test/helper/FileManipulation.hxx"
 
-class StructureMapSerializerTest : public testing::Test
+class MapKeyAsStructureSerializerXMLTest : public testing::Test
 {
 private:
     const std::string m_FileName{"Test.xml"};
@@ -30,7 +30,7 @@ public:
     }
 };
 
-TEST_F(StructureMapSerializerTest, Reading)
+TEST_F(MapKeyAsStructureSerializerXMLTest, Reading)
 {
     const std::string fileContent{Helper::testCMAElementDatabase()};
 
@@ -44,7 +44,7 @@ TEST_F(StructureMapSerializerTest, Reading)
     Helper::checkMapEquality(correct.options, mapEl.options);
 }
 
-TEST_F(StructureMapSerializerTest, Writing)
+TEST_F(MapKeyAsStructureSerializerXMLTest, Writing)
 {
     const Helper::CMAElement knownElement{{{"Low", "Low"}, {12.34, 2.98}},
                                           {{"High", "High"}, {1.731, 7.39}}};
@@ -65,7 +65,8 @@ TEST_F(StructureMapSerializerTest, Writing)
                                       "\t</Element>\n"
                                       "</Test>\n"};
 
-    Helper::saveCMAElement(knownElement, fileName());
+    const auto result{Helper::saveCMAElement(knownElement, fileName())};
+    EXPECT_EQ(result, 0) << "Error saving CMAElement!";
 
     const std::string serializedContent{File::loadToString(fileName())};
 

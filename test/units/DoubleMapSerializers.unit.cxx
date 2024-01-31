@@ -4,37 +4,41 @@
 
 #include "test/helper/files/MapElementXML.hxx"
 #include "test/helper/structures/StructureMap.hxx"
+#include "test/helper/serializers/SerializersMap.hxx"
 
-#include "test/helper/FileManipulation.hxx"
+#include "test/helper/MockNodeAdapter.hxx"
 
 class DoubleMapSerializerTest : public testing::Test
+{};
+
+Helper::MockNode createStringDoubleMapElement()
 {
-protected:
-    void SetUp() override
-    {}
+    Helper::MockNode node{"child"};
+    Helper::MockNode & mapNode = Helper::addChildNode(node, "DoubleMap");
 
-    void TearDown() override
-    {}
-};
+    addChildNode(mapNode, "Key1", "37.582914");
+    addChildNode(mapNode, "Key2", "92.143057");
+    addChildNode(mapNode, "Key3", "15.907634");
 
-TEST_F(DoubleMapSerializerTest, Reading)
-{
-    const std::string fileContent{Helper::testMapElementDoubleDatabase()};
-    const std::string fileName{"TestRead.xml"};
-
-    File::createFileFromString(fileName, fileContent);
-
-    const auto mapEl{Helper::loadMapElementDouble(fileName)};
-
-    const std::map<std::string, double> correct{{"Key1", 37.582914}, {"Key2", 92.143057}, {"Key3", 15.907634}};
-
-    constexpr auto tolerance{1e-6};
-    Helper::checkMapValues(correct, mapEl.values, tolerance);
-
-    std::remove(fileName.c_str());
+    return node;
 }
 
-TEST_F(DoubleMapSerializerTest, Writing)
+TEST_F(DoubleMapSerializerTest, DeserializeMapStringDouble)
+{
+    auto elementNode(createStringDoubleMapElement());
+    const Helper::MockNodeAdapter adapter{&elementNode};
+
+    Helper::MapElementDouble element;
+    adapter >> element;
+
+    const std::map<std::string, double> correct{
+      {"Key1", 37.582914}, {"Key2", 92.143057}, {"Key3", 15.907634}};
+
+    constexpr auto tolerance{1e-6};
+    Helper::checkMapValues(correct, element.values, tolerance);
+}
+
+TEST_F(DoubleMapSerializerTest, SerializeMapStringDouble)
 {
     Helper::MapElementDouble mapEl;
     mapEl.values = {{"Value1", 23.856912},
@@ -43,15 +47,22 @@ TEST_F(DoubleMapSerializerTest, Writing)
                     {"Value4", 98.540127},
                     {"Value5", 51.284960}};
 
-    const std::string fileName{"TestWrite.xml"};
+    Helper::MockNode elementNode("Root");
+    Helper::MockNodeAdapter adapter{&elementNode};
+    adapter << mapEl;
 
-    std::remove(fileName.c_str());
+    auto correctNodes = []() {
+        Helper::MockNode node{"Root"};
+        Helper::MockNode & mapNode = Helper::addChildNode(node, "DoubleMap");
 
-    Helper::saveMapElementDouble(mapEl, fileName);
-    const auto loadedMap{Helper::loadMapElementDouble(fileName)};
+        addChildNode(mapNode, "Value1", "23.856912");
+        addChildNode(mapNode, "Value2", "67.431280");
+        addChildNode(mapNode, "Value3", "14.903215");
+        addChildNode(mapNode, "Value4", "98.540127");
+        addChildNode(mapNode, "Value5", "51.284960");
 
-    constexpr auto tolerance{1e-6};
-    Helper::checkMapValues(mapEl.values, loadedMap.values, tolerance);
+        return node;
+    };
 
-    std::remove(fileName.c_str());
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }

@@ -2,6 +2,8 @@
 
 #include "test/helper/structures/StructureMap.hxx"
 #include "../serializers/SerializersMap.hxx"
+#include "test/helper/structures/CMAStringOptions.hxx"
+#include "../serializers/SerializerCMAStringOptions.hxx"
 
 #include "FP_XMLNodeAdapter.hxx"
 
@@ -163,14 +165,14 @@ namespace Helper
         return element;
     }
 
-    void saveMapElementDouble(const MapElementString & element, std::string_view fileName)
+    int saveMapElementDouble(const MapElementString & element, std::string_view fileName)
     {
         using FileParse::Child;
 
         auto xmlNode{createTopNode("Test")};
 
         xmlNode << element;
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 
     MapElementOptionalString loadMapElementOptionalString(std::string_view fileName)
@@ -188,15 +190,15 @@ namespace Helper
         return element;
     }
 
-    void saveMapElementOptionalDouble(const MapElementOptionalString & element,
-                                      std::string_view fileName)
+    int saveMapElementOptionalDouble(const MapElementOptionalString & element,
+                                     std::string_view fileName)
     {
         using FileParse::Child;
 
         auto xmlNode{createTopNode("Test")};
         xmlNode << Child{"OptionalStringMap", element};
 
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 
     MapElementEnum loadMapElementEnum(std::string_view fileName)
@@ -214,14 +216,14 @@ namespace Helper
         return element;
     }
 
-    void saveMapElementEnum(const MapElementEnum & element, std::string_view fileName)
+    int saveMapElementEnum(const MapElementEnum & element, std::string_view fileName)
     {
         using FileParse::Child;
 
         auto xmlNode{createTopNode("Test")};
 
         xmlNode << Child{"EnumMap", element};
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 
     MapElementDouble loadMapElementDouble(std::string_view fileName)
@@ -233,20 +235,21 @@ namespace Helper
         MapElementDouble element;
         if(xmlNode.has_value())
         {
-            xmlNode.value() >> Child{"DoubleMap", element};
+            xmlNode.value() >> element;
         }
 
         return element;
     }
 
-    void saveMapElementDouble(const MapElementDouble & element, std::string_view fileName)
+    int saveMapElementDouble(const MapElementDouble & element, std::string_view fileName)
     {
         using FileParse::Child;
 
         auto xmlNode{createTopNode("Test")};
 
-        xmlNode << Child{"DoubleMap", element};
-        xmlNode.writeToFile(fileName);
+        xmlNode << element;
+
+        return xmlNode.writeToFile(fileName);
     }
 
     MapElementEnumDouble loadMapElementEnumDouble(std::string_view fileName)
@@ -264,7 +267,7 @@ namespace Helper
         return element;
     }
 
-    void saveMapElementEnumDouble(const MapElementEnumDouble & element, std::string_view fileName)
+    int saveMapElementEnumDouble(const MapElementEnumDouble & element, std::string_view fileName)
     {
         using FileParse::Child;
 
@@ -272,7 +275,7 @@ namespace Helper
 
         xmlNode << Child{"EnumDoubleMap", element};
 
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 
     CMAElement loadCMAElement(std::string_view fileName)
@@ -290,7 +293,8 @@ namespace Helper
 
         return element;
     }
-    void saveCMAElement(const CMAElement & element, std::string_view fileName)
+
+    int saveCMAElement(const CMAElement & element, std::string_view fileName)
     {
         using FileParse::Child;
 
@@ -298,6 +302,6 @@ namespace Helper
 
         xmlNode << element;
 
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 }   // namespace Helper

@@ -1,3 +1,6 @@
+// File: Enums.hxx
+// Brief: Declarations for helper namespace, including enums and conversion functions.
+
 #pragma once
 
 #include <array>
@@ -6,6 +9,7 @@
 
 namespace Helper
 {
+    /// Enum Day - Represents days of the week.
     enum class Day
     {
         None,
@@ -18,42 +22,65 @@ namespace Helper
         Sunday
     };
 
+    /// Maps Day enum values to their string representations.
     constexpr std::array<std::string_view, 8> DayToString
       = {"None", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
-    inline std::string toDayString(Day day)
-    {
-        return std::string{DayToString[static_cast<int>(day)]};
-    }
+    /// Converts a Day enum to its string representation.
+    /// @param day The Day enum to convert.
+    /// @return A string representing the given day.
+    std::string toDayString(Day day);
 
-    inline Day toDay(std::string_view str)
-    {
-        if(auto it = std::find(DayToString.begin(), DayToString.end(), str);
-           it != DayToString.end())
-            return static_cast<Day>(std::distance(DayToString.begin(), it));
-        return Day::None;
-    }
+    /// Converts a string to its corresponding Day enum value. In case string is not recognized, it
+    /// will return Day::None
+    /// @param str The string to convert.
+    /// @return The Day enum corresponding to the given string.
+    Day toDay(std::string_view str);
 
+    /// Enum Color - Represents basic color options.
     enum class Color
     {
-        None,
-        Red,
-        Green,
-        Blue
+        None,    ///< Represents no specific color.
+        Red,     ///< Represents the color Red.
+        Green,   ///< Represents the color Green.
+        Blue     ///< Represents the color Blue.
     };
 
+    /// Maps Color enum values to their string representations.
     constexpr std::array<std::string_view, 4> ColorToString = {"None", "Red", "Green", "Blue"};
 
-    inline std::string toColorString(Color color)
-    {
-        return std::string{ColorToString[static_cast<int>(color)]};
-    }
+    /// Converts a Color enum to its string representation.
+    /// @param color The Color enum to convert.
+    /// @return A string representing the given color.
+    std::string toColorString(Color color);
 
-    inline Color toColor(std::string_view str)
+    /// Converts a string to its corresponding Color enum value. In case the string is not
+    /// recognized, it will return Color::None.
+    /// @param str The string to convert.
+    /// @return The Color enum corresponding to the given string.
+    Color toColor(std::string_view str);
+
+    /// Enum Option - Represents options with a low, high, or none state.
+    enum class Option
     {
-        if(auto it = std::find(ColorToString.begin(), ColorToString.end(), str);
-           it != ColorToString.end())
-            return static_cast<Color>(std::distance(ColorToString.begin(), it));
-        return Color::None;
-    }
+        None,   ///< Represents no specific option or an unrecognized option.
+        Low,    ///< Represents the Low option.
+        High    ///< Represents the High option.
+    };
+
+    /// Maps Option enum values to their string representations.
+    constexpr std::array<std::string_view, 3> OptionToString = {"None", "Low", "High"};
+
+    /// Converts an Option enum to its string representation.
+    /// @param option The Option enum to convert.
+    /// @return A string representing the given option.
+    std::string toOptionString(Option option);
+
+    /// Converts a string to its corresponding Option enum value. In case the string is not
+    /// recognized, it will return Option::None.
+    /// @param str The string to convert.
+    /// @return The Option enum corresponding to the given string.
+    Option toOption(std::string_view str);
+
+
 }   // namespace Helper
