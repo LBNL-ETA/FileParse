@@ -86,3 +86,30 @@ TEST_F(VectorSerializerTest, DeserializeVectorOfEnumerators)
 
     Helper::checkVectorEquality<Color>(correct, elements);
 }
+
+TEST_F(VectorSerializerTest, SerializeVectorOfEnumerators)
+{
+    using Helper::Color;
+
+    const std::vector<Color> elements{Color::Green, Color::Blue, Color::Blue, Color::Green};
+
+    Helper::MockNode elementNode("Root");
+    Helper::MockNodeAdapter adapter{&elementNode};
+
+    adapter << FileParse::Child{{"Colors", "Color"}, elements};
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"Root"};
+
+        auto & child{Helper::addChildNode(node, "Colors")};
+
+        addChildNode(child, "Color", "Green");
+        addChildNode(child, "Color", "Blue");
+        addChildNode(child, "Color", "Blue");
+        addChildNode(child, "Color", "Green");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
