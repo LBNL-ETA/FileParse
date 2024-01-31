@@ -3,6 +3,7 @@
 #include "FP_Common.hxx"
 #include "FP_Map.hxx"
 
+#include "test/helper/serializers/SerializerCMAEnumOptions.hxx"
 #include "test/helper/structures/CMAValues.hxx"
 
 namespace Helper

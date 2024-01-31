@@ -32,8 +32,11 @@ add_executable(${PROJECT_TEST_NAME}
         helper/FileManipulation.cxx
         helper/MockNodeAdapter.hxx
         helper/MockNodeAdapter.cxx
+        helper/Utility.hxx
+		helper/UtilityCMA.hxx
 
-        helper/serializers/SerializerCMAOptions.hxx
+		helper/serializers/SerializerCMAEnumOptions.hxx
+		helper/serializers/SerializerCMAStringOptions.hxx
         helper/serializers/SerializerCMAValues.hxx
         helper/serializers/SerializersBaseElement.hxx
         helper/serializers/SerializersEnum.hxx
@@ -42,6 +45,7 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/serializers/SerializersVariant.hxx
 		helper/serializers/SerializersVector.hxx
 
+		helper/structures/CMAEnumOptions.hxx
 		helper/structures/CMAStringOptions.hxx
 		helper/structures/CMAValues.hxx
 		helper/structures/Enums.hxx
@@ -66,8 +70,6 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/files/VectorElementXML.hxx
 		helper/files/VectorElementXML.cxx
 
-		helper/Utility.hxx
-
         units/BaseSerializers.unit.cxx
         units/BaseSerializersXML.unit.cxx
 		units/DoubleMapSerializers.unit.cxx
@@ -77,6 +79,7 @@ add_executable(${PROJECT_TEST_NAME}
 		units/EnumMapSerializers.unit.cxx
 		units/EnumMapSerializersXML.unit.cxx
 		units/StringMapSerializersXML.unit.cxx
+        units/MapKeyAsEnumSerializers.unit.cxx
         units/MapKeyAsStructureSerializers.unit.cxx
         units/MapKeyAsStructureSerializersXML.unit.cxx
 		units/SetSerializers.unit.cxx

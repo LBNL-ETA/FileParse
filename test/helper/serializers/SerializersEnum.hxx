@@ -41,6 +41,22 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::Option & option)
+    {
+        FileParse::deserializeEnum<NodeAdapter, Helper::Option>(node, option, Helper::toOption);
+
+        return node;
+    }
+
+    template<typename NodeAdapter>
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::Option & option)
+    {
+        FileParse::serializeEnum<NodeAdapter, Helper::Option>(node, option, Helper::toOptionString);
+
+        return node;
+    }
+
+    template<typename NodeAdapter>
     inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::EnumElement & element)
     {
         node >> FileParse::Child{"Day", element.day};

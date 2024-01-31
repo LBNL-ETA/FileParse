@@ -4,13 +4,13 @@
 #include "test/helper/UtilityCMA.hxx"
 #include "test/helper/MockNodeAdapter.hxx"
 
-#include "test/helper/structures/CMAStringOptions.hxx"
-#include "test/helper/serializers/SerializerCMAStringOptions.hxx"
+#include "test/helper/structures/CMAEnumOptions.hxx"
+#include "test/helper/serializers/SerializerCMAEnumOptions.hxx"
 
-class MapKeyAsStructureSerializerTest : public testing::Test
+class MapKeyAsEnumSerializerTest : public testing::Test
 {};
 
-TEST_F(MapKeyAsStructureSerializerTest, DeserializationUnorderedMap)
+TEST_F(MapKeyAsEnumSerializerTest, DeserializationUnorderedMap)
 {
     auto mockData = []() {
         Helper::MockNode node{"Root"};
@@ -34,20 +34,22 @@ TEST_F(MapKeyAsStructureSerializerTest, DeserializationUnorderedMap)
     auto elementNode(mockData());
     const Helper::MockNodeAdapter adapter{&elementNode};
 
-    std::unordered_map<Helper::CMAStringOptions, Helper::CMAValues> element;
+    std::unordered_map<Helper::CMAEnumOptions, Helper::CMAValues> element;
     FileParse::deserializeMapAsChilds(adapter, "Element", element);
 
-    const std::unordered_map<Helper::CMAStringOptions, Helper::CMAValues> correct{
-      {{"Low", "Low"}, {12.34, 2.98}}, {{"High", "High"}, {1.731, 7.39}}};
+    const std::unordered_map<Helper::CMAEnumOptions, Helper::CMAValues> correct{
+      {{Helper::Option::Low, Helper::Option::Low}, {12.34, 2.98}},
+      {{Helper::Option::High, Helper::Option::High}, {1.731, 7.39}}};
 
     constexpr auto tolerance{1e-6};
     checkCMAValuesMap(correct, element, tolerance);
 }
 
-TEST_F(MapKeyAsStructureSerializerTest, SerializationUnorderedMap)
+TEST_F(MapKeyAsEnumSerializerTest, SerializationUnorderedMap)
 {
-    std::unordered_map<Helper::CMAStringOptions, Helper::CMAValues> element{
-      {{"Low", "Low"}, {12.34, 2.98}}, {{"High", "High"}, {1.731, 7.39}}};
+    std::unordered_map<Helper::CMAEnumOptions, Helper::CMAValues> element{
+      {{Helper::Option::Low, Helper::Option::Low}, {12.34, 2.98}},
+      {{Helper::Option::High, Helper::Option::High}, {1.731, 7.39}}};
 
     Helper::MockNode elementNode("Root");
     Helper::MockNodeAdapter adapter{&elementNode};
@@ -78,16 +80,17 @@ TEST_F(MapKeyAsStructureSerializerTest, SerializationUnorderedMap)
     EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
-TEST_F(MapKeyAsStructureSerializerTest, DeserializationOrderedMap) {
+TEST_F(MapKeyAsEnumSerializerTest, DeserializationOrderedMap)
+{
     auto mockData = []() {
         Helper::MockNode node{"Root"};
 
-        auto & child_medium = Helper::addChildNode(node, "Element");
+        auto & child_low = Helper::addChildNode(node, "Element");
 
-        addChildNode(child_medium, "Glazing", "Medium");
-        addChildNode(child_medium, "Spacer", "Medium");
-        addChildNode(child_medium, "Conductivity", "3.45");
-        addChildNode(child_medium, "FilmCoefficient", "1.23");
+        addChildNode(child_low, "Glazing", "Low");
+        addChildNode(child_low, "Spacer", "Low");
+        addChildNode(child_low, "Conductivity", "3.45");
+        addChildNode(child_low, "FilmCoefficient", "1.23");
 
         auto & child_high = Helper::addChildNode(node, "Element");
 
@@ -101,19 +104,22 @@ TEST_F(MapKeyAsStructureSerializerTest, DeserializationOrderedMap) {
     auto elementNode(mockData());
     const Helper::MockNodeAdapter adapter{&elementNode};
 
-    std::map<Helper::CMAStringOptions, Helper::CMAValues> element;
+    std::map<Helper::CMAEnumOptions, Helper::CMAValues> element;
     FileParse::deserializeMapAsChilds(adapter, "Element", element);
 
-    const std::map<Helper::CMAStringOptions, Helper::CMAValues> correct{
-      {{"Medium", "Medium"}, {3.45, 1.23}}, {{"High", "High"}, {4.56, 2.34}}};
+    const std::map<Helper::CMAEnumOptions, Helper::CMAValues> correct{
+      {{Helper::Option::Low, Helper::Option::Low}, {3.45, 1.23}},
+      {{Helper::Option::High, Helper::Option::High}, {4.56, 2.34}}};
 
     constexpr auto tolerance = 1e-6;
     checkCMAValuesMap(correct, element, tolerance);
 }
 
-TEST_F(MapKeyAsStructureSerializerTest, SerializationOrderedMap) {
-    std::map<Helper::CMAStringOptions, Helper::CMAValues> element{
-      {{"Medium", "Medium"}, {3.45, 1.23}}, {{"High", "High"}, {4.56, 2.34}}};
+TEST_F(MapKeyAsEnumSerializerTest, SerializationOrderedMap)
+{
+    std::map<Helper::CMAEnumOptions, Helper::CMAValues> element{
+      {{Helper::Option::Low, Helper::Option::Low}, {3.45, 1.23}},
+      {{Helper::Option::High, Helper::Option::High}, {4.56, 2.34}}};
 
     Helper::MockNode elementNode("Root");
     Helper::MockNodeAdapter adapter{&elementNode};
@@ -123,19 +129,19 @@ TEST_F(MapKeyAsStructureSerializerTest, SerializationOrderedMap) {
     auto correctNodes = []() {
         Helper::MockNode node{"Root"};
 
+        auto & child_low = Helper::addChildNode(node, "Element");
+
+        addChildNode(child_low, "Glazing", "Low");
+        addChildNode(child_low, "Spacer", "Low");
+        addChildNode(child_low, "Conductivity", "3.450000");
+        addChildNode(child_low, "FilmCoefficient", "1.230000");
+
         auto & child_high = Helper::addChildNode(node, "Element");
 
         addChildNode(child_high, "Glazing", "High");
         addChildNode(child_high, "Spacer", "High");
         addChildNode(child_high, "Conductivity", "4.560000");
         addChildNode(child_high, "FilmCoefficient", "2.340000");
-
-        auto & child_medium = Helper::addChildNode(node, "Element");
-
-        addChildNode(child_medium, "Glazing", "Medium");
-        addChildNode(child_medium, "Spacer", "Medium");
-        addChildNode(child_medium, "Conductivity", "3.450000");
-        addChildNode(child_medium, "FilmCoefficient", "1.230000");
 
         return node;
     };
