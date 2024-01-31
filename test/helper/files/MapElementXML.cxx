@@ -2,7 +2,7 @@
 
 #include "test/helper/structures/StructureMap.hxx"
 #include "../serializers/SerializersMap.hxx"
-#include "test/helper/structures/CMAOptions.hxx"
+#include "test/helper/structures/CMAStringOptions.hxx"
 #include "../serializers/SerializerCMAOptions.hxx"
 
 #include "FP_XMLNodeAdapter.hxx"

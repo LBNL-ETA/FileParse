@@ -34,6 +34,7 @@ add_executable(${PROJECT_TEST_NAME}
         helper/MockNodeAdapter.cxx
 
         helper/serializers/SerializerCMAOptions.hxx
+        helper/serializers/SerializerCMAValues.hxx
         helper/serializers/SerializersBaseElement.hxx
         helper/serializers/SerializersEnum.hxx
 		helper/serializers/SerializersMap.hxx
@@ -41,7 +42,8 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/serializers/SerializersVariant.hxx
 		helper/serializers/SerializersVector.hxx
 
-		helper/structures/CMAOptions.hxx
+		helper/structures/CMAStringOptions.hxx
+		helper/structures/CMAValues.hxx
 		helper/structures/Enums.hxx
 		helper/structures/StructureBase.hxx
 		helper/structures/StructureEnum.hxx

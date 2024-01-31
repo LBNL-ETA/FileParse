@@ -3,7 +3,7 @@
 #include "test/helper/Utility.hxx"
 #include "test/helper/MockNodeAdapter.hxx"
 
-#include "test/helper/structures/CMAOptions.hxx"
+#include "test/helper/structures/CMAStringOptions.hxx"
 #include "test/helper/serializers/SerializerCMAOptions.hxx"
 
 class MapKeyAsStructureSerializerTest : public testing::Test
@@ -35,7 +35,7 @@ void checkCMAValuesMap(const MapType & expected, const MapType & actual, double 
     }
 }
 
-TEST_F(MapKeyAsStructureSerializerTest, Deserialization)
+TEST_F(MapKeyAsStructureSerializerTest, DeserializationUnorderedMap)
 {
     auto mockData = []() {
         Helper::MockNode node{"Root"};
@@ -59,19 +59,19 @@ TEST_F(MapKeyAsStructureSerializerTest, Deserialization)
     auto elementNode(mockData());
     const Helper::MockNodeAdapter adapter{&elementNode};
 
-    std::unordered_map<Helper::CMAOptions, Helper::CMAValues> element;
+    std::unordered_map<Helper::CMAStringOptions, Helper::CMAValues> element;
     FileParse::deserializeMapAsChilds(adapter, "Element", element);
 
-    const std::unordered_map<Helper::CMAOptions, Helper::CMAValues> correct{
+    const std::unordered_map<Helper::CMAStringOptions, Helper::CMAValues> correct{
       {{"Low", "Low"}, {12.34, 2.98}}, {{"High", "High"}, {1.731, 7.39}}};
 
     constexpr auto tolerance{1e-6};
     checkCMAValuesMap(correct, element, tolerance);
 }
 
-TEST_F(MapKeyAsStructureSerializerTest, Serialization)
+TEST_F(MapKeyAsStructureSerializerTest, SerializationUnorderedMap)
 {
-    std::unordered_map<Helper::CMAOptions, Helper::CMAValues> element{
+    std::unordered_map<Helper::CMAStringOptions, Helper::CMAValues> element{
       {{"Low", "Low"}, {12.34, 2.98}}, {{"High", "High"}, {1.731, 7.39}}};
 
     Helper::MockNode elementNode("Root");
@@ -103,3 +103,67 @@ TEST_F(MapKeyAsStructureSerializerTest, Serialization)
     EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
+TEST_F(MapKeyAsStructureSerializerTest, DeserializationOrderedMap) {
+    auto mockData = []() {
+        Helper::MockNode node{"Root"};
+
+        auto & child1 = Helper::addChildNode(node, "Element");
+
+        addChildNode(child1, "Glazing", "Medium");
+        addChildNode(child1, "Spacer", "Medium");
+        addChildNode(child1, "Conductivity", "3.45");
+        addChildNode(child1, "FilmCoefficient", "1.23");
+
+        auto & child2 = Helper::addChildNode(node, "Element");
+
+        addChildNode(child2, "Glazing", "High");
+        addChildNode(child2, "Spacer", "High");
+        addChildNode(child2, "Conductivity", "4.56");
+        addChildNode(child2, "FilmCoefficient", "2.34");
+
+        return node;
+    };
+    auto elementNode(mockData());
+    const Helper::MockNodeAdapter adapter{&elementNode};
+
+    std::map<Helper::CMAStringOptions, Helper::CMAValues> element;
+    FileParse::deserializeMapAsChilds(adapter, "Element", element);
+
+    const std::map<Helper::CMAStringOptions, Helper::CMAValues> correct{
+      {{"Medium", "Medium"}, {3.45, 1.23}}, {{"High", "High"}, {4.56, 2.34}}};
+
+    constexpr auto tolerance = 1e-6;
+    checkCMAValuesMap(correct, element, tolerance);
+}
+
+TEST_F(MapKeyAsStructureSerializerTest, SerializationOrderedMap) {
+    std::map<Helper::CMAStringOptions, Helper::CMAValues> element{
+      {{"Medium", "Medium"}, {3.45, 1.23}}, {{"High", "High"}, {4.56, 2.34}}};
+
+    Helper::MockNode elementNode("Root");
+    Helper::MockNodeAdapter adapter{&elementNode};
+
+    FileParse::serializeMapAsChilds(adapter, "Element", element);
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"Root"};
+
+        auto & child1 = Helper::addChildNode(node, "Element");
+
+        addChildNode(child1, "Glazing", "High");
+        addChildNode(child1, "Spacer", "High");
+        addChildNode(child1, "Conductivity", "4.560000");
+        addChildNode(child1, "FilmCoefficient", "2.340000");
+
+        auto & child2 = Helper::addChildNode(node, "Element");
+
+        addChildNode(child2, "Glazing", "Medium");
+        addChildNode(child2, "Spacer", "Medium");
+        addChildNode(child2, "Conductivity", "3.450000");
+        addChildNode(child2, "FilmCoefficient", "1.230000");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
