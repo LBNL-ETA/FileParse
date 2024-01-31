@@ -3,8 +3,9 @@
 #include "FP_Vector.hxx"
 
 #include "test/helper/Utility.hxx"
-
 #include "test/helper/MockNodeAdapter.hxx"
+#include "test/helper/structures/Enums.hxx"
+#include "test/helper/serializers/SerializersEnum.hxx"
 
 class VectorSerializerTest : public testing::Test
 {};
@@ -58,4 +59,30 @@ TEST_F(VectorSerializerTest, SerializeVectorOfDoubles)
     };
 
     EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
+
+TEST_F(VectorSerializerTest, DeserializeVectorOfEnumerators)
+{
+    auto mockData = []() {
+        Helper::MockNode node{"Root"};
+
+        auto & child{Helper::addChildNode(node, "Table")};
+
+        addChildNode(child, "Color", "Red");
+        addChildNode(child, "Color", "Green");
+        addChildNode(child, "Color", "Blue");
+
+        return node;
+    };
+    auto elementNode(mockData());
+    const Helper::MockNodeAdapter adapter{&elementNode};
+
+    using Helper::Color;
+
+    std::vector<Color> elements;
+    adapter >> FileParse::Child{{"Table", "Color"}, elements};
+
+    const std::vector<Color> correct{Color::Red, Color::Green, Color::Blue};
+
+    //Helper::checkVectorEquality(correct, elements);
 }
