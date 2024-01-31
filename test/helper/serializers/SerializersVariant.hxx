@@ -12,7 +12,8 @@
 namespace Helper
 {
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::ElementTemperature & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::ElementTemperature & element)
     {
         using FileParse::Child;
         using FileParse::operator>>;
@@ -23,7 +24,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::ElementTemperature & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::ElementTemperature & element)
     {
         using FileParse::Child;
         using FileParse::operator<<;
@@ -34,7 +35,8 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::ElementHumidity & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::ElementHumidity & element)
     {
         using FileParse::Child;
         using FileParse::operator>>;
@@ -45,7 +47,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::ElementHumidity & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::ElementHumidity & element)
     {
         using FileParse::Child;
         using FileParse::operator<<;
@@ -56,7 +58,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::VariantParent & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::VariantParent & element)
     {
         using FileParse::Child;
         using FileParse::operator>>;
@@ -88,7 +90,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::VariantParent & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::VariantParent & element)
     {
         using FileParse::Child;
         using FileParse::operator<<;
@@ -102,7 +104,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator>>(const NodeAdapter & node, Helper::VariantsAll & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::VariantsAll & element)
     {
         auto processTag = [&node, &element](const std::string & tagValue) {
             const auto n{node.nChildNode(tagValue)};
@@ -123,19 +125,19 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter operator<<(NodeAdapter node, const Helper::VariantsAll & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::VariantsAll & element)
     {
         std::map<std::type_index, std::function<void(const Helper::VariantParent &, NodeAdapter &)>>
-          serializers = {
-            {std::type_index(typeid(Helper::ElementTemperature)),
-             [](const Helper::VariantParent & vp, NodeAdapter & aNode) {
-                              aNode.addChild("VariantParentTemperature") << vp;
-             }},
-            {std::type_index(typeid(Helper::ElementHumidity)),
-             [](const Helper::VariantParent & vp, NodeAdapter & aNode) {
-                              aNode.addChild("VariantParentHumidity") << vp;
-             }}
-          };
+          serializers = {{std::type_index(typeid(Helper::ElementTemperature)),
+                          [](const Helper::VariantParent & vp, NodeAdapter & aNode) {
+                              auto child = aNode.addChild("VariantParentTemperature");
+                              child << vp;
+                          }},
+                         {std::type_index(typeid(Helper::ElementHumidity)),
+                          [](const Helper::VariantParent & vp, NodeAdapter & aNode) {
+                              auto child = aNode.addChild("VariantParentHumidity");
+                              child << vp;
+                          }}};
 
         for(const auto & vp : element.values)
         {

@@ -117,7 +117,7 @@ namespace Helper
         return element;
     }
 
-    void saveSetElementDouble(const SetElementDouble & element, std::string_view fileName)
+    int saveSetElementDouble(const SetElementDouble & element, std::string_view fileName)
     {
         using FileParse::Child;
 
@@ -125,7 +125,7 @@ namespace Helper
 
         xmlNode << Child{"SetElementDouble", element};
 
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 
     SetElementOptionalDouble loadSetElementOptionalDouble(std::string_view fileName)
@@ -143,7 +143,7 @@ namespace Helper
         return element;
     }
 
-    void saveSetElementOptionalDouble(const SetElementOptionalDouble & element,
+    int saveSetElementOptionalDouble(const SetElementOptionalDouble & element,
                                       std::string_view fileName)
     {
         using FileParse::Child;
@@ -152,7 +152,7 @@ namespace Helper
 
         xmlNode << Child{"SetElementOptionalDouble", element};
 
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 
     SetElementEnum loadSetElementEnum(std::string_view fileName)
@@ -170,7 +170,7 @@ namespace Helper
         return element;
     }
 
-    void saveSetElementEnum(const SetElementEnum & element, std::string_view fileName)
+    int saveSetElementEnum(const SetElementEnum & element, std::string_view fileName)
     {
         using FileParse::Child;
 
@@ -178,7 +178,7 @@ namespace Helper
 
         xmlNode << Child{"SetElementEnum", element};
 
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 
 }   // namespace Helper

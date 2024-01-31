@@ -48,7 +48,7 @@ namespace Helper
         return base;
     }
 
-    void saveBaseElement(const BaseElement & base, std::string_view fileName)
+    int saveBaseElement(const BaseElement & base, std::string_view fileName)
     {
         using FileParse::Child;
 
@@ -56,6 +56,6 @@ namespace Helper
 
         xmlNode << Child{"BaseElement", base};
 
-        xmlNode.writeToFile(fileName);
+        return xmlNode.writeToFile(fileName);
     }
 }   // namespace Helper

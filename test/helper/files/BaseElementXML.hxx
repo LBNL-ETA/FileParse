@@ -6,9 +6,9 @@ namespace Helper
 {
     struct BaseElement;
 
-    std::string testBaseElementDatabase();
-    std::string baseElement();
+    [[nodiscard]] std::string testBaseElementDatabase();
+    [[nodiscard]] std::string baseElement();
 
-    BaseElement loadBaseElement(std::string_view fileName);
-    void saveBaseElement(const BaseElement & base, std::string_view fileName);
+    [[nodiscard]] BaseElement loadBaseElement(std::string_view fileName);
+    [[nodiscard]] int saveBaseElement(const BaseElement & base, std::string_view fileName);
 }

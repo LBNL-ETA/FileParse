@@ -11,44 +11,47 @@ namespace Helper
     struct MapElementEnumDouble;
     struct CMAElement;
 
-    std::string testMapElementStringDatabase();
-    std::string mapElementString();
+    [[nodiscard]] std::string testMapElementStringDatabase();
+    [[nodiscard]] std::string mapElementString();
 
-    std::string testMapElementDoubleDatabase();
-    std::string mapElementDouble();
+    [[nodiscard]] std::string testMapElementDoubleDatabase();
+    [[nodiscard]] std::string mapElementDouble();
 
-    std::string testMapElementOptionalStringDatabase();
-    std::string mapElementOptionalString();
+    [[nodiscard]] std::string testMapElementOptionalStringDatabase();
+    [[nodiscard]] std::string mapElementOptionalString();
 
-    std::string testMapElementEmptyStringDatabase();
-    std::string mapElementEmptyString();
+    [[nodiscard]] std::string testMapElementEmptyStringDatabase();
+    [[nodiscard]] std::string mapElementEmptyString();
 
-    std::string testMapElementDayStringDatabase();
-    std::string mapElementDayString();
+    [[nodiscard]] std::string testMapElementDayStringDatabase();
+    [[nodiscard]] std::string mapElementDayString();
 
-    std::string testMapElementDayDoubleDatabase();
-    std::string mapElementDayDouble();
+    [[nodiscard]] std::string testMapElementDayDoubleDatabase();
+    [[nodiscard]] std::string mapElementDayDouble();
 
-    std::string testCMAElementDatabase();
-    std::string cmaElement1();
-    std::string cmaElement2();
+    [[nodiscard]] std::string testCMAElementDatabase();
+    [[nodiscard]] std::string cmaElement1();
+    [[nodiscard]] std::string cmaElement2();
 
-    MapElementString loadMapElementString(std::string_view fileName);
-    void saveMapElementDouble(const MapElementString & element, std::string_view fileName);
+    [[nodiscard]] MapElementString loadMapElementString(std::string_view fileName);
+    [[nodiscard]] int saveMapElementDouble(const MapElementString & element,
+                                           std::string_view fileName);
 
-    MapElementOptionalString loadMapElementOptionalString(std::string_view fileName);
-    void saveMapElementOptionalDouble(const MapElementOptionalString & element,
-                                      std::string_view fileName);
+    [[nodiscard]] MapElementOptionalString loadMapElementOptionalString(std::string_view fileName);
+    [[nodiscard]] int saveMapElementOptionalDouble(const MapElementOptionalString & element,
+                                                   std::string_view fileName);
 
-    MapElementEnum loadMapElementEnum(std::string_view fileName);
-    void saveMapElementEnum(const MapElementEnum & element, std::string_view fileName);
+    [[nodiscard]] MapElementEnum loadMapElementEnum(std::string_view fileName);
+    [[nodiscard]] int saveMapElementEnum(const MapElementEnum & element, std::string_view fileName);
 
-    MapElementDouble loadMapElementDouble(std::string_view fileName);
-    void saveMapElementDouble(const MapElementDouble & element, std::string_view fileName);
+    [[nodiscard]] MapElementDouble loadMapElementDouble(std::string_view fileName);
+    [[nodiscard]] int saveMapElementDouble(const MapElementDouble & element,
+                                           std::string_view fileName);
 
-    MapElementEnumDouble loadMapElementEnumDouble(std::string_view fileName);
-    void saveMapElementEnumDouble(const MapElementEnumDouble & element, std::string_view fileName);
+    [[nodiscard]] MapElementEnumDouble loadMapElementEnumDouble(std::string_view fileName);
+    [[nodiscard]] int saveMapElementEnumDouble(const MapElementEnumDouble & element,
+                                               std::string_view fileName);
 
-    CMAElement loadCMAElement(std::string_view fileName);
-    void saveCMAElement(const CMAElement & element, std::string_view fileName);
-}
+    [[nodiscard]] CMAElement loadCMAElement(std::string_view fileName);
+    [[nodiscard]] int saveCMAElement(const CMAElement & element, std::string_view fileName);
+}   // namespace Helper

@@ -7,17 +7,10 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-class StringMapSerializerTest : public testing::Test
-{
-protected:
-    void SetUp() override
-    {}
+class StringMapSerializerXMLTest : public testing::Test
+{};
 
-    void TearDown() override
-    {}
-};
-
-TEST_F(StringMapSerializerTest, ReadingStringMap)
+TEST_F(StringMapSerializerXMLTest, ReadingStringMap)
 {
     const std::string fileContent{Helper::testMapElementStringDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -26,8 +19,10 @@ TEST_F(StringMapSerializerTest, ReadingStringMap)
 
     const auto mapEl{Helper::loadMapElementString(fileName)};
 
-    const std::map<std::string, std::string> correctOrdered{{"Key1", "Value1"}, {"Key2", "Value2"}, {"Key3", "Value3"}};
-    const std::unordered_map<std::string, std::string> correctUnordered{{"K1", "V1"}, {"K2", "V2"}, {"K3", "V3"}};
+    const std::map<std::string, std::string> correctOrdered{
+      {"Key1", "Value1"}, {"Key2", "Value2"}, {"Key3", "Value3"}};
+    const std::unordered_map<std::string, std::string> correctUnordered{
+      {"K1", "V1"}, {"K2", "V2"}, {"K3", "V3"}};
 
     Helper::checkMapEquality(correctOrdered, mapEl.ordered);
     Helper::checkMapEquality(correctUnordered, mapEl.unordered);
@@ -35,16 +30,18 @@ TEST_F(StringMapSerializerTest, ReadingStringMap)
     std::remove(fileName.c_str());
 }
 
-TEST_F(StringMapSerializerTest, WritingStringMap)
+TEST_F(StringMapSerializerXMLTest, WritingStringMap)
 {
     Helper::MapElementString mapEl;
-    mapEl.ordered = {{"1", "Value1"}, {"2", "Value2"}, {"3", "Value3"}, {"4", "Value4"}, {"5", "Value5"}};
+    mapEl.ordered
+      = {{"1", "Value1"}, {"2", "Value2"}, {"3", "Value3"}, {"4", "Value4"}, {"5", "Value5"}};
 
     const std::string fileName{"TestWrite.xml"};
 
     std::remove(fileName.c_str());
 
-    Helper::saveMapElementDouble(mapEl, fileName);
+    const auto result{Helper::saveMapElementDouble(mapEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedMap{Helper::loadMapElementString(fileName)};
 
@@ -53,7 +50,7 @@ TEST_F(StringMapSerializerTest, WritingStringMap)
     std::remove(fileName.c_str());
 }
 
-TEST_F(StringMapSerializerTest, ReadingOptionalStringMap)
+TEST_F(StringMapSerializerXMLTest, ReadingOptionalStringMap)
 {
     const std::string fileContent{Helper::testMapElementOptionalStringDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -72,7 +69,7 @@ TEST_F(StringMapSerializerTest, ReadingOptionalStringMap)
     std::remove(fileName.c_str());
 }
 
-TEST_F(StringMapSerializerTest, WritingOptionalStringMap)
+TEST_F(StringMapSerializerXMLTest, WritingOptionalStringMap)
 {
     Helper::MapElementOptionalString mapEl;
     mapEl.values = {{"o1", "1"}, {"o2", "2"}, {"o3", "3"}, {"o4", "4"}, {"o5", "5"}};
@@ -81,7 +78,8 @@ TEST_F(StringMapSerializerTest, WritingOptionalStringMap)
 
     std::remove(fileName.c_str());
 
-    Helper::saveMapElementOptionalDouble(mapEl, fileName);
+    const auto result{Helper::saveMapElementOptionalDouble(mapEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedMap{Helper::loadMapElementOptionalString(fileName)};
 
@@ -92,7 +90,7 @@ TEST_F(StringMapSerializerTest, WritingOptionalStringMap)
     std::remove(fileName.c_str());
 }
 
-TEST_F(StringMapSerializerTest, ReadingEmpty)
+TEST_F(StringMapSerializerXMLTest, ReadingEmpty)
 {
     const std::string fileContent{Helper::testMapElementEmptyStringDatabase()};
     const std::string fileName{"TestRead.xml"};
@@ -106,7 +104,7 @@ TEST_F(StringMapSerializerTest, ReadingEmpty)
     std::remove(fileName.c_str());
 }
 
-TEST_F(StringMapSerializerTest, WritingEmpty)
+TEST_F(StringMapSerializerXMLTest, WritingEmpty)
 {
     Helper::MapElementString mapEl;
 
@@ -114,7 +112,8 @@ TEST_F(StringMapSerializerTest, WritingEmpty)
 
     std::remove(fileName.c_str());
 
-    Helper::saveMapElementDouble(mapEl, fileName);
+    const auto result{Helper::saveMapElementDouble(mapEl, fileName)};
+    EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadMapElementString(fileName)};
 

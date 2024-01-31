@@ -1,186 +1,115 @@
 #include <gtest/gtest.h>
 
+#include "FP_Vector.hxx"
+
 #include "test/helper/Utility.hxx"
-
-#include "test/helper/files/VectorElementXML.hxx"
-#include "test/helper/structures/StructureVector.hxx"
-
-#include "test/helper/FileManipulation.hxx"
+#include "test/helper/MockNodeAdapter.hxx"
+#include "test/helper/structures/Enums.hxx"
+#include "test/helper/serializers/SerializersEnum.hxx"
 
 class VectorSerializerTest : public testing::Test
+{};
+
+TEST_F(VectorSerializerTest, DeserializeVectorOfDoubles)
 {
-protected:
-    void SetUp() override
-    {}
+    auto mockData = []() {
+        Helper::MockNode node{"Root"};
 
-    void TearDown() override
-    {}
-};
+        auto & child{Helper::addChildNode(node, "Table")};
 
-TEST_F(VectorSerializerTest, Reading)
-{
-    const std::string fileContent{Helper::testVectorElementDatabase()};
-    const std::string fileName{"TestRead.xml"};
+        addChildNode(child, "Value", "38.8048");
+        addChildNode(child, "Value", "25.5758");
+        addChildNode(child, "Value", "96.1831");
+        addChildNode(child, "Value", "90.3927");
 
-    File::createFileFromString(fileName, fileContent);
+        return node;
+    };
+    auto elementNode(mockData());
+    const Helper::MockNodeAdapter adapter{&elementNode};
 
-    const auto vectorEl{Helper::loadVectorElement(fileName)};
+    std::vector<double> elements;
+    adapter >> FileParse::Child{{"Table", "Value"}, elements};
 
-    const std::vector<double> correct{23.41, 18.13, 5.0756};
-    constexpr auto tolerance{1e-6};
-    Helper::checkVectorValues(correct, vectorEl.values, tolerance);
-
-    std::remove(fileName.c_str());
-}
-
-TEST_F(VectorSerializerTest, Writing)
-{
-    Helper::VectorElement vectorEl;
-    vectorEl.values = {1, 2, 3, 4, 5};
-
-    const std::string fileName{"TestWrite.xml"};
-
-    // Sometimes in debug mode the above file was not removed from the previous run. This is to ensure deletion.
-    std::remove(fileName.c_str());
-
-    Helper::saveVectorElement(vectorEl, fileName);
-
-    const auto loadedVector{Helper::loadVectorElement(fileName)};
+    const std::vector<double> correct{38.8048, 25.5758, 96.1831, 90.3927};
 
     constexpr auto tolerance{1e-6};
-    Helper::checkVectorValues(vectorEl.values, loadedVector.values, tolerance);
-
-    std::remove(fileName.c_str());
+    Helper::checkVectorValues(correct, elements, tolerance);
 }
 
-TEST_F(VectorSerializerTest, ReadingOptional)
+TEST_F(VectorSerializerTest, SerializeVectorOfDoubles)
 {
-    const std::string fileContent{Helper::testVectorElementDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    const std::vector<double> elements{38.8048, 25.5758, 96.1831, 90.3927};
 
-    File::createFileFromString(fileName, fileContent);
+    Helper::MockNode elementNode("Root");
+    Helper::MockNodeAdapter adapter{&elementNode};
 
-    const auto vectorEl{Helper::loadOptionalVectorElement(fileName)};
+    adapter << FileParse::Child{{"Nodes", "Element"}, elements};
 
-    const std::vector<double> correct{33.41, 28.13, 6.0756};
-    constexpr auto tolerance{1e-6};
-    Helper::checkVectorValues(correct, vectorEl.values.value(), tolerance);
+    auto correctNodes = []() {
+        Helper::MockNode node{"Root"};
 
-    std::remove(fileName.c_str());
+        auto & child{Helper::addChildNode(node, "Nodes")};
+
+        addChildNode(child, "Element", "38.804800");
+        addChildNode(child, "Element", "25.575800");
+        addChildNode(child, "Element", "96.183100");
+        addChildNode(child, "Element", "90.392700");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
-TEST_F(VectorSerializerTest, ReadingOptionalEmpty)
+TEST_F(VectorSerializerTest, DeserializeVectorOfEnumerators)
 {
-    const std::string fileContent{Helper::testVectorElementEmptyOptionalDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    auto mockData = []() {
+        Helper::MockNode node{"Root"};
 
-    File::createFileFromString(fileName, fileContent);
+        auto & child{Helper::addChildNode(node, "Table")};
 
-    const auto vectorEl{Helper::loadOptionalVectorElement(fileName)};
+        addChildNode(child, "Color", "Red");
+        addChildNode(child, "Color", "Green");
+        addChildNode(child, "Color", "Blue");
 
-    EXPECT_EQ(false, vectorEl.values.has_value());
+        return node;
+    };
+    auto elementNode(mockData());
+    const Helper::MockNodeAdapter adapter{&elementNode};
 
-    std::remove(fileName.c_str());
+    using Helper::Color;
+
+    std::vector<Color> elements;
+    adapter >> FileParse::Child{{"Table", "Color"}, elements};
+
+    const std::vector<Color> correct{Color::Red, Color::Green, Color::Blue};
+
+    Helper::checkVectorEquality<Color>(correct, elements);
 }
 
-TEST_F(VectorSerializerTest, WritingOptional)
+TEST_F(VectorSerializerTest, SerializeVectorOfEnumerators)
 {
-    Helper::OptionalVectorElement vectorEl;
-    vectorEl.values = {0.342561, 2.673412, 6.895461, 7.012345, 8.567890};
+    using Helper::Color;
 
-    const std::string fileName{"TestWrite.xml"};
+    const std::vector<Color> elements{Color::Green, Color::Blue, Color::Blue, Color::Green};
 
-    std::remove(fileName.c_str());
+    Helper::MockNode elementNode("Root");
+    Helper::MockNodeAdapter adapter{&elementNode};
 
-    Helper::saveOptionalVectorElement(vectorEl, fileName);
+    adapter << FileParse::Child{{"Colors", "Color"}, elements};
 
-    const auto loadedVector{Helper::loadOptionalVectorElement(fileName)};
+    auto correctNodes = []() {
+        Helper::MockNode node{"Root"};
 
-    constexpr auto tolerance{1e-6};
-    Helper::checkVectorValues(vectorEl.values.value(), loadedVector.values.value(), tolerance);
+        auto & child{Helper::addChildNode(node, "Colors")};
 
-    std::remove(fileName.c_str());
-}
+        addChildNode(child, "Color", "Green");
+        addChildNode(child, "Color", "Blue");
+        addChildNode(child, "Color", "Blue");
+        addChildNode(child, "Color", "Green");
 
-TEST_F(VectorSerializerTest, WritingOptionalEmpty)
-{
-    Helper::OptionalVectorElement vectorEl;
+        return node;
+    };
 
-    const std::string fileName{"TestWrite.xml"};
-
-    std::remove(fileName.c_str());
-
-    Helper::saveOptionalVectorElement(vectorEl, fileName);
-
-    const auto loadedVector{Helper::loadOptionalVectorElement(fileName)};
-
-    EXPECT_EQ(false, loadedVector.values.has_value());
-
-    std::remove(fileName.c_str());
-}
-
-TEST_F(VectorSerializerTest, ReadingEmpty)
-{
-    const std::string fileContent{Helper::testEmptyVectorElementDatabase()};
-    const std::string fileName{"TestRead.xml"};
-
-    File::createFileFromString(fileName, fileContent);
-
-    const auto vectorEl{Helper::loadOptionalVectorElement(fileName)};
-
-    EXPECT_EQ(false, vectorEl.values.has_value());
-
-    std::remove(fileName.c_str());
-}
-
-TEST_F(VectorSerializerTest, WritingEmpty)
-{
-    Helper::VectorElement vectorEl;
-
-    const std::string fileName{"TestWrite.xml"};
-
-    // Sometimes in debug mode the above file was not removed from the previous run. This is to ensure deletion.
-    std::remove(fileName.c_str());
-
-    Helper::saveVectorElement(vectorEl, fileName);
-
-    const auto loadedVector{Helper::loadVectorElement(fileName)};
-
-    EXPECT_EQ(vectorEl.values.size(), loadedVector.values.size());
-
-    std::remove(fileName.c_str());
-}
-
-TEST_F(VectorSerializerTest, ReadingEnum)
-{
-    const std::string fileContent{Helper::testDayVectorElementDatabase()};
-    const std::string fileName{"TestRead.xml"};
-
-    File::createFileFromString(fileName, fileContent);
-
-    const auto vectorEl{Helper::loadEnumVectorElement(fileName)};
-
-    const std::vector<Helper::Day> correct{Helper::Day::Friday, Helper::Day::Saturday, Helper::Day::Sunday};
-    Helper::checkVectorEquality(correct, vectorEl.days, Helper::toDayString);
-
-    std::remove(fileName.c_str());
-}
-
-TEST_F(VectorSerializerTest, WritingEnum)
-{
-    Helper::EnumVectorElement vectorEl;
-    using Helper::Day;
-    vectorEl.days = {Day::Monday, Day::Tuesday, Day::Thursday, Day::Friday};
-
-    const std::string fileName{"TestWrite.xml"};
-
-    std::remove(fileName.c_str());
-
-    Helper::saveEnumVectorElement(vectorEl, fileName);
-
-    const auto loadedVector{Helper::loadEnumVectorElement(fileName)};
-
-    Helper::checkVectorEquality(vectorEl.days, loadedVector.days, Helper::toDayString);
-
-    std::remove(fileName.c_str());
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }

@@ -42,19 +42,14 @@ int XMLNodeAdapter::nChildNode(std::string_view name) const
     return pimpl_->node_.nChildNode(name.data());
 }
 
-XMLNodeAdapter XMLNodeAdapter::addChild(std::string_view name) const
+XMLNodeAdapter XMLNodeAdapter::addChild(std::string_view name)
 {
     return XMLNodeAdapter(pimpl_->node_.addChild(name.data()));
 }
 
-void XMLNodeAdapter::addText(std::string_view text) const
+void XMLNodeAdapter::addText(std::string_view text)
 {
     pimpl_->node_.addText(text.data());
-}
-
-XMLNodeAdapter XMLNodeAdapter::addChild(const XMLNodeAdapter & node) const
-{
-    return XMLNodeAdapter(pimpl_->node_.addChild(node.pimpl_->node_));
 }
 
 int XMLNodeAdapter::writeToUTF8(std::string_view outString) const
