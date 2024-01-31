@@ -29,24 +29,4 @@ namespace Helper
             return static_cast<Color>(std::distance(ColorToString.begin(), it));
         return Color::None;
     }
-
-    std::ostream & operator<<(std::ostream & os, const Color & color)
-    {
-        switch(color)
-        {
-            case Color::Red:
-                os << "Red";
-                break;
-            case Color::Green:
-                os << "Green";
-                break;
-            case Color::Blue:
-                os << "Blue";
-                break;
-            default:
-                os << "Unknown Color";
-                break;
-        }
-        return os;
-    }
 }   // namespace Helper
