@@ -148,3 +148,30 @@ TEST_F(MapKeyAsEnumSerializerTest, SerializationOrderedMap)
 
     EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
+
+TEST_F(MapKeyAsEnumSerializerTest, DeserializationWrongStringKeys)
+{
+    auto mockData = []() {
+        Helper::MockNode node{"Root"};
+
+        auto & child_wrong{Helper::addChildNode(node, "Element")};
+
+        addChildNode(child_wrong, "Glazing", "Wrong");
+        addChildNode(child_wrong, "Spacer", "Wrong");
+        addChildNode(child_wrong, "Conductivity", "12.34");
+        addChildNode(child_wrong, "FilmCoefficient", "2.98");
+
+        return node;
+    };
+    auto elementNode(mockData());
+    const Helper::MockNodeAdapter adapter{&elementNode};
+
+    std::unordered_map<Helper::CMAEnumOptions, Helper::CMAValues> element;
+    FileParse::deserializeMapAsChilds(adapter, "Element", element);
+
+    const std::unordered_map<Helper::CMAEnumOptions, Helper::CMAValues> correct{
+      {{Helper::Option::None, Helper::Option::None}, {12.34, 2.98}}};
+
+    constexpr auto tolerance{1e-6};
+    checkCMAValuesMap(correct, element, tolerance);
+}
