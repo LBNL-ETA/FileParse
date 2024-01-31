@@ -1,3 +1,7 @@
+/// File: FP_Set.hxx
+/// @brief Provides serialization and deserialization functionalities for sets and enum sets
+///        in the FileParse namespace.
+
 #pragma once
 
 #include <set>
@@ -8,6 +12,12 @@
 
 namespace FileParse
 {
+    /// Serializes a set as child nodes of a given node.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The type of elements in the set.
+    /// @param node The node to serialize the set into.
+    /// @param value The Child object containing the set and node hierarchy information.
+    /// @return Reference to the updated node.
     template<typename NodeAdapter, typename T>
     inline NodeAdapter & operator<<(NodeAdapter & node, const Child<const std::set<T>> & value)
     {
@@ -25,6 +35,12 @@ namespace FileParse
         return node;
     }
 
+    /// Deserializes child nodes of a given node into a set.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The type of elements in the set.
+    /// @param node The node to deserialize the set from.
+    /// @param vec The Child object where the deserialized set will be stored.
+    /// @return Const reference to the node.
     template<typename NodeAdapter, typename T>
     inline const NodeAdapter & operator>>(const NodeAdapter & node, const Child<std::set<T>> & vec)
     {
@@ -47,6 +63,12 @@ namespace FileParse
         return node;
     }
 
+    /// Deserializes child nodes into an optional set.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The type of elements in the set.
+    /// @param node The node to deserialize the set from.
+    /// @param opt_vec The Child object where the deserialized optional set will be stored.
+    /// @return Const reference to the node.
     template<typename NodeAdapter, typename T>
     inline const NodeAdapter & operator>>(const NodeAdapter & node,
                                           const Child<std::optional<std::set<T>>> & opt_vec)
@@ -63,6 +85,12 @@ namespace FileParse
         return node;
     }
 
+    /// Serializes an optional set as child nodes of a given node.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The type of elements in the set.
+    /// @param node The node to serialize the optional set into.
+    /// @param opt_vec The Child object containing the optional set and node hierarchy information.
+    /// @return Reference to the updated node.
     template<typename NodeAdapter, typename T>
     inline NodeAdapter & operator<<(NodeAdapter & node,
                                     const Child<const std::optional<std::set<T>>> & opt_vec)
@@ -81,6 +109,14 @@ namespace FileParse
         return node;
     }
 
+    /// Serializes a set of enum values as child nodes, converting the enums to strings.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam EnumType The enumeration type of the set's elements.
+    /// @param node The node to serialize the set into.
+    /// @param tags A vector of strings specifying the node hierarchy.
+    /// @param vec The set of enum values to be serialized.
+    /// @param converter A function that converts the enum values to strings.
+    /// @return Reference to the updated node.
     template<typename NodeAdapter, typename EnumType>
     NodeAdapter & serializeEnumSet(NodeAdapter & node,
                                    const std::vector<std::string> & tags,
@@ -103,7 +139,14 @@ namespace FileParse
         return node;
     }
 
-
+    /// Deserializes child nodes into a set of enum values, converting the strings back to enums.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam EnumType The enumeration type of the set's elements.
+    /// @param node The node to deserialize the set from.
+    /// @param tags A vector of strings specifying the node hierarchy.
+    /// @param vec The set where the deserialized enum values will be stored.
+    /// @param converter A function that converts strings to enum values.
+    /// @return Const reference to the node.
     template<typename NodeAdapter, typename EnumType>
     const NodeAdapter & deserializeEnumSet(const NodeAdapter & node,
                                            const std::vector<std::string> & tags,

@@ -1,3 +1,7 @@
+/// File: FP_Vector.hxx
+/// @brief Provides functionality to serialize and deserialize std::vector and
+///        std::optional<std::vector> types in the FileParse namespace.
+
 #pragma once
 
 #include <vector>
@@ -9,6 +13,12 @@
 
 namespace FileParse
 {
+    /// Serializes a vector as child nodes of a given node.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The type of elements in the vector.
+    /// @param node The node to serialize the vector into.
+    /// @param vec The Child object containing the vector and node hierarchy information.
+    /// @return Reference to the updated node.
     template<typename NodeAdapter, typename T>
     inline NodeAdapter & operator<<(NodeAdapter & node, const Child<const std::vector<T>> & vec)
     {
@@ -28,6 +38,12 @@ namespace FileParse
         return node;
     }
 
+    /// Deserializes child nodes of a given node into a vector.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The type of elements in the vector.
+    /// @param node The node to deserialize the vector from.
+    /// @param vec The Child object where the deserialized vector will be stored.
+    /// @return Const reference to the node.
     template<typename NodeAdapter, typename T>
     inline const NodeAdapter & operator>>(const NodeAdapter & node,
                                           const Child<std::vector<T>> & vec)
@@ -53,6 +69,12 @@ namespace FileParse
         return node;
     }
 
+    /// Deserializes child nodes into an optional vector.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The type of elements in the vector.
+    /// @param node The node to deserialize the optional vector from.
+    /// @param opt_vec The Child object where the deserialized optional vector will be stored.
+    /// @return Const reference to the node.
     template<typename NodeAdapter, typename T>
     inline const NodeAdapter & operator>>(const NodeAdapter & node,
                                           const Child<std::optional<std::vector<T>>> & opt_vec)
@@ -69,6 +91,12 @@ namespace FileParse
         return node;
     }
 
+    /// Serializes an optional vector as child nodes of a given node.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The type of elements in the vector.
+    /// @param node The node to serialize the optional vector into.
+    /// @param opt_vec The Child object containing the optional vector and node hierarchy information.
+    /// @return Reference to the updated node.
     template<typename NodeAdapter, typename T>
     inline NodeAdapter & operator<<(NodeAdapter & node,
                                     const Child<const std::optional<std::vector<T>>> & opt_vec)
@@ -87,6 +115,14 @@ namespace FileParse
         return node;
     }
 
+    /// Serializes a vector of enum values as child nodes, converting the enums to strings.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam EnumType The enumeration type of the vector's elements.
+    /// @param node The node to serialize the vector into.
+    /// @param tags A vector of strings specifying the node hierarchy.
+    /// @param vec The vector of enum values to be serialized.
+    /// @param converter A function that converts the enum values to strings.
+    /// @return Reference to the updated node.
     template<typename NodeAdapter, typename EnumType>
     NodeAdapter & serializeEnumVector(NodeAdapter & node,
                                       const std::vector<std::string> & tags,
@@ -109,7 +145,14 @@ namespace FileParse
         return node;
     }
 
-
+    /// Deserializes child nodes into a vector of enum values, converting the strings back to enums.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam EnumType The enumeration type of the vector's elements.
+    /// @param node The node to deserialize the vector from.
+    /// @param tags A vector of strings specifying the node hierarchy.
+    /// @param vec The vector where the deserialized enum values will be stored.
+    /// @param converter A function that converts strings to enum values.
+    /// @return Const reference to the node.
     template<typename NodeAdapter, typename EnumType>
     const NodeAdapter & deserializeEnumVector(const NodeAdapter & node,
                                               const std::vector<std::string> & tags,
