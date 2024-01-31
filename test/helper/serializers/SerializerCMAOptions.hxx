@@ -1,10 +1,5 @@
 #pragma once
 
-#include "FP_StringConversion.hxx"
-
-#include "FP_Common.hxx"
-#include "FP_Map.hxx"
-
 #include "test/helper/serializers/SerializerCMAValues.hxx"
 #include "test/helper/structures/CMAStringOptions.hxx"
 
