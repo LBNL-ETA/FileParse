@@ -5,36 +5,13 @@
 #include "FP_Common.hxx"
 #include "FP_Map.hxx"
 
-#include "test/helper/structures/CMAOptions.hxx"
+#include "test/helper/serializers/SerializerCMAValues.hxx"
+#include "test/helper/structures/CMAStringOptions.hxx"
 
 namespace Helper
 {
     template<typename NodeAdapter>
-    inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::CMAValues & element)
-    {
-        using FileParse::Child;
-        using FileParse::operator>>;
-
-        node >> Child{"Conductivity", element.conductivity};
-        node >> Child{"FilmCoefficient", element.filmCoefficient};
-
-        return node;
-    }
-
-    template<typename NodeAdapter>
-    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::CMAValues & element)
-    {
-        using FileParse::Child;
-        using FileParse::operator<<;
-
-        node << Child{"Conductivity", element.conductivity};
-        node << Child{"FilmCoefficient", element.filmCoefficient};
-
-        return node;
-    }
-
-    template<typename NodeAdapter>
-    inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::CMAOptions & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::CMAStringOptions & element)
     {
         using FileParse::Child;
         using FileParse::operator>>;
@@ -46,7 +23,7 @@ namespace Helper
     }
 
     template<typename NodeAdapter>
-    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::CMAOptions & element)
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::CMAStringOptions & element)
     {
         using FileParse::Child;
         using FileParse::operator<<;

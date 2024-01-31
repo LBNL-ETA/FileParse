@@ -3,7 +3,7 @@
 #include "test/helper/Utility.hxx"
 
 #include "test/helper/files/MapElementXML.hxx"
-#include "test/helper/structures/CMAOptions.hxx"
+#include "test/helper/structures/CMAStringOptions.hxx"
 
 #include "test/helper/FileManipulation.hxx"
 
