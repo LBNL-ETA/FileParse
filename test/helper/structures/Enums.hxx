@@ -21,18 +21,9 @@ namespace Helper
     constexpr std::array<std::string_view, 8> DayToString
       = {"None", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
-    inline std::string toDayString(Day day)
-    {
-        return std::string{DayToString[static_cast<int>(day)]};
-    }
+    std::string toDayString(Day day);
 
-    inline Day toDay(std::string_view str)
-    {
-        if(auto it = std::find(DayToString.begin(), DayToString.end(), str);
-           it != DayToString.end())
-            return static_cast<Day>(std::distance(DayToString.begin(), it));
-        return Day::None;
-    }
+    Day toDay(std::string_view str);
 
     //// This is needed by GTest so it can be compared with EXPECT_EQ
     //inline std::ostream& operator<<(std::ostream& os, Day day) {
@@ -59,16 +50,9 @@ namespace Helper
 
     constexpr std::array<std::string_view, 4> ColorToString = {"None", "Red", "Green", "Blue"};
 
-    inline std::string toColorString(Color color)
-    {
-        return std::string{ColorToString[static_cast<int>(color)]};
-    }
+    std::string toColorString(Color color);
 
-    inline Color toColor(std::string_view str)
-    {
-        if(auto it = std::find(ColorToString.begin(), ColorToString.end(), str);
-           it != ColorToString.end())
-            return static_cast<Color>(std::distance(ColorToString.begin(), it));
-        return Color::None;
-    }
+    Color toColor(std::string_view str);
+
+    std::ostream& operator<<(std::ostream& os, const Color& color);
 }   // namespace Helper

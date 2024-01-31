@@ -45,6 +45,7 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/structures/CMAStringOptions.hxx
 		helper/structures/CMAValues.hxx
 		helper/structures/Enums.hxx
+		helper/structures/Enums.cxx
 		helper/structures/StructureBase.hxx
 		helper/structures/StructureEnum.hxx
 		helper/structures/StructureSet.hxx

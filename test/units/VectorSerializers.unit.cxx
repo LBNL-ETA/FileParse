@@ -84,5 +84,5 @@ TEST_F(VectorSerializerTest, DeserializeVectorOfEnumerators)
 
     const std::vector<Color> correct{Color::Red, Color::Green, Color::Blue};
 
-    //Helper::checkVectorEquality(correct, elements);
+    Helper::checkVectorEquality<Color>(correct, elements);
 }
