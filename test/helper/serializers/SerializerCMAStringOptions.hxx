@@ -9,7 +9,6 @@ namespace Helper
     inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::CMAStringOptions & element)
     {
         using FileParse::Child;
-        using FileParse::operator>>;
 
         node >> Child{"Glazing", element.glazingOption};
         node >> Child{"Spacer", element.spacerOption};
@@ -21,7 +20,6 @@ namespace Helper
     inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::CMAStringOptions & element)
     {
         using FileParse::Child;
-        using FileParse::operator<<;
 
         node << Child{"Glazing", element.glazingOption};
         node << Child{"Spacer", element.spacerOption};

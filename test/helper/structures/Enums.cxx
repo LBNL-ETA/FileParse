@@ -29,4 +29,17 @@ namespace Helper
             return static_cast<Color>(std::distance(ColorToString.begin(), it));
         return Color::None;
     }
+
+    std::string toOptionString(Option option)
+    {
+        return std::string{OptionToString[static_cast<int>(option)]};
+    }
+
+    Option toOption(std::string_view str)
+    {
+        if(auto it = std::find(OptionToString.begin(), OptionToString.end(), str);
+           it != OptionToString.end())
+            return static_cast<Option>(std::distance(OptionToString.begin(), it));
+        return Option::None;
+    }
 }   // namespace Helper
