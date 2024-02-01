@@ -216,19 +216,173 @@ TEST_F(BaseSerializerTest, DeserializeDouble)
     EXPECT_DOUBLE_EQ(42.5, element.double_number);
 }
 
-TEST_F(BaseSerializerTest, SerializeDouble)
+TEST_F(BaseSerializerTest, SerializeDoubleThreeDecimals)
 {
-    Helper::DoubleNumberElement element;
-    element.double_number = 99.913;
+    double element{99.913};
 
     Helper::MockNode elementNode("BaseElement");
     Helper::MockNodeAdapter adapter{&elementNode};
-    adapter << element;
+    adapter << FileParse::Child{"Double" ,element};
 
     auto correctNodes = []() {
         Helper::MockNode node{"BaseElement"};
 
-        addChildNode(node, "Double", "99.913000");
+        addChildNode(node, "Double", "99.913");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
+
+TEST_F(BaseSerializerTest, SerializeDoubleALotOfDecimals)
+{
+    double element{2.93875672333045};
+
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+    adapter << FileParse::Child{"Double" ,element};
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Double", "2.938757");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
+
+TEST_F(BaseSerializerTest, SerializeIntegerLikeDouble) {
+    double element{100.0};
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+    adapter << FileParse::Child{"Double" ,element};
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Double", "100");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
+
+TEST_F(BaseSerializerTest, SerializeVerySmallDouble) {
+    double element{1e-6};
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+    adapter << FileParse::Child{"Double" ,element};
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Double", "1e-6");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
+
+TEST_F(BaseSerializerTest, SerializeScientificWithDecimal) {
+    double element{1.4225e-17};
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+    adapter << FileParse::Child{"Double" ,element};
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Double", "1.4225e-17");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
+
+TEST_F(BaseSerializerTest, SerializeVeryLargeDouble) {
+    double element{1e+6};
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+    adapter << FileParse::Child{"Double" ,element};
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Double", "1e6");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
+
+TEST_F(BaseSerializerTest, SerializeNegativeDouble) {
+    double element{-123.456};
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+    adapter << FileParse::Child{"Double" ,element};
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Double", "-123.456");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
+
+TEST_F(BaseSerializerTest, SerializeLargePositiveDouble) {
+    double element{123456.789};
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+    adapter << FileParse::Child{"Double" ,element};
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Double", "1.234568e5");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
+
+TEST_F(BaseSerializerTest, SerializeLargeNegativeDouble) {
+    double element{-123456.789};
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+    adapter << FileParse::Child{"Double" ,element};
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Double", "-1.234568e5");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
+
+TEST_F(BaseSerializerTest, SerializeZeroDouble) {
+    double element{0.0};
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+    adapter << FileParse::Child{"Double" ,element};
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Double", "0");
 
         return node;
     };
@@ -291,7 +445,7 @@ TEST_F(BaseSerializerTest, SerializeOptionalDouble)
     auto correctNodes = []() {
         Helper::MockNode node{"BaseElement"};
 
-        addChildNode(node, "OptionalDouble", "123.450000");
+        addChildNode(node, "OptionalDouble", "123.45");
 
         return node;
     };
@@ -314,7 +468,7 @@ TEST_F(BaseSerializerTest, SerializeOptionalDoubleEmpty)
         return node;
     };
 
-    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), elementNode));
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
 ///////////////////////////////////////////
@@ -634,7 +788,7 @@ TEST_F(BaseSerializerTest, SerializeVariantFieldAsDouble)
     auto correctNodes = []() {
         Helper::MockNode node{"BaseElement"};
 
-        addChildNode(node, "Double", "678.900000");
+        addChildNode(node, "Double", "678.9");
 
         return node;
     };
