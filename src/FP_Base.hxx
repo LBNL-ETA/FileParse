@@ -4,12 +4,12 @@
 
 #pragma once
 
-#include <sstream>
-#include <iomanip>
 #include <string>
 #include <optional>
 #include <map>
 #include <unordered_map>
+
+#include "FP_Formatter.hxx"
 
 namespace FileParse
 {
@@ -260,75 +260,12 @@ namespace FileParse
     template<typename NodeAdapter>
     inline NodeAdapter & operator<<(NodeAdapter & node, double value)
     {
+        const auto & config{SerializationConfig::getInstance()};
         std::ostringstream oss;
+        FileParse::formatDouble(oss, value, config.precision);
 
-        // Access the singleton instance
-        auto & config = SerializationConfig::getInstance();
-
-        // Check for zero and handle it as a special case
-        if(value == 0.0)
-        {
-            oss.str("0");
-        }
-        else
-        {
-            // Use the configured precision and bounds for scientific notation
-            bool useScientific = (std::abs(value) < config.scientificLowerBound
-                                  || std::abs(value) > config.scientificUpperBound);
-
-            if(value == static_cast<long long>(value) && !useScientific)
-            {
-                // For integer-like values, use integer representation
-                oss.str(std::to_string(static_cast<long long>(value)));
-            }
-            else
-            {
-                // Set precision from the configuration
-                oss << std::setprecision(config.precision);
-
-                if(useScientific)
-                {
-                    // Calculate exponent and base for scientific notation manually
-                    double exponent = std::floor(std::log10(std::abs(value)));
-                    double base = value / std::pow(10.0, exponent);
-
-                    std::ostringstream baseStream;
-                    baseStream << std::setprecision(config.precision + 1)
-                               << base;   // Use configured precision
-                    std::string baseStr = baseStream.str();
-
-                    // Trim trailing zeros after the decimal point in base part
-                    baseStr.erase(baseStr.find_last_not_of('0') + 1, std::string::npos);
-                    if(!baseStr.empty() && baseStr.back() == '.')
-                    {
-                        baseStr.pop_back();
-                    }
-
-                    oss.str(baseStr + "e" + std::to_string(static_cast<long long>(exponent)));
-                }
-                else
-                {
-                    // Format the string in fixed notation manually
-                    oss.str(std::to_string(value));
-                }
-
-                // Optional: Trim trailing zeros and decimal point if not needed
-                std::string str = oss.str();
-                str.erase(str.find_last_not_of('0') + 1,
-                          std::string::npos);   // Remove trailing zeros
-                if(str.back() == '.')
-                {
-                    str.pop_back();   // Remove the decimal point if it's the last character
-                }
-
-                // Update the stringstream with the modified string
-                oss.str(str);
-                oss.clear();   // Clear any error flags
-            }
-        }
-
-        // Write the formatted string to the node
         node.addText(oss.str());
+
         return node;
     }
 

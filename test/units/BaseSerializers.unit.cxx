@@ -282,7 +282,7 @@ TEST_F(BaseSerializerTest, SerializeVerySmallDouble)
     auto correctNodes = []() {
         Helper::MockNode node{"BaseElement"};
 
-        addChildNode(node, "Double", "1e-6");
+        addChildNode(node, "Double", "1e-06");
 
         return node;
     };
@@ -318,7 +318,7 @@ TEST_F(BaseSerializerTest, SerializeVeryLargeDouble)
     auto correctNodes = []() {
         Helper::MockNode node{"BaseElement"};
 
-        addChildNode(node, "Double", "1e6");
+        addChildNode(node, "Double", "1e+06");
 
         return node;
     };
@@ -354,7 +354,7 @@ TEST_F(BaseSerializerTest, SerializeLargePositiveDouble)
     auto correctNodes = []() {
         Helper::MockNode node{"BaseElement"};
 
-        addChildNode(node, "Double", "1.234568e5");
+        addChildNode(node, "Double", "1.234568e+05");
 
         return node;
     };
@@ -372,7 +372,7 @@ TEST_F(BaseSerializerTest, SerializeLargeNegativeDouble)
     auto correctNodes = []() {
         Helper::MockNode node{"BaseElement"};
 
-        addChildNode(node, "Double", "-1.234568e5");
+        addChildNode(node, "Double", "-1.234568e+05");
 
         return node;
     };
@@ -393,7 +393,7 @@ TEST_F(BaseSerializerTest, SerializeLargePositiveDoubleNewSettings)
 
     auto correctNodes = []() {
         Helper::MockNode node{"BaseElement"};
-        addChildNode(node, "Double", "1.2345679e5");   // Expected output with the custom settings
+        addChildNode(node, "Double", "1.2345679e+05");   // Expected output with the custom settings
         return node;
     };
 
@@ -417,7 +417,7 @@ TEST_F(BaseSerializerTest, SerializeDoubleNonDefaultDecimals)
     auto correctNodes = []() {
         Helper::MockNode node{"BaseElement"};
 
-        addChildNode(node, "Double", "2.938");
+        addChildNode(node, "Double", "2.939");
 
         return node;
     };
