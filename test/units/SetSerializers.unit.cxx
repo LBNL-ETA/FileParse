@@ -48,9 +48,9 @@ TEST_F(SetSerializerTest, SerializationOfDoubles)
         Helper::MockNode node{"BaseElement"};
         auto & tableNode{Helper::addChildNode(node, "Table")};
 
-        addChildNode(tableNode, "Value", "9.392000");
-        addChildNode(tableNode, "Value", "20.310000");
-        addChildNode(tableNode, "Value", "932.320000");
+        addChildNode(tableNode, "Value", "9.392");
+        addChildNode(tableNode, "Value", "20.31");
+        addChildNode(tableNode, "Value", "932.32");
 
         return node;
     };

@@ -64,15 +64,15 @@ TEST_F(MapKeyAsEnumSerializerTest, SerializationUnorderedMap)
 
         addChildNode(child_high, "Glazing", "High");
         addChildNode(child_high, "Spacer", "High");
-        addChildNode(child_high, "Conductivity", "1.731000");
-        addChildNode(child_high, "FilmCoefficient", "7.390000");
+        addChildNode(child_high, "Conductivity", "1.731");
+        addChildNode(child_high, "FilmCoefficient", "7.39");
 
         auto & child_low{Helper::addChildNode(node, "Element")};
 
         addChildNode(child_low, "Glazing", "Low");
         addChildNode(child_low, "Spacer", "Low");
-        addChildNode(child_low, "Conductivity", "12.340000");
-        addChildNode(child_low, "FilmCoefficient", "2.980000");
+        addChildNode(child_low, "Conductivity", "12.34");
+        addChildNode(child_low, "FilmCoefficient", "2.98");
 
         return node;
     };
@@ -133,15 +133,15 @@ TEST_F(MapKeyAsEnumSerializerTest, SerializationOrderedMap)
 
         addChildNode(child_low, "Glazing", "Low");
         addChildNode(child_low, "Spacer", "Low");
-        addChildNode(child_low, "Conductivity", "3.450000");
-        addChildNode(child_low, "FilmCoefficient", "1.230000");
+        addChildNode(child_low, "Conductivity", "3.45");
+        addChildNode(child_low, "FilmCoefficient", "1.23");
 
         auto & child_high = Helper::addChildNode(node, "Element");
 
         addChildNode(child_high, "Glazing", "High");
         addChildNode(child_high, "Spacer", "High");
-        addChildNode(child_high, "Conductivity", "4.560000");
-        addChildNode(child_high, "FilmCoefficient", "2.340000");
+        addChildNode(child_high, "Conductivity", "4.56");
+        addChildNode(child_high, "FilmCoefficient", "2.34");
 
         return node;
     };

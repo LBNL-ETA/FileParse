@@ -56,10 +56,10 @@ TEST_F(DoubleMapSerializerTest, SerializeMapStringDouble)
         Helper::MockNode & mapNode = Helper::addChildNode(node, "DoubleMap");
 
         addChildNode(mapNode, "Value1", "23.856912");
-        addChildNode(mapNode, "Value2", "67.431280");
+        addChildNode(mapNode, "Value2", "67.43128");
         addChildNode(mapNode, "Value3", "14.903215");
         addChildNode(mapNode, "Value4", "98.540127");
-        addChildNode(mapNode, "Value5", "51.284960");
+        addChildNode(mapNode, "Value5", "51.28496");
 
         return node;
     };

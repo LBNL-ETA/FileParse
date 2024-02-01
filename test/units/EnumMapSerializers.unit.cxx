@@ -136,9 +136,9 @@ TEST_F(EnumMapSerializerTest, SerializingEnumAsKey_Double)
     auto correctNodes = []() {
         Helper::MockNode node{"MapElement"};
 
-        addChildNode(node, "Blue", "3.300000");
-        addChildNode(node, "Green", "2.200000");
-        addChildNode(node, "Red", "1.100000");
+        addChildNode(node, "Blue", "3.3");
+        addChildNode(node, "Green", "2.2");
+        addChildNode(node, "Red", "1.1");
 
         return node;
     };

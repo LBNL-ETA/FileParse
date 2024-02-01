@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <sstream>
+#include <iomanip>
 #include <string>
 #include <optional>
 #include <map>
@@ -184,9 +186,75 @@ namespace FileParse
     template<typename NodeAdapter>
     inline NodeAdapter & operator<<(NodeAdapter & node, double value)
     {
-        node.addText(std::to_string(value));
+        std::ostringstream oss;
+
+        // Check for zero and handle it as a special case
+        if(value == 0.0)
+        {
+            oss.str("0");
+        }
+        else
+        {
+            // Determine whether to use scientific or fixed notation
+            bool useScientific = (std::abs(value) < 0.001 || std::abs(value) > 100000);
+
+            if(value == static_cast<long long>(value) && !useScientific)
+            {
+                // For integer-like values, use integer representation
+                oss.str(std::to_string(static_cast<long long>(value)));
+            }
+            else
+            {
+                // Set precision
+                constexpr auto precision(6);
+                oss << std::setprecision(precision);
+
+                if(useScientific)
+                {
+                    // Format the string in scientific notation manually
+                    double exponent = std::floor(std::log10(std::abs(value)));
+                    double base = value / std::pow(10.0, exponent);
+
+                    std::ostringstream baseStream;
+                    baseStream << std::setprecision(precision + 1)
+                               << base;   // Adjust precision as needed
+                    std::string baseStr = baseStream.str();
+
+                    // Trim trailing zeros after the decimal point in base part
+                    baseStr.erase(baseStr.find_last_not_of('0') + 1, std::string::npos);
+                    if(!baseStr.empty() && baseStr.back() == '.')
+                    {
+                        baseStr.pop_back();
+                    }
+
+                    oss.str(baseStr + "e" + std::to_string(static_cast<long long>(exponent)));
+                }
+                else
+                {
+                    // Format the string in fixed notation manually
+                    oss.str(std::to_string(value));
+                }
+
+                // Optional: Trim trailing zeros and decimal point if not needed
+                std::string str = oss.str();
+                str.erase(str.find_last_not_of('0') + 1,
+                          std::string::npos);   // Remove trailing zeros
+                if(str.back() == '.')
+                {
+                    str.pop_back();   // Remove the decimal point if it's the last character
+                }
+
+                // Update the stringstream with the modified string
+                oss.str(str);
+                oss.clear();   // Clear any error flags
+            }
+        }
+
+        // Write the formatted string to the node
+        node.addText(oss.str());
         return node;
     }
+
 
     /// Extracts text from the node and converts it to a double value.
     /// @param node The node to extract text from.

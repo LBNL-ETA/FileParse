@@ -50,10 +50,10 @@ TEST_F(VectorSerializerTest, SerializeVectorOfDoubles)
 
         auto & child{Helper::addChildNode(node, "Nodes")};
 
-        addChildNode(child, "Element", "38.804800");
-        addChildNode(child, "Element", "25.575800");
-        addChildNode(child, "Element", "96.183100");
-        addChildNode(child, "Element", "90.392700");
+        addChildNode(child, "Element", "38.8048");
+        addChildNode(child, "Element", "25.5758");
+        addChildNode(child, "Element", "96.1831");
+        addChildNode(child, "Element", "90.3927");
 
         return node;
     };
