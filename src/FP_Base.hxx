@@ -262,7 +262,8 @@ namespace FileParse
     {
         const auto & config{SerializationConfig::getInstance()};
         std::ostringstream oss;
-        FileParse::formatDouble(oss, value, config.precision);
+        FileParse::formatDouble(
+          oss, value, config.precision, config.scientificLowerBound, config.scientificUpperBound);
 
         node.addText(oss.str());
 

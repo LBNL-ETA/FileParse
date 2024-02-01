@@ -362,6 +362,29 @@ TEST_F(BaseSerializerTest, SerializeLargePositiveDouble)
     EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
 
+TEST_F(BaseSerializerTest, SerializeLargePositiveDoubleNewSettingsNoScientific)
+{
+    // Adjust precision and bounds as needed
+    FileParse::setSerializerConfiguration(2, 0.001, 1e9);
+
+    double element{123456.789};
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+    adapter << FileParse::Child{"Double", element};
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "Double", "123456.79");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+
+    FileParse::resetSerializerConfigurationToDefaults();
+}
+
 TEST_F(BaseSerializerTest, SerializeLargeNegativeDouble)
 {
     double element{-123456.789};
