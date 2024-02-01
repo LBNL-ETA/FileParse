@@ -13,6 +13,80 @@
 
 namespace FileParse
 {
+    namespace
+    {
+        /// Serialization of doubles to string can have different formats, depending on the value.
+        /// This singleton approach is used to store the configuration for serialization of doubles.
+        class SerializationConfig
+        {
+        public:
+            static SerializationConfig & getInstance()
+            {
+                static SerializationConfig instance;
+                return instance;
+            }
+
+            void
+              setConfiguration(int newPrecision, double newSciLowerBound, double newSciUpperBound)
+            {
+                precision = newPrecision;
+                scientificLowerBound = newSciLowerBound;
+                scientificUpperBound = newSciUpperBound;
+            }
+
+            void resetConfigurationToDefaults()
+            {
+                precision = defaultPrecision;
+                scientificLowerBound = defaultSciLowerBound;
+                scientificUpperBound = defaultSciUpperBound;
+            }
+
+            int precision = defaultPrecision;
+            double scientificLowerBound = defaultSciLowerBound;
+            double scientificUpperBound = defaultSciUpperBound;
+
+            SerializationConfig(const SerializationConfig &) = delete;
+            SerializationConfig & operator=(const SerializationConfig &) = delete;
+
+        private:
+            SerializationConfig() = default;
+
+            static constexpr int defaultPrecision = 6;
+            static constexpr double defaultSciLowerBound = 0.001;
+            static constexpr double defaultSciUpperBound = 100000;
+        };
+    }   // namespace
+
+    // Sets the serializer configuration with custom precision and scientific notation bounds.
+    //
+    // This function configures the serialization process by specifying the precision
+    // and the lower and upper bounds for using scientific notation. This configuration
+    // is applied globally and affects how floating-point numbers are formatted.
+    //
+    // @param precision The number of significant digits to use for the serialized numbers.
+    // @param sciLowerBound The lower bound for using scientific notation. Numbers smaller than this
+    //                      value are formatted using scientific notation.
+    // @param sciUpperBound The upper bound for using scientific notation. Numbers larger than this
+    //                      value are also formatted using scientific notation.
+    inline void setSerializerConfiguration(int precision,
+                                           double sciLowerBound = 0.001,
+                                           double sciUpperBound = 100000)
+    {
+        SerializationConfig::getInstance().setConfiguration(
+          precision, sciLowerBound, sciUpperBound);
+    }
+
+    // Resets the serializer configuration to its default values.
+    //
+    // This function resets the serialization configuration to the default settings,
+    // affecting the precision and the bounds for using scientific notation. After calling
+    // this function, the serialization process will use the default configuration settings.
+    inline void resetSerializerConfigurationToDefaults()
+    {
+        SerializationConfig::getInstance().resetConfigurationToDefaults();
+    }
+
+
     /// Inserts all child nodes as specified by nodeNames into the given node.
     /// @param node The node to insert child nodes into.
     /// @param nodeNames A vector of strings representing the names of the child nodes to be
@@ -188,6 +262,9 @@ namespace FileParse
     {
         std::ostringstream oss;
 
+        // Access the singleton instance
+        auto & config = SerializationConfig::getInstance();
+
         // Check for zero and handle it as a special case
         if(value == 0.0)
         {
@@ -195,8 +272,9 @@ namespace FileParse
         }
         else
         {
-            // Determine whether to use scientific or fixed notation
-            bool useScientific = (std::abs(value) < 0.001 || std::abs(value) > 100000);
+            // Use the configured precision and bounds for scientific notation
+            bool useScientific = (std::abs(value) < config.scientificLowerBound
+                                  || std::abs(value) > config.scientificUpperBound);
 
             if(value == static_cast<long long>(value) && !useScientific)
             {
@@ -205,19 +283,18 @@ namespace FileParse
             }
             else
             {
-                // Set precision
-                constexpr auto precision(6);
-                oss << std::setprecision(precision);
+                // Set precision from the configuration
+                oss << std::setprecision(config.precision);
 
                 if(useScientific)
                 {
-                    // Format the string in scientific notation manually
+                    // Calculate exponent and base for scientific notation manually
                     double exponent = std::floor(std::log10(std::abs(value)));
                     double base = value / std::pow(10.0, exponent);
 
                     std::ostringstream baseStream;
-                    baseStream << std::setprecision(precision + 1)
-                               << base;   // Adjust precision as needed
+                    baseStream << std::setprecision(config.precision + 1)
+                               << base;   // Use configured precision
                     std::string baseStr = baseStream.str();
 
                     // Trim trailing zeros after the decimal point in base part
@@ -254,7 +331,6 @@ namespace FileParse
         node.addText(oss.str());
         return node;
     }
-
 
     /// Extracts text from the node and converts it to a double value.
     /// @param node The node to extract text from.
