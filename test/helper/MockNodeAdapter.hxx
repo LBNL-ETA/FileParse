@@ -53,18 +53,6 @@ namespace Helper
 
         [[nodiscard]] MockNode getNode() const;
 
-        MockNodeAdapter & operator=(const MockNodeAdapter & other)
-        {
-            if(this != &other)
-            {
-                node_
-                  = other
-                      .node_;   // This should increase the ref count and point to the same object
-            }
-            return *this;
-        }
-
-
     private:
         MockNode * node_{nullptr};
     };
