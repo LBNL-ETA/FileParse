@@ -8,54 +8,51 @@
 #include <optional>
 #include <map>
 #include <unordered_map>
+#include <array>
 
 #include "FP_Formatter.hxx"
 
 namespace FileParse
 {
-    namespace
+    /// Serialization of doubles to string can have different formats, depending on the value.
+    /// This singleton approach is used to store the configuration for serialization of doubles.
+    class SerializationConfig
     {
-        /// Serialization of doubles to string can have different formats, depending on the value.
-        /// This singleton approach is used to store the configuration for serialization of doubles.
-        class SerializationConfig
+    public:
+        inline static SerializationConfig & getInstance()
         {
-        public:
-            static SerializationConfig & getInstance()
-            {
-                static SerializationConfig instance;
-                return instance;
-            }
+            static SerializationConfig instance;
+            return instance;
+        }
 
-            void
-              setConfiguration(int newPrecision, double newSciLowerBound, double newSciUpperBound)
-            {
-                precision = newPrecision;
-                scientificLowerBound = newSciLowerBound;
-                scientificUpperBound = newSciUpperBound;
-            }
+        void setConfiguration(int newPrecision, double newSciLowerBound, double newSciUpperBound)
+        {
+            precision = newPrecision;
+            scientificLowerBound = newSciLowerBound;
+            scientificUpperBound = newSciUpperBound;
+        }
 
-            void resetConfigurationToDefaults()
-            {
-                precision = defaultPrecision;
-                scientificLowerBound = defaultSciLowerBound;
-                scientificUpperBound = defaultSciUpperBound;
-            }
+        void resetConfigurationToDefaults()
+        {
+            precision = defaultPrecision;
+            scientificLowerBound = defaultSciLowerBound;
+            scientificUpperBound = defaultSciUpperBound;
+        }
 
-            int precision = defaultPrecision;
-            double scientificLowerBound = defaultSciLowerBound;
-            double scientificUpperBound = defaultSciUpperBound;
+        int precision = defaultPrecision;
+        double scientificLowerBound = defaultSciLowerBound;
+        double scientificUpperBound = defaultSciUpperBound;
 
-            SerializationConfig(const SerializationConfig &) = delete;
-            SerializationConfig & operator=(const SerializationConfig &) = delete;
+        SerializationConfig(const SerializationConfig &) = delete;
+        SerializationConfig & operator=(const SerializationConfig &) = delete;
 
-        private:
-            SerializationConfig() = default;
+    private:
+        SerializationConfig() = default;
 
-            static constexpr int defaultPrecision = 6;
-            static constexpr double defaultSciLowerBound = 0.001;
-            static constexpr double defaultSciUpperBound = 100000;
-        };
-    }   // namespace
+        static constexpr int defaultPrecision = 6;
+        static constexpr double defaultSciLowerBound = 0.001;
+        static constexpr double defaultSciUpperBound = 100000;
+    };
 
     // Sets the serializer configuration with custom precision and scientific notation bounds.
     //
@@ -103,6 +100,7 @@ namespace FileParse
 
         return lastNode;
     }
+
 
     /// Inserts all but the last child node specified by nodeNames into the given node.
     /// @param node The node to insert child nodes into.
