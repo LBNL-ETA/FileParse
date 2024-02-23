@@ -52,14 +52,9 @@ namespace FileParse
 
         if(auto currentNode{findParentOfLastTag(node, arr.nodeNames)}; currentNode.has_value())
         {
-            int childCount = currentNode.value().nChildNode(arr.nodeNames.back());
-            if(arr.data.size() != childCount)
-            {
-                throw std::runtime_error("Array size mismatch");
-                return node;
-            }
-
-            for(int i = 0; i < arr.data.size(); ++i)
+            auto minimum{
+              std::min(arr.data.size(), static_cast<size_t>(currentNode.value().nChildNode()))};
+            for(int i = 0; i < minimum; ++i)
             {
                 NodeAdapter activeNode = currentNode.value().getChildNode(arr.nodeNames.back(), i);
                 T item;
@@ -97,7 +92,8 @@ namespace FileParse
     /// @tparam NodeAdapter The type of the node adapter.
     /// @tparam T The type of elements in the vector.
     /// @param node The node to serialize the optional vector into.
-    /// @param opt_vec The Child object containing the optional vector and node hierarchy information.
+    /// @param opt_vec The Child object containing the optional vector and node hierarchy
+    /// information.
     /// @return Reference to the updated node.
     template<typename NodeAdapter, typename T, size_t N>
     inline NodeAdapter & operator<<(NodeAdapter & node,
