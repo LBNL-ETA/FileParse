@@ -70,6 +70,7 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/files/VectorElementXML.hxx
 		helper/files/VectorElementXML.cxx
 
+        units/ArraySerializers.unit.cxx
         units/BaseSerializers.unit.cxx
         units/BaseSerializersXML.unit.cxx
 		units/DoubleMapSerializers.unit.cxx
