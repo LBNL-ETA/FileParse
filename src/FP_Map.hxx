@@ -129,10 +129,8 @@ namespace FileParse
     /// @param converter A function that converts the enum keys to strings.
     /// @return Reference to the updated node.
     template<typename NodeAdapter, typename EnumType, typename ValueType, typename MapType>
-    inline typename std::enable_if<is_valid_map<MapType>::value, NodeAdapter &>::type
-      serializeEnumMap(NodeAdapter & node,
-                       const MapType & map,
-                       std::function<std::string(EnumType)> converter)
+    inline typename std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter &> serializeEnumMap(
+      NodeAdapter & node, const MapType & map, std::function<std::string(EnumType)> converter)
     {
         if(map.empty())
             return node;
