@@ -43,18 +43,10 @@ public:
     /// @return The number of child nodes.
     [[nodiscard]] int nChildNode() const override;
 
-    /// Retrieves the child node at a specified index.
-    /// @param i The index of the child node.
-    /// @return The child node adapter at the specified index.
-    [[nodiscard]] std::optional<XMLNodeAdapter> getFirstChildNode() const override;
-
     [[nodiscard]] std::vector<XMLNodeAdapter> getChildNodes() const override;
 
-    /// Retrieves the child node with a specified name at a specified index.
-    /// @param name The name of the child node.
-    /// @param i The index of the child node.
-    /// @return The child node adapter with the specified name at the specified index.
-    [[nodiscard]] XMLNodeAdapter getChildNode(std::string_view name, int i) const override;
+    [[nodiscard]] std::optional<XMLNodeAdapter> getChildFirstChildByName(std::string_view name) const override;
+    [[nodiscard]] std::vector<XMLNodeAdapter> getChildNodesByName(std::string_view name) const override;
 
     /// Counts the number of child nodes with a specified name.
     /// @param name The name of the child nodes to count.

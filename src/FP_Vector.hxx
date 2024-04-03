@@ -55,13 +55,12 @@ namespace FileParse
 
         if(auto currentNode{findParentOfLastTag(node, vec.nodeNames)}; currentNode.has_value())
         {
-            int childCount = currentNode.value().nChildNode(vec.nodeNames.back());
-            vec.data.reserve(childCount);
-            for(int i = 0; i < childCount; ++i)
+            const auto childNodes{currentNode.value().getChildNodesByName(vec.nodeNames.back())};
+            vec.data.reserve(childNodes.size());
+            for(const auto & childNode : childNodes)
             {
-                NodeAdapter activeNode = currentNode.value().getChildNode(vec.nodeNames.back(), i);
                 T item;
-                activeNode >> item;
+                childNode >> item;
                 vec.data.push_back(item);
             }
         }
@@ -95,7 +94,8 @@ namespace FileParse
     /// @tparam NodeAdapter The type of the node adapter.
     /// @tparam T The type of elements in the vector.
     /// @param node The node to serialize the optional vector into.
-    /// @param opt_vec The Child object containing the optional vector and node hierarchy information.
+    /// @param opt_vec The Child object containing the optional vector and node hierarchy
+    /// information.
     /// @return Reference to the updated node.
     template<typename NodeAdapter, typename T>
     inline NodeAdapter & operator<<(NodeAdapter & node,
@@ -170,15 +170,12 @@ namespace FileParse
 
         if(auto currentNode{findParentOfLastTag(node, tags)}; currentNode.has_value())
         {
-            int totalNodes = currentNode.value().nChildNode(tags.back());
-            for(int i = 0; i < totalNodes; ++i)
+            const auto childNodes{currentNode.value().getChildNodesByName(tags.back())};
+            vec.reserve(childNodes.size());
+            for(const auto & childNode : childNodes)
             {
-                NodeAdapter childNode = currentNode.value().getChildNode(tags.back(), i);
-                if(!childNode.isEmpty())
-                {
-                    const auto text = childNode.getText();
-                    vec.emplace_back(converter(text));
-                }
+                const auto text = childNode.getText();
+                vec.emplace_back(converter(text));
             }
         }
 

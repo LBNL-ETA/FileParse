@@ -52,13 +52,14 @@ namespace FileParse
 
         if(auto currentNode{findParentOfLastTag(node, arr.nodeNames)}; currentNode.has_value())
         {
-            auto minimum{
-              std::min(arr.data.size(), static_cast<size_t>(currentNode.value().nChildNode()))};
+            const auto childNodes{currentNode.value().getChildNodesByName(arr.nodeNames.back())};
+
+            // std::array is fixed and cannot be resized, so we need to limit the number of elements
+            auto minimum{std::min(arr.data.size(), childNodes.size())};
             for(int i = 0; i < minimum; ++i)
             {
-                NodeAdapter activeNode = currentNode.value().getChildNode(arr.nodeNames.back(), i);
                 T item;
-                activeNode >> item;
+                childNodes[i] >> item;
                 arr.data[i] = item;
             }
         }

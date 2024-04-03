@@ -32,13 +32,15 @@ public:
     /// Counts the number of child nodes of the current node.
     [[nodiscard]] virtual int nChildNode() const = 0;
 
-    [[nodiscard]] virtual std::optional<AdapterType> getFirstChildNode() const = 0;
-
     // Gets all child nodes of the current node.
     [[nodiscard]] virtual std::vector<AdapterType> getChildNodes() const = 0;
 
-    /// Gets the child node with the specified name at the specified index.
-    [[nodiscard]] virtual AdapterType getChildNode(std::string_view name, int i) const = 0;
+    /// If child with given name exists, it will return the first child node with the given name.
+    [[nodiscard]] virtual std::optional<AdapterType> getChildFirstChildByName(std::string_view name) const = 0;
+
+    /// Gets the child nodes with the specified name.
+    [[nodiscard]] virtual std::vector<AdapterType> getChildNodesByName(std::string_view name) const
+      = 0;
 
     /// Counts the number of child nodes with the specified name.
     [[nodiscard]] virtual int nChildNode(std::string_view name) const = 0;
