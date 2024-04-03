@@ -23,14 +23,8 @@ public:
     /// Gets the tag of the current node.
     [[nodiscard]] virtual std::string getCurrentTag() const = 0;
 
-    /// Checks if the current tag matches the provided name.
-    [[nodiscard]] virtual bool isCurrentTag(std::string_view name) const = 0;
-
     /// Gets the text content of the current node.
     [[nodiscard]] virtual std::string getText() const = 0;
-
-    /// Counts the number of child nodes of the current node.
-    [[nodiscard]] virtual int nChildNode() const = 0;
 
     // Gets all child nodes of the current node.
     [[nodiscard]] virtual std::vector<AdapterType> getChildNodes() const = 0;
