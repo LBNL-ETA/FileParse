@@ -19,8 +19,8 @@ bool XMLNodeAdapter::isEmpty() const
 
 std::string XMLNodeAdapter::getText() const
 {
-    // getText will return nullptr if the text is empty string. This will cause a crash in the calling code.
-    // So, we need to check for nullptr and return empty string in that case.
+    // getText will return nullptr if the text is empty string. This will cause a crash in the
+    // calling code. So, we need to check for nullptr and return empty string in that case.
     if(pimpl_->node_.getText())
     {
         return pimpl_->node_.getText();
@@ -36,6 +36,19 @@ int XMLNodeAdapter::nChildNode() const
 XMLNodeAdapter XMLNodeAdapter::getChildNode(int i) const
 {
     return XMLNodeAdapter(pimpl_->node_.getChildNode(i));
+}
+
+std::vector<XMLNodeAdapter> XMLNodeAdapter::getChildNodes() const
+{
+    std::vector<XMLNodeAdapter> children;
+    children.reserve(nChildNode());
+
+    for(int i = 0; i < nChildNode(); ++i)
+    {
+        children.push_back(getChildNode(i));
+    }
+
+    return children;
 }
 
 XMLNodeAdapter XMLNodeAdapter::getChildNode(std::string_view name, int i) const
