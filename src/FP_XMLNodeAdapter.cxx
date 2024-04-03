@@ -31,17 +31,12 @@ std::string XMLNodeAdapter::getText() const
     return {};
 }
 
-int XMLNodeAdapter::nChildNode() const
-{
-    return pimpl_->node_.nChildNode();
-}
-
 std::vector<XMLNodeAdapter> XMLNodeAdapter::getChildNodes() const
 {
     std::vector<XMLNodeAdapter> children;
-    children.reserve(nChildNode());
+    children.reserve(pimpl_->node_.nChildNode());
 
-    for(int i = 0; i < nChildNode(); ++i)
+    for(int i = 0; i < pimpl_->node_.nChildNode(); ++i)
     {
         children.emplace_back(pimpl_->node_.getChildNode(i));
     }
@@ -51,7 +46,7 @@ std::vector<XMLNodeAdapter> XMLNodeAdapter::getChildNodes() const
 
 std::optional<XMLNodeAdapter> XMLNodeAdapter::getFirstChildByName(std::string_view name) const
 {
-    for(int i = 0; i < nChildNode(); ++i)
+    for(int i = 0; i < pimpl_->node_.nChildNode(); ++i)
     {
         if(auto childNode{pimpl_->node_.getChildNode(i)}; childNode.getName() == name)
         {
@@ -64,9 +59,9 @@ std::optional<XMLNodeAdapter> XMLNodeAdapter::getFirstChildByName(std::string_vi
 std::vector<XMLNodeAdapter> XMLNodeAdapter::getChildNodesByName(std::string_view name) const
 {
     std::vector<XMLNodeAdapter> filteredChildren;
-    filteredChildren.reserve(nChildNode());
+    filteredChildren.reserve(pimpl_->node_.nChildNode());
 
-    for(int i = 0; i < nChildNode(); ++i)
+    for(int i = 0; i < pimpl_->node_.nChildNode(); ++i)
     {
         auto childNode = pimpl_->node_.getChildNode(i);
         if(childNode.getName() == name)
@@ -95,11 +90,6 @@ void XMLNodeAdapter::addText(std::string_view text)
     pimpl_->node_.addText(text.data());
 }
 
-int XMLNodeAdapter::writeToUTF8(std::string_view outString) const
-{
-    return static_cast<int>(pimpl_->node_.writeToUTF8(outString.data()));
-}
-
 int XMLNodeAdapter::writeToFile(std::string_view outString) const
 {
     return pimpl_->node_.writeToFile(outString.data());
@@ -113,11 +103,6 @@ bool XMLNodeAdapter::hasChildNode(std::string_view name) const
 std::string XMLNodeAdapter::getCurrentTag() const
 {
     return pimpl_->node_.getName();
-}
-
-bool XMLNodeAdapter::isCurrentTag(std::string_view name) const
-{
-    return name == getCurrentTag();
 }
 
 XMLNodeAdapter createTopNode(std::string_view topNodeName)

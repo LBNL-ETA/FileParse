@@ -30,18 +30,9 @@ public:
     /// @return The current tag as a string.
     [[nodiscard]] std::string getCurrentTag() const override;
 
-    /// Checks if the current tag matches the given name.
-    /// @param name The tag name to compare.
-    /// @return True if the current tag matches the name, false otherwise.
-    [[nodiscard]] bool isCurrentTag(std::string_view name) const override;
-
     /// Gets the text content of the node.
     /// @return The text content as a string.
     [[nodiscard]] std::string getText() const override;
-
-    /// Counts the number of child nodes.
-    /// @return The number of child nodes.
-    [[nodiscard]] int nChildNode() const override;
 
     [[nodiscard]] std::vector<XMLNodeAdapter> getChildNodes() const override;
 
@@ -67,11 +58,6 @@ public:
     /// Adds text content to the node.
     /// @param text The text to add to the node.
     void addText(std::string_view text) override;
-
-    /// Writes the node's content to a UTF-8 string.
-    /// @param outString The string to write the content to.
-    /// @return The number of characters written.
-    [[nodiscard]] int writeToUTF8(std::string_view outString) const;
 
     /// Writes the node's content to a file.
     /// @param outString The name of the file to write the content to.

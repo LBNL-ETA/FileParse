@@ -23,20 +23,10 @@ namespace Helper
         return node_->tag;
     }
 
-    bool MockNodeAdapter::isCurrentTag(std::string_view name) const
-    {
-        return name.data() == node_->tag;
-    }
-
-    int MockNodeAdapter::nChildNode() const
-    {
-        return static_cast<int>(node_->child.size());
-    }
-
     std::vector<MockNodeAdapter> MockNodeAdapter::getChildNodes() const
     {
         std::vector<MockNodeAdapter> children;
-        children.reserve(nChildNode());
+        children.reserve(node_->child.size());
 
         std::transform(begin(node_->child),
                        end(node_->child),
@@ -64,7 +54,7 @@ namespace Helper
         std::vector<MockNodeAdapter> children;
         children.reserve(nChildNode(name));
 
-        for(int i = 0; i < nChildNode(); ++i)
+        for(int i = 0; i < node_->child.size(); ++i)
         {
             if(node_->child[i].tag == name)
             {
