@@ -159,10 +159,9 @@ namespace FileParse
     inline std::enable_if_t<is_valid_map<MapType>::value, const NodeAdapter &> deserializeEnumMap(
       const NodeAdapter & node, MapType & map, std::function<EnumType(std::string_view)> converter)
     {
-        int totalNodes = node.nChildNode();
-        for(int i = 0; i < totalNodes; ++i)
+        const auto & childNodes{node.getChildNodes()};
+        for(const auto & childNode : childNodes)
         {
-            NodeAdapter childNode = node.getChildNode(i);
             if(!childNode.isEmpty())
             {
                 const auto text = childNode.getText();

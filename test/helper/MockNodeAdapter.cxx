@@ -1,5 +1,6 @@
 #include <utility>
 #include <algorithm>
+#include <iterator>
 
 #include "MockNodeAdapter.hxx"
 
@@ -32,14 +33,14 @@ namespace Helper
         return static_cast<int>(node_->child.size());
     }
 
-    MockNodeAdapter MockNodeAdapter::getChildNode(int i) const
+    std::optional<MockNodeAdapter> MockNodeAdapter::getFirstChildNode() const
     {
-        if(i < node_->child.size())
+        if(!node_->child.empty())
         {
-            return MockNodeAdapter(&node_->child[i]);
+            return MockNodeAdapter(&node_->child[0]);
         }
 
-        return MockNodeAdapter(nullptr);
+        return std::nullopt;
     }
 
     std::vector<MockNodeAdapter> MockNodeAdapter::getChildNodes() const
@@ -47,10 +48,10 @@ namespace Helper
         std::vector<MockNodeAdapter> children;
         children.reserve(nChildNode());
 
-        for(int i = 0; i < nChildNode(); ++i)
-        {
-            children.push_back(getChildNode(i));
-        }
+        std::transform(begin(node_->child),
+                       end(node_->child),
+                       std::back_inserter(children),
+                       [](auto & child) { return MockNodeAdapter(&child); });
 
         return children;
     }
@@ -145,4 +146,4 @@ namespace Helper
         }
         return true;
     }
-}
+}   // namespace Helper

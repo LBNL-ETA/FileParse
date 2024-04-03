@@ -43,7 +43,7 @@ namespace Helper
         [[nodiscard]] std::string getCurrentTag() const override;
         [[nodiscard]] bool isCurrentTag(std::string_view name) const override;
         [[nodiscard]] int nChildNode() const override;
-        [[nodiscard]] MockNodeAdapter getChildNode(int i) const override;
+        [[nodiscard]] std::optional<MockNodeAdapter> getFirstChildNode() const override;
         [[nodiscard]] std::vector<MockNodeAdapter> getChildNodes() const override;
         [[nodiscard]] MockNodeAdapter getChildNode(std::string_view name, int i) const override;
         [[nodiscard]] int nChildNode(std::string_view name) const override;
