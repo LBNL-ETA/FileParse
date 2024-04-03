@@ -81,7 +81,7 @@ namespace FileParse
     {
         for(const auto & nodeName : child.nodeNames)
         {
-            auto childNode{node.getChildFirstChildByName(nodeName)};
+            auto childNode{node.getFirstChildByName(nodeName)};
             if(childNode.has_value())
             {
                 childNode.value() >> child.data;

@@ -46,7 +46,7 @@ namespace Helper
         return children;
     }
 
-    std::optional<MockNodeAdapter> MockNodeAdapter::getChildFirstChildByName(std::string_view name) const
+    std::optional<MockNodeAdapter> MockNodeAdapter::getFirstChildByName(std::string_view name) const
     {
         for(auto & child : node_->child)
         {

@@ -36,7 +36,8 @@ public:
     [[nodiscard]] virtual std::vector<AdapterType> getChildNodes() const = 0;
 
     /// If child with given name exists, it will return the first child node with the given name.
-    [[nodiscard]] virtual std::optional<AdapterType> getChildFirstChildByName(std::string_view name) const = 0;
+    [[nodiscard]] virtual std::optional<AdapterType>
+      getFirstChildByName(std::string_view name) const = 0;
 
     /// Gets the child nodes with the specified name.
     [[nodiscard]] virtual std::vector<AdapterType> getChildNodesByName(std::string_view name) const
