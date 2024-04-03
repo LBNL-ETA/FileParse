@@ -62,15 +62,15 @@ TEST_F(MapKeyAsStructureSerializerTest, SerializationUnorderedMap)
 
         addChildNode(child_high, "Glazing", "High");
         addChildNode(child_high, "Spacer", "High");
-        addChildNode(child_high, "Conductivity", "1.731000");
-        addChildNode(child_high, "FilmCoefficient", "7.390000");
+        addChildNode(child_high, "Conductivity", "1.731");
+        addChildNode(child_high, "FilmCoefficient", "7.39");
 
         auto & child_low{Helper::addChildNode(node, "Element")};
 
         addChildNode(child_low, "Glazing", "Low");
         addChildNode(child_low, "Spacer", "Low");
-        addChildNode(child_low, "Conductivity", "12.340000");
-        addChildNode(child_low, "FilmCoefficient", "2.980000");
+        addChildNode(child_low, "Conductivity", "12.34");
+        addChildNode(child_low, "FilmCoefficient", "2.98");
 
         return node;
     };
@@ -127,15 +127,15 @@ TEST_F(MapKeyAsStructureSerializerTest, SerializationOrderedMap) {
 
         addChildNode(child_high, "Glazing", "High");
         addChildNode(child_high, "Spacer", "High");
-        addChildNode(child_high, "Conductivity", "4.560000");
-        addChildNode(child_high, "FilmCoefficient", "2.340000");
+        addChildNode(child_high, "Conductivity", "4.56");
+        addChildNode(child_high, "FilmCoefficient", "2.34");
 
         auto & child_medium = Helper::addChildNode(node, "Element");
 
         addChildNode(child_medium, "Glazing", "Medium");
         addChildNode(child_medium, "Spacer", "Medium");
-        addChildNode(child_medium, "Conductivity", "3.450000");
-        addChildNode(child_medium, "FilmCoefficient", "1.230000");
+        addChildNode(child_medium, "Conductivity", "3.45");
+        addChildNode(child_medium, "FilmCoefficient", "1.23");
 
         return node;
     };

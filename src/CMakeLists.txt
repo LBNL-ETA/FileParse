@@ -2,6 +2,8 @@ set( CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON )
 
 add_library( ${LIB_NAME}
         FP_Base.hxx
+		FP_Formatter.hxx
+		FP_Formatter.cxx
 		FP_Common.hxx
 		FP_Enum.hxx
 		FP_Map.hxx

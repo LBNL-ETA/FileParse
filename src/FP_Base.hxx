@@ -8,9 +8,82 @@
 #include <optional>
 #include <map>
 #include <unordered_map>
+#include <array>
+
+#include "FP_Formatter.hxx"
 
 namespace FileParse
 {
+    /// Serialization of doubles to string can have different formats, depending on the value.
+    /// This singleton approach is used to store the configuration for serialization of doubles.
+    class SerializationConfig
+    {
+    public:
+        inline static SerializationConfig & getInstance()
+        {
+            static SerializationConfig instance;
+            return instance;
+        }
+
+        void setConfiguration(int newPrecision, double newSciLowerBound, double newSciUpperBound)
+        {
+            precision = newPrecision;
+            scientificLowerBound = newSciLowerBound;
+            scientificUpperBound = newSciUpperBound;
+        }
+
+        void resetConfigurationToDefaults()
+        {
+            precision = defaultPrecision;
+            scientificLowerBound = defaultSciLowerBound;
+            scientificUpperBound = defaultSciUpperBound;
+        }
+
+        int precision = defaultPrecision;
+        double scientificLowerBound = defaultSciLowerBound;
+        double scientificUpperBound = defaultSciUpperBound;
+
+        SerializationConfig(const SerializationConfig &) = delete;
+        SerializationConfig & operator=(const SerializationConfig &) = delete;
+
+    private:
+        SerializationConfig() = default;
+
+        static constexpr int defaultPrecision = 6;
+        static constexpr double defaultSciLowerBound = 0.001;
+        static constexpr double defaultSciUpperBound = 100000;
+    };
+
+    // Sets the serializer configuration with custom precision and scientific notation bounds.
+    //
+    // This function configures the serialization process by specifying the precision
+    // and the lower and upper bounds for using scientific notation. This configuration
+    // is applied globally and affects how floating-point numbers are formatted.
+    //
+    // @param precision The number of significant digits to use for the serialized numbers.
+    // @param sciLowerBound The lower bound for using scientific notation. Numbers smaller than this
+    //                      value are formatted using scientific notation.
+    // @param sciUpperBound The upper bound for using scientific notation. Numbers larger than this
+    //                      value are also formatted using scientific notation.
+    inline void setSerializerConfiguration(int precision,
+                                           double sciLowerBound = 0.001,
+                                           double sciUpperBound = 100000)
+    {
+        SerializationConfig::getInstance().setConfiguration(
+          precision, sciLowerBound, sciUpperBound);
+    }
+
+    // Resets the serializer configuration to its default values.
+    //
+    // This function resets the serialization configuration to the default settings,
+    // affecting the precision and the bounds for using scientific notation. After calling
+    // this function, the serialization process will use the default configuration settings.
+    inline void resetSerializerConfigurationToDefaults()
+    {
+        SerializationConfig::getInstance().resetConfigurationToDefaults();
+    }
+
+
     /// Inserts all child nodes as specified by nodeNames into the given node.
     /// @param node The node to insert child nodes into.
     /// @param nodeNames A vector of strings representing the names of the child nodes to be
@@ -27,6 +100,7 @@ namespace FileParse
 
         return lastNode;
     }
+
 
     /// Inserts all but the last child node specified by nodeNames into the given node.
     /// @param node The node to insert child nodes into.
@@ -184,7 +258,13 @@ namespace FileParse
     template<typename NodeAdapter>
     inline NodeAdapter & operator<<(NodeAdapter & node, double value)
     {
-        node.addText(std::to_string(value));
+        const auto & config{SerializationConfig::getInstance()};
+        std::ostringstream oss;
+        FileParse::formatDouble(
+          oss, value, config.precision, config.scientificLowerBound, config.scientificUpperBound);
+
+        node.addText(oss.str());
+
         return node;
     }
 
