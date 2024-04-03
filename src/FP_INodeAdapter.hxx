@@ -5,6 +5,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 /// Interface INodeAdapter provides a set of virtual functions for node manipulation
 /// and data extraction in a tree-like structure.
@@ -32,6 +33,9 @@ public:
 
     /// Gets the child node at the specified index.
     [[nodiscard]] virtual AdapterType getChildNode(int i) const = 0;
+
+    // Gets all child nodes of the current node.
+    [[nodiscard]] virtual std::vector<AdapterType> getChildNodes() const = 0;
 
     /// Gets the child node with the specified name at the specified index.
     [[nodiscard]] virtual AdapterType getChildNode(std::string_view name, int i) const = 0;

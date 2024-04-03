@@ -48,6 +48,8 @@ public:
     /// @return The child node adapter at the specified index.
     [[nodiscard]] XMLNodeAdapter getChildNode(int i) const override;
 
+    [[nodiscard]] std::vector<XMLNodeAdapter> getChildNodes() const override;
+
     /// Retrieves the child node with a specified name at a specified index.
     /// @param name The name of the child node.
     /// @param i The index of the child node.

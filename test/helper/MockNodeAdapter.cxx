@@ -42,6 +42,19 @@ namespace Helper
         return MockNodeAdapter(nullptr);
     }
 
+    std::vector<MockNodeAdapter> MockNodeAdapter::getChildNodes() const
+    {
+        std::vector<MockNodeAdapter> children;
+        children.reserve(nChildNode());
+
+        for(int i = 0; i < nChildNode(); ++i)
+        {
+            children.push_back(getChildNode(i));
+        }
+
+        return children;
+    }
+
     MockNodeAdapter MockNodeAdapter::getChildNode(std::string_view name, int i) const
     {
         int count = 0;
