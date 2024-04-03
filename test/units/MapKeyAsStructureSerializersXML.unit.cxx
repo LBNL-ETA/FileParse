@@ -54,14 +54,14 @@ TEST_F(MapKeyAsStructureSerializerXMLTest, Writing)
                                       "\t<Element>\n"
                                       "\t\t<Glazing>High</Glazing>\n"
                                       "\t\t<Spacer>High</Spacer>\n"
-                                      "\t\t<Conductivity>1.731000</Conductivity>\n"
-                                      "\t\t<FilmCoefficient>7.390000</FilmCoefficient>\n"
+                                      "\t\t<Conductivity>1.731</Conductivity>\n"
+                                      "\t\t<FilmCoefficient>7.39</FilmCoefficient>\n"
                                       "\t</Element>\n"
                                       "\t<Element>\n"
                                       "\t\t<Glazing>Low</Glazing>\n"
                                       "\t\t<Spacer>Low</Spacer>\n"
-                                      "\t\t<Conductivity>12.340000</Conductivity>\n"
-                                      "\t\t<FilmCoefficient>2.980000</FilmCoefficient>\n"
+                                      "\t\t<Conductivity>12.34</Conductivity>\n"
+                                      "\t\t<FilmCoefficient>2.98</FilmCoefficient>\n"
                                       "\t</Element>\n"
                                       "</Test>\n"};
 

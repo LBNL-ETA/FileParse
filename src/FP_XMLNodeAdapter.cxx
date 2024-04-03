@@ -19,7 +19,13 @@ bool XMLNodeAdapter::isEmpty() const
 
 std::string XMLNodeAdapter::getText() const
 {
-    return pimpl_->node_.getText();
+    // getText will return nullptr if the text is empty string. This will cause a crash in the calling code.
+    // So, we need to check for nullptr and return empty string in that case.
+    if(pimpl_->node_.getText())
+    {
+        return pimpl_->node_.getText();
+    }
+    return {};
 }
 
 int XMLNodeAdapter::nChildNode() const

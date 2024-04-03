@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 #include <vector>
+#include <array>
 #include <sstream>
 
 namespace Helper
@@ -22,8 +23,22 @@ namespace Helper
         }
     }
 
+    template<typename T, std::size_t N>
+    void checkArrayValues(const std::array<T, N> & correct,
+                          const std::array<T, N> & values,
+                          T tolerance)
+    {
+        for(size_t i = 0u; i < N; ++i)
+        {
+            std::ostringstream message;
+            message << "At index " << i << ": expected " << correct[i] << ", but got " << values[i]
+                    << " with tolerance " << tolerance;
+            EXPECT_NEAR(correct[i], values[i], tolerance) << message.str();
+        }
+    }
+
     template<typename T>
-    typename std::enable_if<!std::is_enum<T>::value, void>::type
+    typename std::enable_if_t<!std::is_enum_v<T>, void>
       checkVectorEquality(const std::vector<T> & expected, const std::vector<T> & actual)
     {
         ASSERT_EQ(expected.size(), actual.size())
@@ -38,7 +53,7 @@ namespace Helper
     }
 
     template<typename T>
-    typename std::enable_if<std::is_enum<T>::value, void>::type
+    typename std::enable_if_t<std::is_enum_v<T>, void>
       checkVectorEquality(const std::vector<T> & expected, const std::vector<T> & actual)
     {
         ASSERT_EQ(expected.size(), actual.size())
@@ -56,9 +71,38 @@ namespace Helper
         }
     }
 
+    template<typename T, size_t N>
+    typename std::enable_if_t<std::is_enum_v<T>, void>
+      checkArrayEquality(const std::array<T, N> & expected, const std::array<T, N> & actual)
+    {
+        for(size_t i = 0u; i < N; ++i)
+        {
+            EXPECT_TRUE(expected[i] == actual[i]) << "Arrays differ at index " << i
+                                                  << ". Expected: " << static_cast<int>(expected[i])
+                                                  << ", Actual: " << static_cast<int>(actual[i]);
+        }
+    }
+
     template<typename T, typename ConverterFunction>
     void checkVectorEquality(const std::vector<T> & expected,
                              const std::vector<T> & actual,
+                             ConverterFunction converter)
+    {
+        ASSERT_EQ(expected.size(), actual.size())
+          << "Vectors have different sizes: expected " << expected.size() << ", but got "
+          << actual.size();
+
+        for(size_t i = 0u; i < expected.size(); ++i)
+        {
+            EXPECT_EQ(expected[i], actual[i])
+              << "At index " << i << ": expected " << converter(expected[i]) << ", but got "
+              << converter(actual[i]);
+        }
+    }
+
+    template<typename T, size_t N, typename ConverterFunction>
+    void checkArrayEquality(const std::array<T, N> & expected,
+                             const std::array<T, N> & actual,
                              ConverterFunction converter)
     {
         ASSERT_EQ(expected.size(), actual.size())
