@@ -45,7 +45,7 @@ namespace Helper
         [[nodiscard]] int nChildNode() const override;
         [[nodiscard]] std::vector<MockNodeAdapter> getChildNodes() const override;
         [[nodiscard]] std::optional<MockNodeAdapter>
-          getChildFirstChildByName(std::string_view name) const override;
+          getFirstChildByName(std::string_view name) const override;
         [[nodiscard]] std::vector<MockNodeAdapter>
           getChildNodesByName(std::string_view name) const override;
         [[nodiscard]] int nChildNode(std::string_view name) const override;

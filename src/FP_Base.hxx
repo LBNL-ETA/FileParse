@@ -160,7 +160,7 @@ namespace FileParse
                 return std::nullopt;
             }
 
-            currentNode = currentNode->getChildFirstChildByName(nodeNames[i]);
+            currentNode = currentNode->getFirstChildByName(nodeNames[i]);
         }
 
         return currentNode;

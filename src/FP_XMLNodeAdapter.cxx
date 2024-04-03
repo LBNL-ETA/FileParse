@@ -49,7 +49,7 @@ std::vector<XMLNodeAdapter> XMLNodeAdapter::getChildNodes() const
     return children;
 }
 
-std::optional<XMLNodeAdapter> XMLNodeAdapter::getChildFirstChildByName(std::string_view name) const
+std::optional<XMLNodeAdapter> XMLNodeAdapter::getFirstChildByName(std::string_view name) const
 {
     for(int i = 0; i < nChildNode(); ++i)
     {

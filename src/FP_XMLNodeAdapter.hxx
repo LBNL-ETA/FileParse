@@ -45,7 +45,8 @@ public:
 
     [[nodiscard]] std::vector<XMLNodeAdapter> getChildNodes() const override;
 
-    [[nodiscard]] std::optional<XMLNodeAdapter> getChildFirstChildByName(std::string_view name) const override;
+    [[nodiscard]] std::optional<XMLNodeAdapter>
+      getFirstChildByName(std::string_view name) const override;
     [[nodiscard]] std::vector<XMLNodeAdapter> getChildNodesByName(std::string_view name) const override;
 
     /// Counts the number of child nodes with a specified name.
