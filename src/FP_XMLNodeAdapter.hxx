@@ -5,7 +5,7 @@
 #pragma once
 
 #include <memory>
-#include <optional>
+
 #include "FP_INodeAdapter.hxx"
 
 namespace XMLParser
@@ -46,7 +46,7 @@ public:
     /// Retrieves the child node at a specified index.
     /// @param i The index of the child node.
     /// @return The child node adapter at the specified index.
-    [[nodiscard]] XMLNodeAdapter getChildNode(int i) const override;
+    [[nodiscard]] std::optional<XMLNodeAdapter> getFirstChildNode() const override;
 
     [[nodiscard]] std::vector<XMLNodeAdapter> getChildNodes() const override;
 

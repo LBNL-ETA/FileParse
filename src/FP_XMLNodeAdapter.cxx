@@ -33,9 +33,13 @@ int XMLNodeAdapter::nChildNode() const
     return pimpl_->node_.nChildNode();
 }
 
-XMLNodeAdapter XMLNodeAdapter::getChildNode(int i) const
+std::optional<XMLNodeAdapter> XMLNodeAdapter::getFirstChildNode() const
 {
-    return XMLNodeAdapter(pimpl_->node_.getChildNode(i));
+    if(!pimpl_->node_.isEmpty())
+    {
+        return XMLNodeAdapter(pimpl_->node_.getChildNode(0));
+    }
+    return std::nullopt;
 }
 
 std::vector<XMLNodeAdapter> XMLNodeAdapter::getChildNodes() const
@@ -45,7 +49,7 @@ std::vector<XMLNodeAdapter> XMLNodeAdapter::getChildNodes() const
 
     for(int i = 0; i < nChildNode(); ++i)
     {
-        children.push_back(getChildNode(i));
+        children.emplace_back(pimpl_->node_.getChildNode(i));
     }
 
     return children;
