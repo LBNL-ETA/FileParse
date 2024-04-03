@@ -100,13 +100,9 @@ namespace FileParse
                              std::string_view childNodeName,
                              MapType & map)
     {
-        int childCount = node.nChildNode(childNodeName.data());
-        for(int i = 0; i < childCount; ++i)
+        const auto childNodes{node.getChildNodesByName(childNodeName.data())};
+        for(const auto & childNode : childNodes)
         {
-            auto childNode = node.getChildNode(childNodeName.data(), i);
-
-            // Assuming key and value types have default constructors and
-            // have the appropriate `>>` operators overloaded.
             typename MapType::key_type key;
             typename MapType::mapped_type value;
 

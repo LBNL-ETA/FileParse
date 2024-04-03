@@ -151,15 +151,16 @@ namespace FileParse
     std::optional<NodeAdapter> findParentOfLastTag(NodeAdapter node,
                                                    const std::vector<std::string> & nodeNames)
     {
-        NodeAdapter currentNode = node;
+        std::optional<NodeAdapter> currentNode = node;
 
         for(size_t i = 0; i < nodeNames.size() - 1; ++i)
         {
-            currentNode = currentNode.getChildNode(nodeNames[i], 0);
-            if(currentNode.isEmpty())
+            if(!currentNode)
             {
                 return std::nullopt;
             }
+
+            currentNode = currentNode->getChildFirstChildByName(nodeNames[i]);
         }
 
         return currentNode;

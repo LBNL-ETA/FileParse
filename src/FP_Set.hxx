@@ -51,11 +51,11 @@ namespace FileParse
 
         if(auto currentNode{findParentOfLastTag(node, vec.nodeNames)}; currentNode.has_value())
         {
-            for(int i = 0; i < currentNode.value().nChildNode(vec.nodeNames.back()); ++i)
+            const auto childNodes{currentNode.value().getChildNodesByName(vec.nodeNames.back())};
+            for(const auto & childNode : childNodes)
             {
-                NodeAdapter activeNode = currentNode.value().getChildNode(vec.nodeNames.back(), i);
                 T item;
-                activeNode >> item;
+                childNode >> item;
                 vec.data.insert(item);
             }
         }
@@ -164,15 +164,11 @@ namespace FileParse
 
         if(auto currentNode{findParentOfLastTag(node, tags)}; currentNode.has_value())
         {
-            int totalNodes = currentNode.value().nChildNode(tags.back());
-            for(int i = 0; i < totalNodes; ++i)
+            const auto childNodes{currentNode.value().getChildNodesByName(tags.back())};
+            for(const auto & childNode : childNodes)
             {
-                NodeAdapter childNode = currentNode.value().getChildNode(tags.back(), i);
-                if(!childNode.isEmpty())
-                {
-                    const auto text = childNode.getText();
-                    vec.insert(converter(text));
-                }
+                const auto text = childNode.getText();
+                vec.insert(converter(text));
             }
         }
 

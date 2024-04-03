@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <iterator>
+
 #include "FP_XMLNodeAdapter.hxx"
 
 #include "xmlParser/xmlParser.h"
@@ -33,15 +36,6 @@ int XMLNodeAdapter::nChildNode() const
     return pimpl_->node_.nChildNode();
 }
 
-std::optional<XMLNodeAdapter> XMLNodeAdapter::getFirstChildNode() const
-{
-    if(!pimpl_->node_.isEmpty())
-    {
-        return XMLNodeAdapter(pimpl_->node_.getChildNode(0));
-    }
-    return std::nullopt;
-}
-
 std::vector<XMLNodeAdapter> XMLNodeAdapter::getChildNodes() const
 {
     std::vector<XMLNodeAdapter> children;
@@ -55,9 +49,35 @@ std::vector<XMLNodeAdapter> XMLNodeAdapter::getChildNodes() const
     return children;
 }
 
-XMLNodeAdapter XMLNodeAdapter::getChildNode(std::string_view name, int i) const
+std::optional<XMLNodeAdapter> XMLNodeAdapter::getChildFirstChildByName(std::string_view name) const
 {
-    return XMLNodeAdapter(pimpl_->node_.getChildNode(name.data(), i));
+    for(int i = 0; i < nChildNode(); ++i)
+    {
+        if(auto childNode{pimpl_->node_.getChildNode(i)}; childNode.getName() == name)
+        {
+            return XMLNodeAdapter(childNode);
+        }
+    }
+    return std::nullopt;
+}
+
+std::vector<XMLNodeAdapter> XMLNodeAdapter::getChildNodesByName(std::string_view name) const
+{
+    std::vector<XMLNodeAdapter> filteredChildren;
+    filteredChildren.reserve(nChildNode());
+
+    for(int i = 0; i < nChildNode(); ++i)
+    {
+        auto childNode = pimpl_->node_.getChildNode(i);
+        if(childNode.getName() == name)
+        {
+            filteredChildren.emplace_back(childNode);
+        }
+    }
+
+    filteredChildren.shrink_to_fit();
+
+    return filteredChildren;
 }
 
 int XMLNodeAdapter::nChildNode(std::string_view name) const

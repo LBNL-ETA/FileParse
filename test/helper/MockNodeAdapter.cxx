@@ -33,16 +33,6 @@ namespace Helper
         return static_cast<int>(node_->child.size());
     }
 
-    std::optional<MockNodeAdapter> MockNodeAdapter::getFirstChildNode() const
-    {
-        if(!node_->child.empty())
-        {
-            return MockNodeAdapter(&node_->child[0]);
-        }
-
-        return std::nullopt;
-    }
-
     std::vector<MockNodeAdapter> MockNodeAdapter::getChildNodes() const
     {
         std::vector<MockNodeAdapter> children;
@@ -56,22 +46,33 @@ namespace Helper
         return children;
     }
 
-    MockNodeAdapter MockNodeAdapter::getChildNode(std::string_view name, int i) const
+    std::optional<MockNodeAdapter> MockNodeAdapter::getChildFirstChildByName(std::string_view name) const
     {
-        int count = 0;
         for(auto & child : node_->child)
         {
             if(child.tag == name)
             {
-                if(count == i)
-                {
-                    return MockNodeAdapter(&child);
-                }
-                count++;
+                return MockNodeAdapter(&child);
             }
         }
-        return MockNodeAdapter(
-          nullptr);   // Return an empty MockNodeAdapter if no matching child is found
+
+        return std::nullopt;
+    }
+
+    std::vector<MockNodeAdapter> MockNodeAdapter::getChildNodesByName(std::string_view name) const
+    {
+        std::vector<MockNodeAdapter> children;
+        children.reserve(nChildNode(name));
+
+        for(int i = 0; i < nChildNode(); ++i)
+        {
+            if(node_->child[i].tag == name)
+            {
+                children.emplace_back(&node_->child[i]);
+            }
+        }
+
+        return children;
     }
 
     int MockNodeAdapter::nChildNode(std::string_view name) const

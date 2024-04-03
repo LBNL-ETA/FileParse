@@ -107,11 +107,11 @@ namespace Helper
     inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::VariantsAll & element)
     {
         auto processTag = [&node, &element](const std::string & tagValue) {
-            const auto n{node.nChildNode(tagValue)};
-            for(int i = 0; i < n; ++i)
+            const auto nodes{node.getChildNodesByName(tagValue)};
+            for(const auto & n : nodes)
             {
                 Helper::VariantParent vp;
-                node.getChildNode(tagValue, i) >> vp;
+                n >> vp;
                 element.values.push_back(vp);
             }
         };
