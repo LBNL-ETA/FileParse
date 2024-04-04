@@ -7,8 +7,8 @@
 
 #include <functional>
 
-#include "FP_Common.hxx"
-#include "FP_StringConversion.hxx"
+#include "Common.hxx"
+#include "StringConversion.hxx"
 
 namespace FileParse
 {

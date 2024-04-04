@@ -32,14 +32,14 @@ endif()
 
 include(CMakeLists-xmlParser.txt)
 
-add_subdirectory(src)
+add_subdirectory(include/fileParse)
 
 target_include_directories(${LIB_NAME}
     PUBLIC 
         $<INSTALL_INTERFACE:include>    
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 Option(BUILD_FileParse_tests "Build FileParse tests." ON)

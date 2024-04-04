@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "FP_Vector.hxx"
+#include "include/fileParse/Vector.hxx"
 
 #include "test/helper/Utility.hxx"
 #include "test/helper/MockNodeAdapter.hxx"

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "FP_StringConversion.hxx"
+#include "include/fileParse/StringConversion.hxx"
 
-#include "FP_Common.hxx"
-#include "FP_Map.hxx"
+#include "include/fileParse/Common.hxx"
+#include "include/fileParse/Map.hxx"
 
 #include "test/helper/structures/StructureMap.hxx"
 

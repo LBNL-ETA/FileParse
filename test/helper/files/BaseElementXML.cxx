@@ -3,7 +3,7 @@
 #include "test/helper/structures/StructureBase.hxx"
 #include "../serializers/SerializersBaseElement.hxx"
 
-#include "FP_XMLNodeAdapter.hxx"
+#include "include/fileParse/XMLNodeAdapter.hxx"
 
 namespace Helper
 {
