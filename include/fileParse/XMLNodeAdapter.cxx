@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <iterator>
 
-#include "FP_XMLNodeAdapter.hxx"
+#include "XMLNodeAdapter.hxx"
 
 #include "xmlParser/xmlParser.h"
 

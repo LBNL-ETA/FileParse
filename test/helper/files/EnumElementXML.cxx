@@ -3,7 +3,7 @@
 #include "test/helper/structures/StructureEnum.hxx"
 #include "../serializers/SerializersEnum.hxx"
 
-#include "FP_XMLNodeAdapter.hxx"
+#include "include/fileParse/XMLNodeAdapter.hxx"
 
 namespace Helper
 {

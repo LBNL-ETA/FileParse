@@ -9,7 +9,7 @@
 #include <functional>
 #include <stdexcept>
 
-#include "FP_Common.hxx"
+#include "Common.hxx"
 
 namespace FileParse
 {

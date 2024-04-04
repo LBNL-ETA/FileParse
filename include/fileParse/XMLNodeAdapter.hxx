@@ -6,7 +6,7 @@
 
 #include <memory>
 
-#include "FP_INodeAdapter.hxx"
+#include "INodeAdapter.hxx"
 
 namespace XMLParser
 {
@@ -34,11 +34,21 @@ public:
     /// @return The text content as a string.
     [[nodiscard]] std::string getText() const override;
 
+    /// Retrieves all child nodes.
+    /// @return A vector of child node adapters.
     [[nodiscard]] std::vector<XMLNodeAdapter> getChildNodes() const override;
 
+    /// Retrieves the first child node with a specified name.
+    /// @param name The name of the child node to retrieve.
+    /// @return An optional containing the child node adapter if successful, std::nullopt otherwise.
     [[nodiscard]] std::optional<XMLNodeAdapter>
       getFirstChildByName(std::string_view name) const override;
-    [[nodiscard]] std::vector<XMLNodeAdapter> getChildNodesByName(std::string_view name) const override;
+
+    /// Retrieves all child nodes with a specified name.
+    /// @param name The name of the child nodes to retrieve.
+    /// @return A vector of child node adapters with the specified name.
+    [[nodiscard]] std::vector<XMLNodeAdapter>
+      getChildNodesByName(std::string_view name) const override;
 
     /// Counts the number of child nodes with a specified name.
     /// @param name The name of the child nodes to count.
