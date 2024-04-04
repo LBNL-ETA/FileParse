@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <array>
 
-#include "FP_Formatter.hxx"
+#include "Formatter.hxx"
 
 namespace FileParse
 {
@@ -151,15 +151,16 @@ namespace FileParse
     std::optional<NodeAdapter> findParentOfLastTag(NodeAdapter node,
                                                    const std::vector<std::string> & nodeNames)
     {
-        NodeAdapter currentNode = node;
+        std::optional<NodeAdapter> currentNode = node;
 
         for(size_t i = 0; i < nodeNames.size() - 1; ++i)
         {
-            currentNode = currentNode.getChildNode(nodeNames[i], 0);
-            if(currentNode.isEmpty())
+            if(!currentNode)
             {
                 return std::nullopt;
             }
+
+            currentNode = currentNode->getFirstChildByName(nodeNames[i]);
         }
 
         return currentNode;
@@ -348,9 +349,9 @@ namespace FileParse
     inline std::enable_if_t<is_valid_map<MapType>::value, const NodeAdapter &>
       operator>>(const NodeAdapter & node, MapType & map)
     {
-        for(int i = 0; i < node.nChildNode(); ++i)
+        const auto & childNodes{node.getChildNodes()};
+        for(const auto & childNode : childNodes)
         {
-            auto childNode = node.getChildNode(i);
             std::string key = childNode.getCurrentTag();
 
             typename MapType::mapped_type val;

@@ -1,16 +1,15 @@
-/// File: FP_Array.hxx
-/// @brief Provides functionality to serialize and deserialize std::array and
-///        std::optional<std::array> types in the FileParse namespace.
+/// File: FP_Vector.hxx
+/// @brief Provides functionality to serialize and deserialize std::vector and
+///        std::optional<std::vector> types in the FileParse namespace.
 
 #pragma once
 
 #include <vector>
-#include <array>
 #include <optional>
 #include <functional>
 #include <stdexcept>
 
-#include "FP_Common.hxx"
+#include "Common.hxx"
 
 namespace FileParse
 {
@@ -18,20 +17,22 @@ namespace FileParse
     /// @tparam NodeAdapter The type of the node adapter.
     /// @tparam T The type of elements in the vector.
     /// @param node The node to serialize the vector into.
-    /// @param arr The Child object containing the vector and node hierarchy information.
+    /// @param vec The Child object containing the vector and node hierarchy information.
     /// @return Reference to the updated node.
-    template<typename NodeAdapter, typename T, size_t N>
-    inline NodeAdapter & operator<<(NodeAdapter & node, const Child<std::array<T, N>> & arr)
+    template<typename NodeAdapter, typename T>
+    inline NodeAdapter & operator<<(NodeAdapter & node, const Child<const std::vector<T>> & vec)
     {
-        if(arr.data.empty())
+        if(vec.nodeNames.empty() || vec.data.empty())
             return node;
 
-        auto currentNode{insertAllButLastChild(node, arr.nodeNames)};
+        auto secondToLastNode{insertAllButLastChild(node, vec.nodeNames)};
 
-        for(const auto & item : arr.data)
+        const auto & lastNodeName = vec.nodeNames.back();
+
+        for(const auto & item : vec.data)
         {
-            auto tableNode = currentNode.addChild(arr.nodeNames.back());
-            tableNode << item;
+            NodeAdapter lastNode = secondToLastNode.addChild(lastNodeName);
+            lastNode << item;
         }
 
         return node;
@@ -41,25 +42,26 @@ namespace FileParse
     /// @tparam NodeAdapter The type of the node adapter.
     /// @tparam T The type of elements in the vector.
     /// @param node The node to deserialize the vector from.
-    /// @param arr The Child object where the deserialized vector will be stored.
+    /// @param vec The Child object where the deserialized vector will be stored.
     /// @return Const reference to the node.
-    template<typename NodeAdapter, typename T, size_t N>
+    template<typename NodeAdapter, typename T>
     inline const NodeAdapter & operator>>(const NodeAdapter & node,
-                                          const Child<std::array<T, N>> & arr)
+                                          const Child<std::vector<T>> & vec)
     {
-        if(!node.hasChildNode(arr.nodeNames.front()))
+        vec.data.clear();
+
+        if(!node.hasChildNode(vec.nodeNames.front()))
             return node;
 
-        if(auto currentNode{findParentOfLastTag(node, arr.nodeNames)}; currentNode.has_value())
+        if(auto currentNode{findParentOfLastTag(node, vec.nodeNames)}; currentNode.has_value())
         {
-            auto minimum{
-              std::min(arr.data.size(), static_cast<size_t>(currentNode.value().nChildNode()))};
-            for(int i = 0; i < minimum; ++i)
+            const auto childNodes{currentNode.value().getChildNodesByName(vec.nodeNames.back())};
+            vec.data.reserve(childNodes.size());
+            for(const auto & childNode : childNodes)
             {
-                NodeAdapter activeNode = currentNode.value().getChildNode(arr.nodeNames.back(), i);
                 T item;
-                activeNode >> item;
-                arr.data[i] = item;
+                childNode >> item;
+                vec.data.push_back(item);
             }
         }
 
@@ -72,9 +74,9 @@ namespace FileParse
     /// @param node The node to deserialize the optional vector from.
     /// @param opt_vec The Child object where the deserialized optional vector will be stored.
     /// @return Const reference to the node.
-    template<typename NodeAdapter, typename T, size_t N>
+    template<typename NodeAdapter, typename T>
     inline const NodeAdapter & operator>>(const NodeAdapter & node,
-                                          const Child<std::optional<std::array<T, N>>> & opt_vec)
+                                          const Child<std::optional<std::vector<T>>> & opt_vec)
     {
         if(auto childNode{findParentOfLastTag(node, opt_vec.nodeNames)};
            !childNode.has_value() || childNode.value().nChildNode(opt_vec.nodeNames.back()) == 0)
@@ -95,9 +97,9 @@ namespace FileParse
     /// @param opt_vec The Child object containing the optional vector and node hierarchy
     /// information.
     /// @return Reference to the updated node.
-    template<typename NodeAdapter, typename T, size_t N>
+    template<typename NodeAdapter, typename T>
     inline NodeAdapter & operator<<(NodeAdapter & node,
-                                    const Child<const std::optional<std::array<T, N>>> & opt_vec)
+                                    const Child<const std::optional<std::vector<T>>> & opt_vec)
     {
         if(opt_vec.data.has_value())
         {
@@ -121,15 +123,15 @@ namespace FileParse
     /// @param vec The vector of enum values to be serialized.
     /// @param converter A function that converts the enum values to strings.
     /// @return Reference to the updated node.
-    template<typename NodeAdapter, typename EnumType, size_t N>
+    template<typename NodeAdapter, typename EnumType>
     NodeAdapter & serializeEnumVector(NodeAdapter & node,
-                                      const std::array<std::string, N> & tags,
-                                      const std::array<EnumType, N> & vec,
+                                      const std::vector<std::string> & tags,
+                                      const std::vector<EnumType> & vec,
                                       std::function<std::string(EnumType)> converter)
     {
         if(tags.empty())
         {
-            throw std::invalid_argument("Tag array is empty");
+            throw std::invalid_argument("Tag vector is empty");
         }
 
         auto currentNode{insertAllButLastChild(node, tags)};
@@ -151,10 +153,10 @@ namespace FileParse
     /// @param vec The vector where the deserialized enum values will be stored.
     /// @param converter A function that converts strings to enum values.
     /// @return Const reference to the node.
-    template<typename NodeAdapter, typename EnumType, size_t N>
+    template<typename NodeAdapter, typename EnumType>
     const NodeAdapter & deserializeEnumVector(const NodeAdapter & node,
-                                              const std::array<std::string, N> & tags,
-                                              std::array<EnumType, N> & vec,
+                                              const std::vector<std::string> & tags,
+                                              std::vector<EnumType> & vec,
                                               std::function<EnumType(std::string_view)> converter)
     {
         static_assert(std::is_enum_v<EnumType>, "Provided type is not an enum!");
@@ -163,20 +165,17 @@ namespace FileParse
 
         if(tags.empty())
         {
-            throw std::invalid_argument("Tag array is empty");
+            throw std::invalid_argument("Tag vector is empty");
         }
 
         if(auto currentNode{findParentOfLastTag(node, tags)}; currentNode.has_value())
         {
-            int totalNodes = currentNode.value().nChildNode(tags.back());
-            for(int i = 0; i < totalNodes; ++i)
+            const auto childNodes{currentNode.value().getChildNodesByName(tags.back())};
+            vec.reserve(childNodes.size());
+            for(const auto & childNode : childNodes)
             {
-                NodeAdapter childNode = currentNode.value().getChildNode(tags.back(), i);
-                if(!childNode.isEmpty())
-                {
-                    const auto text = childNode.getText();
-                    vec.emplace_back(converter(text));
-                }
+                const auto text = childNode.getText();
+                vec.emplace_back(converter(text));
             }
         }
 

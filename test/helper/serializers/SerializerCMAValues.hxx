@@ -1,7 +1,7 @@
 #pragma once
 
-#include "FP_Common.hxx"
-#include "FP_Map.hxx"
+#include "include/fileParse/Common.hxx"
+#include "include/fileParse/Map.hxx"
 
 #include "test/helper/serializers/SerializerCMAEnumOptions.hxx"
 #include "test/helper/structures/CMAValues.hxx"

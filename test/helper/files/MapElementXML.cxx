@@ -5,7 +5,7 @@
 #include "test/helper/structures/CMAStringOptions.hxx"
 #include "../serializers/SerializerCMAStringOptions.hxx"
 
-#include "FP_XMLNodeAdapter.hxx"
+#include "include/fileParse/XMLNodeAdapter.hxx"
 
 namespace Helper
 {
