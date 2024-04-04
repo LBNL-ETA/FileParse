@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "FP_Array.hxx"
+#include "include/fileParse/Array.hxx"
 
 #include "test/helper/Utility.hxx"
 #include "test/helper/MockNodeAdapter.hxx"

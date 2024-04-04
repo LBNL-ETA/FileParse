@@ -7,8 +7,8 @@
 
 #include <functional>
 
-#include "FP_Common.hxx"
-#include "FP_StringConversion.hxx"
+#include "Common.hxx"
+#include "StringConversion.hxx"
 
 namespace FileParse
 {
@@ -100,13 +100,9 @@ namespace FileParse
                              std::string_view childNodeName,
                              MapType & map)
     {
-        int childCount = node.nChildNode(childNodeName.data());
-        for(int i = 0; i < childCount; ++i)
+        const auto childNodes{node.getChildNodesByName(childNodeName.data())};
+        for(const auto & childNode : childNodes)
         {
-            auto childNode = node.getChildNode(childNodeName.data(), i);
-
-            // Assuming key and value types have default constructors and
-            // have the appropriate `>>` operators overloaded.
             typename MapType::key_type key;
             typename MapType::mapped_type value;
 
@@ -159,10 +155,9 @@ namespace FileParse
     inline std::enable_if_t<is_valid_map<MapType>::value, const NodeAdapter &> deserializeEnumMap(
       const NodeAdapter & node, MapType & map, std::function<EnumType(std::string_view)> converter)
     {
-        int totalNodes = node.nChildNode();
-        for(int i = 0; i < totalNodes; ++i)
+        const auto & childNodes{node.getChildNodes()};
+        for(const auto & childNode : childNodes)
         {
-            NodeAdapter childNode = node.getChildNode(i);
             if(!childNode.isEmpty())
             {
                 const auto text = childNode.getText();

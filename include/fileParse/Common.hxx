@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "FP_Base.hxx"
+#include "Base.hxx"
 
 namespace FileParse
 {
@@ -81,10 +81,10 @@ namespace FileParse
     {
         for(const auto & nodeName : child.nodeNames)
         {
-            auto childNode = node.getChildNode(nodeName, 0);
-            if(!childNode.isEmpty())
+            auto childNode{node.getFirstChildByName(nodeName)};
+            if(childNode.has_value())
             {
-                childNode >> child.data;
+                childNode.value() >> child.data;
             }
         }
         return node;

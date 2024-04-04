@@ -1,8 +1,8 @@
 #pragma once
 
-#include "FP_Common.hxx"
-#include "FP_Enum.hxx"
-#include "FP_Optional.hxx"
+#include "include/fileParse/Common.hxx"
+#include "include/fileParse/Enum.hxx"
+#include "include/fileParse/Optional.hxx"
 
 #include "test/helper/structures/StructureEnum.hxx"
 

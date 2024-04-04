@@ -2,10 +2,10 @@
 
 #include <typeindex>
 
-#include "FP_Common.hxx"
-#include "FP_Vector.hxx"
-#include "FP_Variant.hxx"
-#include "FP_Optional.hxx"
+#include "include/fileParse/Common.hxx"
+#include "include/fileParse/Vector.hxx"
+#include "include/fileParse/Variant.hxx"
+#include "include/fileParse/Optional.hxx"
 
 #include "test/helper/structures/StructureVariant.hxx"
 
@@ -107,11 +107,11 @@ namespace Helper
     inline const NodeAdapter & operator>>(const NodeAdapter & node, Helper::VariantsAll & element)
     {
         auto processTag = [&node, &element](const std::string & tagValue) {
-            const auto n{node.nChildNode(tagValue)};
-            for(int i = 0; i < n; ++i)
+            const auto nodes{node.getChildNodesByName(tagValue)};
+            for(const auto & n : nodes)
             {
                 Helper::VariantParent vp;
-                node.getChildNode(tagValue, i) >> vp;
+                n >> vp;
                 element.values.push_back(vp);
             }
         };

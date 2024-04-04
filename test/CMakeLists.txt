@@ -90,7 +90,7 @@ add_executable(${PROJECT_TEST_NAME}
 		units/VectorSerializersXML.unit.cxx
 		main.cpp)
 
-include_directories(${PROJECT_SOURCE_DIR}/src)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 target_compile_features(${PROJECT_TEST_NAME} PRIVATE cxx_std_17)

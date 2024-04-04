@@ -5,8 +5,8 @@
 #pragma once
 
 #include <memory>
-#include <optional>
-#include "FP_INodeAdapter.hxx"
+
+#include "INodeAdapter.hxx"
 
 namespace XMLParser
 {
@@ -30,31 +30,25 @@ public:
     /// @return The current tag as a string.
     [[nodiscard]] std::string getCurrentTag() const override;
 
-    /// Checks if the current tag matches the given name.
-    /// @param name The tag name to compare.
-    /// @return True if the current tag matches the name, false otherwise.
-    [[nodiscard]] bool isCurrentTag(std::string_view name) const override;
-
     /// Gets the text content of the node.
     /// @return The text content as a string.
     [[nodiscard]] std::string getText() const override;
 
-    /// Counts the number of child nodes.
-    /// @return The number of child nodes.
-    [[nodiscard]] int nChildNode() const override;
-
-    /// Retrieves the child node at a specified index.
-    /// @param i The index of the child node.
-    /// @return The child node adapter at the specified index.
-    [[nodiscard]] XMLNodeAdapter getChildNode(int i) const override;
-
+    /// Retrieves all child nodes.
+    /// @return A vector of child node adapters.
     [[nodiscard]] std::vector<XMLNodeAdapter> getChildNodes() const override;
 
-    /// Retrieves the child node with a specified name at a specified index.
-    /// @param name The name of the child node.
-    /// @param i The index of the child node.
-    /// @return The child node adapter with the specified name at the specified index.
-    [[nodiscard]] XMLNodeAdapter getChildNode(std::string_view name, int i) const override;
+    /// Retrieves the first child node with a specified name.
+    /// @param name The name of the child node to retrieve.
+    /// @return An optional containing the child node adapter if successful, std::nullopt otherwise.
+    [[nodiscard]] std::optional<XMLNodeAdapter>
+      getFirstChildByName(std::string_view name) const override;
+
+    /// Retrieves all child nodes with a specified name.
+    /// @param name The name of the child nodes to retrieve.
+    /// @return A vector of child node adapters with the specified name.
+    [[nodiscard]] std::vector<XMLNodeAdapter>
+      getChildNodesByName(std::string_view name) const override;
 
     /// Counts the number of child nodes with a specified name.
     /// @param name The name of the child nodes to count.
@@ -74,11 +68,6 @@ public:
     /// Adds text content to the node.
     /// @param text The text to add to the node.
     void addText(std::string_view text) override;
-
-    /// Writes the node's content to a UTF-8 string.
-    /// @param outString The string to write the content to.
-    /// @return The number of characters written.
-    [[nodiscard]] int writeToUTF8(std::string_view outString) const;
 
     /// Writes the node's content to a file.
     /// @param outString The name of the file to write the content to.
