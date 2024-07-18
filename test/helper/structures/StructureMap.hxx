@@ -10,6 +10,9 @@
 
 namespace Helper
 {
+    //! \brief This structure is used in case where map items are stored in a way where
+    //!    the key string used as tag value in the structure while the value is stored
+    //!    as the value for the given tag.
     struct MapElementString
     {
         std::map<std::string, std::string> ordered;

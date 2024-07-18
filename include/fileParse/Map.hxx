@@ -87,7 +87,8 @@ namespace FileParse
         return node;
     }
 
-    /// Deserializes child nodes of a given node into a map.
+    //! @brief Deserializes child nodes of a given node into a map. This function expects that
+    //! both key and the value types have deserializers defined.
     /// @tparam NodeAdapter The type of the node adapter.
     /// @tparam MapType The type of the map to be deserialized.
     /// @param node The node to deserialize the map from.
@@ -115,7 +116,72 @@ namespace FileParse
         return node;
     }
 
-    /// Serializes a map with enum keys, converting the enums to strings.
+    //! @brief Simple structure that is to be used as argument in templated functions bellow just to
+    //! make the code more readable.
+    struct MapStructure
+    {
+        std::string childsName;
+        std::string keyName;
+        std::string valueName;
+    };
+
+    /// Serializes a map as child nodes of a given node.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam MapType The type of the map to be serialized.
+    /// @param node The node to serialize the map into.
+    /// @param childNodeName The name of the child nodes to create for each map entry.
+    /// @param map The map to be serialized.
+    /// @return Reference to the updated node.
+    template<typename NodeAdapter, typename MapType>
+    inline std::enable_if_t<is_valid_map<MapType>::value, NodeAdapter &>
+      serializeMapAsChilds(NodeAdapter & node,
+                           const MapStructure & mapStructure,
+                           const MapType & map)
+    {
+        if(map.empty())
+            return node;
+
+        for(const auto & [enumKey, mapValue] : map)
+        {
+            auto childNode{node.addChild(mapStructure.childsName)};
+            childNode << Child{mapStructure.keyName, enumKey};
+            childNode << Child{mapStructure.valueName, mapValue};
+        }
+
+        return node;
+    }
+
+    //! @brief Deserializes child nodes of a given node into a map. This function expects that
+    //! both key and the value types have deserializers defined.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam MapType The type of the map to be deserialized.
+    /// @param node The node to deserialize the map from.
+    /// @param childNodeName The name of the child nodes to read for each map entry.
+    /// @param map The map to store the deserialized values.
+    /// @return Const reference to the node.
+    template<typename NodeAdapter, typename MapType>
+    inline std::enable_if_t<is_valid_map<MapType>::value, const NodeAdapter &>
+      deserializeMapAsChilds(const NodeAdapter & node,
+                             const MapStructure & mapStructure,
+                             MapType & map)
+    {
+        const auto childNodes{node.getChildNodesByName(mapStructure.childsName)};
+        for(const auto & childNode : childNodes)
+        {
+            typename MapType::key_type key;
+            typename MapType::mapped_type value;
+
+            childNode >> Child{mapStructure.keyName, key};
+            childNode >> Child{mapStructure.valueName, value};
+
+            map[key] = value;
+        }
+
+        return node;
+    }
+
+    //! @brief Serializes a map into child nodes. This function expects that both key and value
+    //! types have serializers defined.
     /// @tparam NodeAdapter The type of the node adapter.
     /// @tparam EnumType The enumeration type of the map's keys.
     /// @tparam ValueType The type of the map's values.
