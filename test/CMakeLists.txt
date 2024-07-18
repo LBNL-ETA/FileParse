@@ -83,6 +83,7 @@ add_executable(${PROJECT_TEST_NAME}
         units/MapKeyAsEnumSerializers.unit.cxx
         units/MapKeyAsStructureSerializers.unit.cxx
         units/MapKeyAsStructureSerializersXML.unit.cxx
+        units/MapSameChilds.unit.cxx
 		units/SetSerializers.unit.cxx
 		units/SetSerializersXML.unit.cxx
 		units/VariantSerializersXML.unit.cxx

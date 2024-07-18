@@ -201,5 +201,34 @@ namespace Helper
         }
     }
 
+    // General function for non-enum map values
+    template<typename MapType>
+    std::enable_if_t<!std::is_enum<typename MapType::mapped_type>::value> checkMapValuesEqual(const MapType & expected,
+                                                                                              const MapType & actual)
+    {
+        ASSERT_EQ(expected.size(), actual.size());
+
+        for(const auto & [expectedKey, expectedValue] : expected)
+        {
+            auto actualIter = actual.find(expectedKey);
+            ASSERT_NE(actualIter, actual.end());
+            EXPECT_EQ(expectedValue, actualIter->second);
+        }
+    }
+
+    // Specialized function for enum map values
+    template<typename MapType>
+    std::enable_if_t<std::is_enum<typename MapType::mapped_type>::value> checkMapValuesEqual(const MapType & expected,
+                                                                                             const MapType & actual)
+    {
+        ASSERT_EQ(expected.size(), actual.size());
+
+        for(const auto & [expectedKey, expectedValue] : expected)
+        {
+            auto actualIter = actual.find(expectedKey);
+            ASSERT_NE(actualIter, actual.end());
+            EXPECT_EQ(static_cast<int>(expectedValue), static_cast<int>(actualIter->second));
+        }
+    }
 
 }   // namespace Helper
