@@ -88,5 +88,8 @@ private:
 /// @param fileName The name of the file containing the XML data.
 /// @param topNodeName The name of the top node to retrieve.
 /// @return An optional containing the top node adapter if successful, std::nullopt otherwise.
-[[nodiscard]] std::optional<XMLNodeAdapter> getTopNode(std::string_view fileName,
+[[nodiscard]] std::optional<XMLNodeAdapter> getTopNodeFromFile(std::string_view fileName,
+                                                       std::string_view topNodeName);
+
+[[nodiscard]] std::optional<XMLNodeAdapter> getTopNodeFromString(std::string_view xml,
                                                        std::string_view topNodeName);
