@@ -107,7 +107,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         VectorElement element;
         if(xmlNode.has_value())
@@ -133,7 +133,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         OptionalVectorElement element;
         if(xmlNode.has_value())
@@ -159,7 +159,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         EnumVectorElement element;
         if(xmlNode.has_value())

@@ -154,7 +154,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         MapElementString element;
         if(xmlNode.has_value())
@@ -179,7 +179,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         MapElementOptionalString element;
         if(xmlNode.has_value())
@@ -205,7 +205,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         MapElementEnum element;
         if(xmlNode.has_value())
@@ -230,7 +230,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         MapElementDouble element;
         if(xmlNode.has_value())
@@ -256,7 +256,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         MapElementEnumDouble element;
         if(xmlNode.has_value())
@@ -283,7 +283,7 @@ namespace Helper
         using FileParse::Child;
         using FileParse::operator>>;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         CMAElement element;
         if(xmlNode.has_value())
