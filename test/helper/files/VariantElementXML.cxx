@@ -49,7 +49,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         VariantsAll element;
         if(xmlNode.has_value())
