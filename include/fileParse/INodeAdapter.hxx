@@ -1,4 +1,4 @@
-/// File: FP_INodeAdapter.hxx
+/// File: INodeAdapter.hxx
 /// @brief Defines the INodeAdapter interface which provides a set of functions
 ///        for node manipulation and data extraction, used by a general parser.
 
