@@ -1,4 +1,4 @@
-/// File: FP_XMLNodeAdapter.hxx
+/// File: XMLNodeAdapter.hxx
 /// @brief Provides a node adapter for XML parsing and serialization
 ///        using an internal implementation of XMLNode.
 

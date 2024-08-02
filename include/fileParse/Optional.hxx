@@ -1,4 +1,4 @@
-/// File: FP_Optional.hxx
+/// File: Optional.hxx
 /// @brief Provides functionality to serialize optional data types
 ///        in the FileParse namespace.
 
