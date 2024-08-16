@@ -48,4 +48,8 @@ public:
 
     /// Adds text content to the current node.
     virtual void addText(std::string_view text) = 0;
+
+    // Adds content of the entire node structure with child into string (the same content
+    // that will be in the file).
+    [[nodiscard]] virtual std::string getContent() const = 0;
 };
