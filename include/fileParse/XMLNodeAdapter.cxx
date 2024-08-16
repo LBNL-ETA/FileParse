@@ -105,6 +105,11 @@ std::string XMLNodeAdapter::getCurrentTag() const
     return pimpl_->node_.getName();
 }
 
+std::string XMLNodeAdapter::getContent() const
+{
+    return pimpl_->node_.createXMLString();
+}
+
 XMLNodeAdapter createTopNode(std::string_view topNodeName)
 {
     return XMLNodeAdapter(XMLParser::XMLNode::createXMLTopNode(topNodeName.data()));

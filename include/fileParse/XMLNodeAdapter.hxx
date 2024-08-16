@@ -74,6 +74,8 @@ public:
     /// @return The number of characters written.
     [[nodiscard]] int writeToFile(std::string_view outString) const;
 
+    [[nodiscard]] std::string getContent() const override;
+
 private:
     struct Impl;
     std::shared_ptr<Impl> pimpl_;   ///< Pointer to the implementation details.
