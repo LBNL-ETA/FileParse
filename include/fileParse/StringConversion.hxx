@@ -1,4 +1,4 @@
-/// File: FP_StringConversion.hxx
+/// File: StringConversion.hxx
 /// @brief Provides functionality to convert strings to various basic data types
 ///        in the FileParse namespace.
 

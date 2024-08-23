@@ -1,4 +1,4 @@
-/// File: FP_Common.hxx
+/// File: Common.hxx
 /// @brief Provides a set of functions and templates for parsing and manipulating XML-like data
 /// structures.
 

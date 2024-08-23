@@ -98,6 +98,12 @@ namespace Helper
         return *node_;
     }
 
+    // Not implemented yet since it is not used
+    std::string MockNodeAdapter::getContent() const
+    {
+        return "";
+    }
+
     MockNode & addChildNode(MockNode & parentNode, std::string_view tag, std::string_view text)
     {
         MockNode node;

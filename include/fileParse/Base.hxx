@@ -1,4 +1,4 @@
-/// File: FP_Base.hxx
+/// File: Base.hxx
 /// @brief Provides a set of functions and templates for parsing and manipulating XML-like data
 /// structures.
 
@@ -9,6 +9,7 @@
 #include <map>
 #include <unordered_map>
 #include <array>
+#include <vector>
 
 #include "Formatter.hxx"
 

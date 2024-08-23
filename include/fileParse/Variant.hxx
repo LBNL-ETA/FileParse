@@ -1,4 +1,4 @@
-/// File: FP_Variant.hxx
+/// File: Variant.hxx
 /// @brief Provides functionality to serialize and deserialize std::variant and
 ///        std::optional<std::variant> types in the FileParse namespace.
 

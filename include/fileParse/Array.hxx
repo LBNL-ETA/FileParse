@@ -1,4 +1,4 @@
-/// File: FP_Array.hxx
+/// File: Array.hxx
 /// @brief Provides functionality to serialize and deserialize std::array and
 ///        std::optional<std::array> types in the FileParse namespace.
 

@@ -1,4 +1,4 @@
-/// File: FP_INodeAdapter.hxx
+/// File: INodeAdapter.hxx
 /// @brief Defines the INodeAdapter interface which provides a set of functions
 ///        for node manipulation and data extraction, used by a general parser.
 
@@ -48,4 +48,8 @@ public:
 
     /// Adds text content to the current node.
     virtual void addText(std::string_view text) = 0;
+
+    // Adds content of the entire node structure with child into string (the same content
+    // that will be in the file).
+    [[nodiscard]] virtual std::string getContent() const = 0;
 };

@@ -1,4 +1,4 @@
-/// File: FP_Vector.hxx
+/// File: Vector.hxx
 /// @brief Provides functionality to serialize and deserialize std::vector and
 ///        std::optional<std::vector> types in the FileParse namespace.
 
