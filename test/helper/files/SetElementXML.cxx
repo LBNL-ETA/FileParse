@@ -106,7 +106,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         SetElementDouble element;
         if(xmlNode.has_value())
@@ -132,7 +132,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         SetElementOptionalDouble element;
         if(xmlNode.has_value())
@@ -159,7 +159,7 @@ namespace Helper
     {
         using FileParse::Child;
 
-        auto xmlNode{getTopNode(fileName, "Test")};
+        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
 
         SetElementEnum element;
         if(xmlNode.has_value())

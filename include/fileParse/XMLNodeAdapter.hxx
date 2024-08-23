@@ -1,4 +1,4 @@
-/// File: FP_XMLNodeAdapter.hxx
+/// File: XMLNodeAdapter.hxx
 /// @brief Provides a node adapter for XML parsing and serialization
 ///        using an internal implementation of XMLNode.
 
@@ -74,6 +74,8 @@ public:
     /// @return The number of characters written.
     [[nodiscard]] int writeToFile(std::string_view outString) const;
 
+    [[nodiscard]] std::string getContent() const override;
+
 private:
     struct Impl;
     std::shared_ptr<Impl> pimpl_;   ///< Pointer to the implementation details.
@@ -88,5 +90,8 @@ private:
 /// @param fileName The name of the file containing the XML data.
 /// @param topNodeName The name of the top node to retrieve.
 /// @return An optional containing the top node adapter if successful, std::nullopt otherwise.
-[[nodiscard]] std::optional<XMLNodeAdapter> getTopNode(std::string_view fileName,
+[[nodiscard]] std::optional<XMLNodeAdapter> getTopNodeFromFile(std::string_view fileName,
+                                                       std::string_view topNodeName);
+
+[[nodiscard]] std::optional<XMLNodeAdapter> getTopNodeFromString(std::string_view xml,
                                                        std::string_view topNodeName);

@@ -105,14 +105,30 @@ std::string XMLNodeAdapter::getCurrentTag() const
     return pimpl_->node_.getName();
 }
 
+std::string XMLNodeAdapter::getContent() const
+{
+    return pimpl_->node_.createXMLString();
+}
+
 XMLNodeAdapter createTopNode(std::string_view topNodeName)
 {
     return XMLNodeAdapter(XMLParser::XMLNode::createXMLTopNode(topNodeName.data()));
 }
 
-std::optional<XMLNodeAdapter> getTopNode(std::string_view fileName, std::string_view topNodeName)
+std::optional<XMLNodeAdapter> getTopNodeFromFile(std::string_view fileName, std::string_view topNodeName)
 {
     if(auto node{XMLParser::XMLNode::openFileHelper(fileName.data(), topNodeName.data())};
+       !node.isEmpty())
+    {
+        return XMLNodeAdapter(node);
+    }
+    return std::nullopt;
+}
+
+std::optional<XMLNodeAdapter> getTopNodeFromString(std::string_view xml,
+                                                 std::string_view topNodeName)
+{
+    if(auto node{XMLParser::XMLNode::parseString(xml.data(), topNodeName.data())};
        !node.isEmpty())
     {
         return XMLNodeAdapter(node);

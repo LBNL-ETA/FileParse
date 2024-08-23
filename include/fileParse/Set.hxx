@@ -1,4 +1,4 @@
-/// File: FP_Set.hxx
+/// File: Set.hxx
 /// @brief Provides serialization and deserialization functionalities for sets and enum sets
 ///        in the FileParse namespace.
 

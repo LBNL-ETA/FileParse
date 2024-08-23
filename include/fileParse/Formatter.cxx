@@ -16,10 +16,13 @@ namespace FileParse
             }
             // Remove the decimal point if it's directly before 'e' or 'E'
             auto dotEPos = str.find_first_of(".eE", lastNonZero);
-            if(dotEPos != std::string::npos && str[dotEPos + 1] == 'e' || str[dotEPos + 1] == 'E')
+            if (dotEPos != std::string::npos &&
+               (dotEPos + 1 < str.size()) &&
+               (str[dotEPos + 1] == 'e' || str[dotEPos + 1] == 'E'))
             {
                 str.erase(dotEPos, 1);
             }
+
         }
         else
         {

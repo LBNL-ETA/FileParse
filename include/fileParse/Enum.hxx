@@ -1,4 +1,4 @@
-/// File: FP_Enum.hxx
+/// File: Enum.hxx
 /// @brief Provides templates for serializing and deserializing enumeration types
 ///        using NodeAdapter in the FileParse namespace. It includes functionality
 ///        to convert enumeration types to and from their string representations
