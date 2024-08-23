@@ -1,4 +1,4 @@
-project( FileParse CXX )
+project(FileParse CXX)
 
 set(LIB_MAJOR_VERSION "1")
 set(LIB_MINOR_VERSION "1")
@@ -35,16 +35,16 @@ include(CMakeLists-xmlParser.txt)
 add_subdirectory(include/fileParse)
 
 target_include_directories(${LIB_NAME}
-    PUBLIC 
-        $<INSTALL_INTERFACE:include>    
+    PUBLIC
+        $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-Option(BUILD_FileParse_tests "Build FileParse tests." ON)
+option(BUILD_FileParse_tests "Build FileParse tests." ON)
 
 if(BUILD_FileParse_tests)
 	enable_testing()
-	add_subdirectory( test )
+	add_subdirectory(test)
 endif()
