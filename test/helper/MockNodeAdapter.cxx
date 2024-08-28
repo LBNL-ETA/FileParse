@@ -104,6 +104,21 @@ namespace Helper
         return "";
     }
 
+    void MockNodeAdapter::addAttribute(std::string_view name, std::string_view value)
+    {
+        attributes_[name.data()] = value.data();
+    }
+
+    std::optional<std::string> MockNodeAdapter::getAttribute(std::string_view name) const
+    {
+        auto it = attributes_.find(name.data());
+        if(it != attributes_.end())
+        {
+            return it->second;
+        }
+        return std::nullopt;
+    }
+
     MockNode & addChildNode(MockNode & parentNode, std::string_view tag, std::string_view text)
     {
         MockNode node;

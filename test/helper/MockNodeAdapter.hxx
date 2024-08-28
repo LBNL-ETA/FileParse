@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <map>
 
 #include "include/fileParse/INodeAdapter.hxx"
 
@@ -54,9 +55,13 @@ namespace Helper
 
         [[nodiscard]] MockNode getNode() const;
 
-        std::string getContent() const override;
+        [[nodiscard]] std::string getContent() const override;
+
+        void addAttribute(std::string_view name, std::string_view value) override;
+        [[nodiscard]] std::optional<std::string> getAttribute(std::string_view name) const override;
 
     private:
         MockNode * node_{nullptr};
+        std::map<std::string, std::string> attributes_;
     };
 }   // namespace Helper
