@@ -76,6 +76,9 @@ public:
 
     [[nodiscard]] std::string getContent() const override;
 
+    void addAttribute(std::string_view name, std::string_view value) override;
+    [[nodiscard]] std::optional<std::string> getAttribute(std::string_view name) const override;
+
 private:
     struct Impl;
     std::shared_ptr<Impl> pimpl_;   ///< Pointer to the implementation details.

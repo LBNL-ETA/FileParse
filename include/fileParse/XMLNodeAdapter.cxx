@@ -110,6 +110,20 @@ std::string XMLNodeAdapter::getContent() const
     return pimpl_->node_.createXMLString();
 }
 
+void XMLNodeAdapter::addAttribute(std::string_view name, std::string_view value)
+{
+    pimpl_->node_.addAttribute(name.data(), value.data());
+}
+
+std::optional<std::string> XMLNodeAdapter::getAttribute(std::string_view name) const
+{
+    if(const char * attribute{pimpl_->node_.getAttribute(name.data())}; attribute != nullptr)
+    {
+        return std::string(attribute);
+    }
+    return std::nullopt;
+}
+
 XMLNodeAdapter createTopNode(std::string_view topNodeName)
 {
     return XMLNodeAdapter(XMLParser::XMLNode::createXMLTopNode(topNodeName.data()));
