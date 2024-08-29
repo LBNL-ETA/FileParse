@@ -19,6 +19,8 @@ TEST(AttributesSerializerTest, Deserialize)
     EXPECT_EQ(23, base.age);
     EXPECT_DOUBLE_EQ(1.93, base.height);
     EXPECT_EQ(Helper::Day::Tuesday, base.day);
+    ASSERT_TRUE(base.optional_age.has_value());
+    EXPECT_EQ(18, base.optional_age.value());
 
     std::remove(fileName.c_str());
 }
@@ -39,6 +41,7 @@ TEST(AttributesSerializerTest, Serialize)
     EXPECT_EQ(base.age, loadedBase.age);
     EXPECT_DOUBLE_EQ(base.height, loadedBase.height);
     EXPECT_EQ(base.day, loadedBase.day);
+    EXPECT_FALSE(loadedBase.optional_age.has_value());
 
     std::remove(fileName.c_str());
 }
