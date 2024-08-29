@@ -52,4 +52,10 @@ public:
     // Adds content of the entire node structure with child into string (the same content
     // that will be in the file).
     [[nodiscard]] virtual std::string getContent() const = 0;
+
+    // Attributes are only supported by XML. For JSON, this functions should
+    // behave as they are operating with child node where attribute name is the tag name
+    // and value should go into value field.
+    virtual void addAttribute(std::string_view name, std::string_view value) = 0;
+    [[nodiscard]] virtual std::optional<std::string> getAttribute(std::string_view name) const = 0;
 };
