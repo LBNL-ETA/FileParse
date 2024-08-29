@@ -1,9 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "test/helper/structures/Attributes.hxx"
-
 #include "test/helper/files/AttributesXML.hxx"
-
 #include "test/helper/FileManipulation.hxx"
 
 TEST(AttributesSerializerTest, Deserialize)
