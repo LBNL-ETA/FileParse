@@ -118,8 +118,9 @@ namespace FileParse
     // Generic saveAttribute for optional basic types, excluding std::string
     template<typename NodeAdapter,
              typename T,
-             typename std::enable_if<
-                 is_basic_type<T>::value && !std::is_same<T, std::string>::value, int>::type = 0>
+             typename std::
+               enable_if<is_basic_type<T>::value && !std::is_same<T, std::string>::value, int>::type
+             = 0>
     void saveAttribute(NodeAdapter & node, const std::string & name, const std::optional<T> & value)
     {
         if(value.has_value())
@@ -130,11 +131,28 @@ namespace FileParse
 
     // Specialization for std::optional<std::string>
     template<typename NodeAdapter>
-    void saveAttribute(NodeAdapter & node, const std::string & name, const std::optional<std::string> & value)
+    void saveAttribute(NodeAdapter & node,
+                       const std::string & name,
+                       const std::optional<std::string> & value)
     {
         if(value.has_value())
         {
             node.addAttribute(name, value.value());
+        }
+    }
+
+    // Save attribute for std::optional<T> where T is an enum, with custom conversion functions
+    template<typename NodeAdapter,
+             typename T,
+             typename std::enable_if<is_enum_type<T>::value, int>::type = 0>
+    void saveAttribute(NodeAdapter & node,
+                       const std::string & name,
+                       const std::optional<T> & value,
+                       const std::function<std::string(T)> & enumToString)
+    {
+        if(value.has_value())
+        {
+            node.addAttribute(name, enumToString(value.value()));
         }
     }
 
@@ -144,7 +162,9 @@ namespace FileParse
              typename std::
                enable_if<is_basic_type<T>::value && !std::is_same<T, std::string>::value, int>::type
              = 0>
-    void loadAttribute(const NodeAdapter & node, const std::string & name, std::optional<T> & attribute)
+    void loadAttribute(const NodeAdapter & node,
+                       const std::string & name,
+                       std::optional<T> & attribute)
     {
         auto stringValue = node.getAttribute(name);
         if(stringValue.has_value())
@@ -155,12 +175,30 @@ namespace FileParse
 
     // Explicit overload for std::optional<std::string>
     template<typename NodeAdapter>
-    void loadAttribute(const NodeAdapter & node, const std::string & name, std::optional<std::string> & attribute)
+    void loadAttribute(const NodeAdapter & node,
+                       const std::string & name,
+                       std::optional<std::string> & attribute)
     {
         auto value = node.getAttribute(name);
         if(value.has_value())
         {
             attribute = value.value();
+        }
+    }
+
+    // Load attribute for std::optional<T> where T is an enum, with custom conversion functions
+    template<typename NodeAdapter,
+             typename T,
+             typename std::enable_if<is_enum_type<T>::value, int>::type = 0>
+    void loadAttribute(const NodeAdapter & node,
+                       const std::string & name,
+                       std::optional<T> & attribute,
+                       const std::function<T(std::string_view)> & stringToEnum)
+    {
+        auto value = node.getAttribute(name);
+        if(value.has_value())
+        {
+            attribute = stringToEnum(value.value());
         }
     }
 }   // namespace FileParse
