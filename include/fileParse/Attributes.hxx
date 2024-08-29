@@ -110,4 +110,57 @@ namespace FileParse
         if(value.has_value())
             attribute = stringToEnum(value.value());
     }
+
+    //////////////////////////////////////////////////////////////////
+    // Need to handle optional values as well
+    //////////////////////////////////////////////////////////////////
+
+    // Generic saveAttribute for optional basic types, excluding std::string
+    template<typename NodeAdapter,
+             typename T,
+             typename std::enable_if<
+                 is_basic_type<T>::value && !std::is_same<T, std::string>::value, int>::type = 0>
+    void saveAttribute(NodeAdapter & node, const std::string & name, const std::optional<T> & value)
+    {
+        if(value.has_value())
+        {
+            node.addAttribute(name, std::to_string(value.value()));
+        }
+    }
+
+    // Specialization for std::optional<std::string>
+    template<typename NodeAdapter>
+    void saveAttribute(NodeAdapter & node, const std::string & name, const std::optional<std::string> & value)
+    {
+        if(value.has_value())
+        {
+            node.addAttribute(name, value.value());
+        }
+    }
+
+    // Explicit overload for std::optional<T> where T is a basic type, excluding std::string
+    template<typename NodeAdapter,
+             typename T,
+             typename std::
+               enable_if<is_basic_type<T>::value && !std::is_same<T, std::string>::value, int>::type
+             = 0>
+    void loadAttribute(const NodeAdapter & node, const std::string & name, std::optional<T> & attribute)
+    {
+        auto stringValue = node.getAttribute(name);
+        if(stringValue.has_value())
+        {
+            attribute = FileParse::from_string<T>(stringValue.value());
+        }
+    }
+
+    // Explicit overload for std::optional<std::string>
+    template<typename NodeAdapter>
+    void loadAttribute(const NodeAdapter & node, const std::string & name, std::optional<std::string> & attribute)
+    {
+        auto value = node.getAttribute(name);
+        if(value.has_value())
+        {
+            attribute = value.value();
+        }
+    }
 }   // namespace FileParse

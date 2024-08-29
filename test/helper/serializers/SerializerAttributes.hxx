@@ -15,6 +15,7 @@ namespace Helper
         FileParse::loadAttribute(node, "Age", element.age);
         FileParse::loadAttribute(node, "Height", element.height);
         FileParse::loadAttribute<NodeAdapter, Helper::Day>(node, "Day", element.day, Helper::toDay);
+        FileParse::loadAttribute(node, "OptionalAge", element.optional_age);
 
         return node;
     }
@@ -26,6 +27,7 @@ namespace Helper
         FileParse::saveAttribute(node, "Age", element.age);
         FileParse::saveAttribute(node, "Height", element.height);
         FileParse::saveAttribute<NodeAdapter, Helper::Day>(node, "Day", element.day, Helper::toDayString);
+        FileParse::saveAttribute(node, "OptionalAge", element.optional_age);
 
         return node;
     }
