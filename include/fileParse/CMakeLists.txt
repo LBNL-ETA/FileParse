@@ -1,6 +1,8 @@
 set( CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON )
 
 add_library( ${LIB_NAME}
+		Array.hxx
+		Attributes.hxx
 		Base.hxx
 		Formatter.hxx
 		Formatter.cxx
