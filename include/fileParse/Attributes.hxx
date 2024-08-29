@@ -101,13 +101,13 @@ namespace FileParse
     template<typename NodeAdapter,
              typename T,
              typename std::enable_if<is_enum_type<T>::value, int>::type = 0>
-    std::optional<T> loadAttribute(const NodeAdapter & node,
-                                   const std::string & name,
-                                   const std::function<T(const std::string &)> & stringToEnum)
+    void loadAttribute(const NodeAdapter & node,
+                       const std::string & name,
+                       T & attribute,
+                       const std::function<T(std::string_view)> & stringToEnum)
     {
         auto value = node.getAttribute(name);
         if(value.has_value())
-            return stringToEnum(value.value());
-        return std::nullopt;
+            attribute = stringToEnum(value.value());
     }
 }   // namespace FileParse

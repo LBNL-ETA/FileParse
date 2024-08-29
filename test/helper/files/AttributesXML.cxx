@@ -19,7 +19,7 @@ namespace Helper
 
     std::string attributesElement()
     {
-        return "\t<AttributesTest Name=\"Text\" Age=\"23\" />";
+        return "\t<AttributesTest Name=\"Text\" Age=\"23\" Height=\"1.93\" Day=\"Tuesday\" />";
     }
 
     AttributesTest loadAttributesElement(std::string_view fileName)
