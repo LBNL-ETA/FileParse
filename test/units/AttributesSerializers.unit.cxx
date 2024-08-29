@@ -16,13 +16,14 @@ TEST(AttributesSerializerTest, Deserialize)
     Helper::AttributesTest base{Helper::loadAttributesElement(fileName)};
 
     EXPECT_EQ("Text", base.name);
+    EXPECT_EQ(23, base.age);
 
     std::remove(fileName.c_str());
 }
 
 TEST(AttributesSerializerTest, Serialize)
 {
-    const Helper::AttributesTest base{"Text"};
+    const Helper::AttributesTest base{"Text", 42};
 
     const std::string fileName{"TestWrite.xml"};
     std::remove(fileName.c_str());
@@ -33,6 +34,7 @@ TEST(AttributesSerializerTest, Serialize)
     Helper::AttributesTest loadedBase{Helper::loadAttributesElement(fileName)};
 
     EXPECT_EQ(base.name, loadedBase.name);
+    EXPECT_EQ(base.age, loadedBase.age);
 
     std::remove(fileName.c_str());
 }

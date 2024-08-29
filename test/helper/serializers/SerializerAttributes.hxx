@@ -1,7 +1,7 @@
 #pragma once
 
 #include "fileParse/Attributes.hxx"
-#include "fileParse/Common.hxx"
+#include "fileParse/Base.hxx"
 
 #include "test/helper/structures/Attributes.hxx"
 
@@ -11,7 +11,8 @@ namespace Helper
     inline const NodeAdapter & operator>>(const NodeAdapter & node,
                                           Helper::AttributesTest & element)
     {
-        FileParse::assignIfHasValue(node.getAttribute("Name"), element.name);
+        FileParse::loadAttribute(node, "Name", element.name);
+        FileParse::loadAttribute(node, "Age", element.age);
 
         return node;
     }
@@ -19,7 +20,8 @@ namespace Helper
     template<typename NodeAdapter>
     inline NodeAdapter & operator<<(NodeAdapter & node, const Helper::AttributesTest & element)
     {
-        node.addAttribute("Name", element.name);
+        FileParse::saveAttribute(node, "Name", element.name);
+        FileParse::saveAttribute(node, "Age", element.age);
 
         return node;
     }
