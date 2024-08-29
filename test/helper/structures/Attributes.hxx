@@ -14,5 +14,6 @@ namespace Helper
         double height{0.0};
         Day day{Day::None};
         std::optional<int> optional_age;
+        std::optional<std::string> nickname; // string is handled by different functions. Need this for coverage.
     };
 }

@@ -21,13 +21,15 @@ TEST(AttributesSerializerTest, Deserialize)
     EXPECT_EQ(Helper::Day::Tuesday, base.day);
     ASSERT_TRUE(base.optional_age.has_value());
     EXPECT_EQ(18, base.optional_age.value());
+    ASSERT_TRUE(base.nickname.has_value());
+    EXPECT_EQ("Charlie", base.nickname.value());
 
     std::remove(fileName.c_str());
 }
 
 TEST(AttributesSerializerTest, Serialize)
 {
-    const Helper::AttributesTest base{"Text", 42, 1.75, Helper::Day::Wednesday};
+    const Helper::AttributesTest base{"Text", 42, 1.75, Helper::Day::Wednesday, std::nullopt, "Goofy"};
 
     const std::string fileName{"TestWrite.xml"};
     std::remove(fileName.c_str());
@@ -42,6 +44,7 @@ TEST(AttributesSerializerTest, Serialize)
     EXPECT_DOUBLE_EQ(base.height, loadedBase.height);
     EXPECT_EQ(base.day, loadedBase.day);
     EXPECT_FALSE(loadedBase.optional_age.has_value());
+    EXPECT_EQ(base.nickname, loadedBase.nickname);
 
     std::remove(fileName.c_str());
 }
