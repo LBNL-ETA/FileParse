@@ -398,4 +398,18 @@ namespace FileParse
         }
         return node;
     }
+
+    /// Simple function that will insert value into the target only if the optional has a value.
+    /// Created to avoid repetition of the same code in multiple places.
+    /// @tparam T The type of the value to be inserted.
+    /// @param opt The optional value to be inserted.
+    /// @param target The target variable to insert the value into.
+    template<typename T>
+    void assignIfHasValue(const std::optional<T> & opt, T & target)
+    {
+        if(opt.has_value())
+        {
+            target = opt.value();
+        }
+    }
 }   // namespace FileParse

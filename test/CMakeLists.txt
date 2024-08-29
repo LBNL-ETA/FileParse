@@ -35,6 +35,7 @@ add_executable(${PROJECT_TEST_NAME}
         helper/Utility.hxx
 		helper/UtilityCMA.hxx
 
+		helper/serializers/SerializerAttributes.hxx
 		helper/serializers/SerializerCMAEnumOptions.hxx
 		helper/serializers/SerializerCMAStringOptions.hxx
         helper/serializers/SerializerCMAValues.hxx
@@ -45,6 +46,7 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/serializers/SerializersVariant.hxx
 		helper/serializers/SerializersVector.hxx
 
+		helper/structures/Attributes.hxx
 		helper/structures/CMAEnumOptions.hxx
 		helper/structures/CMAStringOptions.hxx
 		helper/structures/CMAValues.hxx
@@ -57,6 +59,8 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/structures/StructureVariant.hxx
 		helper/structures/StructureVector.hxx
 
+		helper/files/AttributesXML.hxx
+		helper/files/AttributesXML.cxx
 		helper/files/BaseElementXML.hxx
 		helper/files/BaseElementXML.cxx
 		helper/files/SetElementXML.hxx
@@ -71,6 +75,7 @@ add_executable(${PROJECT_TEST_NAME}
 		helper/files/VectorElementXML.cxx
 
         units/ArraySerializers.unit.cxx
+        units/AttributesSerializers.unit.cxx
         units/BaseSerializers.unit.cxx
         units/BaseSerializersXML.unit.cxx
 		units/DoubleMapSerializers.unit.cxx
