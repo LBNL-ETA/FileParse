@@ -3,6 +3,7 @@
 #include <string>
 #include <optional>
 #include <variant>
+#include <vector>
 
 namespace Helper
 {
@@ -79,6 +80,11 @@ namespace Helper
     struct OptionalVariantElement
     {
         std::optional<std::variant<std::string, int>> optional_variant;
+    };
+
+    struct OptionalVariantVectorElement
+    {
+        std::optional<std::variant<std::vector<std::string>, std::vector<int>>> optional_variant_vector;
     };
 
 }   // namespace Helper

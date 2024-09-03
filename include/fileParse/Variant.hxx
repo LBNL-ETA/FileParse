@@ -136,4 +136,129 @@ namespace FileParse
         std::visit([&](auto && arg) { node << arg; }, v);
         return node;
     }
+
+    /// Serializes a std::variant containing std::vector types into a node.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam Ts Variadic template representing the vector types held by the variant.
+    /// @param node The node to serialize the variant into.
+    /// @param nodeNames A vector of strings representing the names for each type in the variant.
+    /// @param variantValue The std::variant value containing vectors to be serialized.
+    template<typename NodeAdapter, typename... Ts>
+    void serializeVariantVector(NodeAdapter & node,
+                                const std::vector<std::string> & nodeNames,
+                                const std::variant<Ts...> & variantValue)
+    {
+        if(variantValue.index() < nodeNames.size())
+        {
+            std::visit(
+              [&node, &nodeNames, &variantValue](const auto & val) {
+                  using ValueType = std::decay_t<decltype(val)>;
+                  if constexpr (std::is_same_v<ValueType, std::vector<std::string>> ||
+                                std::is_same_v<ValueType, std::vector<int>>)
+                  {
+                      node << Child{nodeNames[variantValue.index()], val};
+                  }
+              },
+              variantValue);
+        }
+    }
+
+    /// Deserializes a node into a std::variant containing std::vector types.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam Ts Variadic template representing the vector types held by the variant.
+    /// @param node The node to deserialize the variant from.
+    /// @param nodeNames A vector of strings representing the names for each type in the variant.
+    /// @param variantValue The std::variant value to store the deserialized vectors.
+    template<typename NodeAdapter, typename... Ts>
+    void deserializeVariantVector(const NodeAdapter & node,
+                                  const std::vector<std::string> & nodeNames,
+                                  std::variant<Ts...> & variantValue)
+    {
+        bool deserialized = false;
+        size_t index{0u};
+
+        auto try_deserialize_variant = [&](auto dummyType) {
+            using Type = decltype(dummyType);
+            if(!deserialized && index < nodeNames.size())
+            {
+                Type value;
+                if constexpr (std::is_same_v<Type, std::vector<std::string>> ||
+                              std::is_same_v<Type, std::vector<int>>)
+                {
+                    if(node.nChildNode(nodeNames[index]) > 0)
+                    {
+                        node >> Child{nodeNames[index], value};
+                        variantValue = value;
+                        deserialized = true;
+                    }
+                }
+            }
+            index++;
+        };
+
+        (try_deserialize_variant(Ts{}), ...);
+    }
+
+    /// Serializes a std::optional<std::variant> containing std::vector types into a node.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam Ts Variadic template representing the vector types held by the variant.
+    /// @param node The node to serialize the optional variant into.
+    /// @param nodeNames A vector of strings representing the names for each type in the variant.
+    /// @param optionalVariantValue The std::optional<std::variant> value containing vectors to be serialized.
+    template<typename NodeAdapter, typename... Ts>
+    void serializeOptionalVariantVector(NodeAdapter & node,
+                                        const std::vector<std::string> & nodeNames,
+                                        const std::optional<std::variant<Ts...>> & optionalVariantValue)
+    {
+        if(optionalVariantValue.has_value())
+        {
+            serializeVariantVector(node, nodeNames, *optionalVariantValue);
+        }
+    }
+
+    /// Deserializes a node into a std::optional<std::variant> containing std::vector types.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam Ts Variadic template representing the vector types held by the variant.
+    /// @param node The node to deserialize the optional variant from.
+    /// @param nodeNames A vector of strings representing the names for each type in the variant.
+    /// @param optionalVariantValue The std::optional<std::variant> value to store the deserialized vectors.
+    template<typename NodeAdapter, typename... Ts>
+    void deserializeOptionalVariantVector(const NodeAdapter & node,
+                                          const std::vector<std::string> & nodeNames,
+                                          std::optional<std::variant<Ts...>> & optionalVariantValue)
+    {
+        std::variant<Ts...> variantValue;
+        bool successfullyDeserialized = false;
+        size_t index{0u};
+
+        auto try_deserialize_variant = [&](auto dummyType) {
+            using Type = decltype(dummyType);
+            if(!successfullyDeserialized && index < nodeNames.size())
+            {
+                Type value;
+                if constexpr (std::is_same_v<Type, std::vector<std::string>> ||
+                              std::is_same_v<Type, std::vector<int>>)
+                {
+                    if(node.nChildNode(nodeNames[index]) > 0)
+                    {
+                        node >> Child{nodeNames[index], value};
+                        variantValue = value;
+                        successfullyDeserialized = true;
+                    }
+                }
+            }
+            index++;
+        };
+
+        (try_deserialize_variant(Ts{}), ...);
+
+        if(successfullyDeserialized)
+        {
+            optionalVariantValue = variantValue;
+        }
+        else
+        {
+            optionalVariantValue = std::nullopt;
+        }
+    }
 }   // namespace FileParse
