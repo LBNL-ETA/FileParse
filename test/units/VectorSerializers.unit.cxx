@@ -113,3 +113,50 @@ TEST_F(VectorSerializerTest, SerializeVectorOfEnumerators)
 
     EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
 }
+
+TEST_F(VectorSerializerTest, DeserializeVectorOfDoublesFromRoot)
+{
+    auto mockData = []() {
+        Helper::MockNode node{"Root"};
+
+        addChildNode(node, "Value", "38.8048");
+        addChildNode(node, "Value", "25.5758");
+        addChildNode(node, "Value", "96.1831");
+        addChildNode(node, "Value", "90.3927");
+
+        return node;
+    };
+    auto elementNode(mockData());
+    const Helper::MockNodeAdapter adapter{&elementNode};
+
+    std::vector<double> elements;
+    adapter >> FileParse::Child{"Value", elements};
+
+    const std::vector<double> correct{38.8048, 25.5758, 96.1831, 90.3927};
+
+    constexpr auto tolerance{1e-6};
+    Helper::checkVectorValues(correct, elements, tolerance);
+}
+
+TEST_F(VectorSerializerTest, SerializeVectorOfDoublesToRoot)
+{
+    const std::vector<double> elements{38.8048, 25.5758, 96.1831, 90.3927};
+
+    Helper::MockNode elementNode("Root");
+    Helper::MockNodeAdapter adapter{&elementNode};
+
+    adapter << FileParse::Child{"Element", elements};
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"Root"};
+
+        addChildNode(node, "Element", "38.8048");
+        addChildNode(node, "Element", "25.5758");
+        addChildNode(node, "Element", "96.1831");
+        addChildNode(node, "Element", "90.3927");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
