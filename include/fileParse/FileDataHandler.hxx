@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <optional>
 
 #include "XMLNodeAdapter.hxx"
 
@@ -19,24 +20,25 @@ namespace Common
     }   // namespace
 
     template<typename T>
-    T loadFromXMLString(const std::string & data, const std::string & nodeTypeName)
+    std::optional<T> loadFromXMLString(const std::string & data, const std::string & nodeTypeName)
     {
         // Attempt to load the top node for the given type
         const auto xmlNode = getTopNodeFromString(data, nodeTypeName);
 
         // Create an instance of the type
-        T model;
         if(xmlNode.has_value())
         {
+            T model;
             // Assume that `operator>>` is overloaded for T and xmlNode type
             xmlNode.value() >> model;
+            return model;
         }
 
-        return model;
+        return std::nullopt;
     }
 
     template<typename T>
-    T loadFromXMLFile(std::string_view fileName, const std::string & nodeTypeName)
+    std::optional<T> loadFromXMLFile(std::string_view fileName, const std::string & nodeTypeName)
     {
         // Convert std::string_view to std::string for file operations
         std::string fileNameStr(fileName);
@@ -51,15 +53,16 @@ namespace Common
         // Attempt to load the top node for the given type
         const auto xmlNode = getTopNodeFromFile(fileNameStr, nodeTypeName);
 
-        // Create an instance of the type
-        T model;
+
         if(xmlNode.has_value())
         {
+            T model;
             // Assume that `operator>>` is overloaded for T and xmlNode type
             xmlNode.value() >> model;
+            return model;
         }
 
-        return model;
+        return std::nullopt;
     }
 
     template<typename T>
