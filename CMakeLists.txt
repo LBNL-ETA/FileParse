@@ -7,6 +7,11 @@ set(LIB_VERSION_STRING "${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_PATCH_VE
 
 cmake_minimum_required(VERSION 3.5)
 
+# Force all targets to use the dynamic runtime library on MSVC
+if (MSVC)
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
+
 set(LIB_NAME ${PROJECT_NAME})
 
 if(NOT "${CMAKE_CXX_STANDARD}")
@@ -47,4 +52,14 @@ option(BUILD_FileParse_tests "Build FileParse tests." ON)
 if(BUILD_FileParse_tests)
 	enable_testing()
 	add_subdirectory(test)
+endif()
+
+if (MSVC)
+    # Apply dynamic runtime setting to all targets
+    foreach(target ${ALL_PROJECT_TARGETS})
+        if (TARGET ${target})
+            set_target_properties(${target} PROPERTIES
+                MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+        endif()
+    endforeach()
 endif()
