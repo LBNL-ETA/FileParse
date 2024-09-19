@@ -1,8 +1,9 @@
 #pragma once
 
-#include "include/fileParse/Common.hxx"
-#include "include/fileParse/Variant.hxx"
-#include "include/fileParse/Optional.hxx"
+#include "fileParse/Common.hxx"
+#include "fileParse/Variant.hxx"
+#include "fileParse/Optional.hxx"
+#include "fileParse/Vector.hxx"
 
 #include "test/helper/structures/StructureBase.hxx"
 
@@ -175,7 +176,8 @@ namespace Helper
     ////////////////////////////////////////////////////
 
     template<typename NodeAdapter>
-    inline const NodeAdapter & operator>>(const NodeAdapter & node, OptionalSizeTFieldElement & element)
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          OptionalSizeTFieldElement & element)
     {
         using FileParse::Child;
         node >> Child{"OptionalSize_t", element.optional_size_t_field};
@@ -239,6 +241,32 @@ namespace Helper
         using FileParse::serializeOptionalVariant;
 
         serializeOptionalVariant(node, {"VariantString", "VariantInt"}, element.optional_variant);
+
+        return node;
+    }
+
+    template<typename NodeAdapter>
+    inline const NodeAdapter & operator>>(const NodeAdapter & node,
+                                          Helper::OptionalVariantVectorElement & object)
+    {
+        using FileParse::Child;
+        using FileParse::deserializeOptionalVariantVector;
+
+        deserializeOptionalVariantVector(
+          node, {"VariantString", "VariantInt"}, object.optional_variant_vector);
+
+        return node;
+    }
+
+    template<typename NodeAdapter>
+    inline NodeAdapter & operator<<(NodeAdapter & node,
+                                    const Helper::OptionalVariantVectorElement & object)
+    {
+        using FileParse::Child;
+        using FileParse::serializeOptionalVariantVector;
+
+        serializeOptionalVariantVector(
+          node, {"VariantString", "VariantInt"}, object.optional_variant_vector);
 
         return node;
     }

@@ -5,6 +5,8 @@
 #pragma once
 
 #include <string>
+#include <array>
+#include <map>
 
 namespace FileParse
 {
@@ -59,5 +61,84 @@ namespace FileParse
     T from_string_helper(const std::string & str)
     {
         return from_string<T>(str);
+    }
+
+    /// Enumerator to string conversion routines.
+
+    /// Converts an enumerator value to a string.
+    /// @tparam EnumType The type of the enumerator.
+    /// @tparam N The number of enumerator values.
+    /// @param value The enumerator value to convert to a string.
+    /// @param values An array of strings representing the enumerator values.
+    /// @return The string representation of the enumerator value.
+    template<typename EnumType, std::size_t N>
+    EnumType enumFromString(std::string_view name,
+                            const std::array<std::string, N> & values,
+                            EnumType defaultValue)
+    {
+        for(std::size_t i = 0; i < values.size(); ++i)
+        {
+            if(values[i] == name)
+            {
+                return static_cast<EnumType>(i);
+            }
+        }
+        return defaultValue;
+    }
+
+    /// Converts an enumerator value to a string.
+    /// @tparam EnumType The type of the enumerator.
+    /// @tparam N The number of enumerator values.
+    /// @param value The enumerator value to convert to a string.
+    /// @param values An array of strings representing the enumerator values.
+    /// @return The string representation of the enumerator value.
+    template<typename EnumType, std::size_t N>
+    std::string enumToString(EnumType value, const std::array<std::string, N> & values)
+    {
+        const auto index{static_cast<std::size_t>(value)};
+        if(index < values.size())
+        {
+            return values[index];
+        }
+        return "Unknown";
+    }
+
+    /// Converts an enumerator value to a string.
+    /// @tparam T The type of the enumerator.
+    /// @param enumType The enumerator value to convert to a string.
+    /// @param enumMap A map of enumerator values to string representations.
+    /// @return The string representation of the enumerator value.
+    template<typename T>
+    std::string enumToString(const T enumType, const std::map<T, std::string> & enumMap)
+    {
+        if(enumMap.count(enumType) > 0)
+        {
+            return enumMap.at(enumType);
+        }
+        return "Unknown";
+    }
+
+    /// Converts a string to an enumerator value.
+    /// @tparam T The type of the enumerator.
+    /// @param enumString The string to convert to an enumerator value.
+    /// @param enumMap A map of enumerator values to string representations.
+    /// @return The enumerator value corresponding to the input string.
+    template<typename T>
+    T enumFromString(std::string_view enumString, const std::map<T, std::string> & enumMap)
+    {
+        if(!enumString.empty())
+        {
+            auto it
+              = std::find_if(enumMap.begin(), enumMap.end(), [&enumString](const auto & pair) {
+                    return pair.second == enumString;
+                });
+
+            if(it != enumMap.end())
+            {
+                return it->first;
+            }
+        }
+
+        return enumMap.begin()->first;
     }
 }   // namespace FileParse
