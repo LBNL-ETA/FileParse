@@ -962,6 +962,64 @@ TEST_F(BaseSerializerTest, DeserializeOptionalVariantFieldEmpty)
     EXPECT_FALSE(element.optional_variant.has_value());
 }
 
+TEST_F(BaseSerializerTest, SerializeOptionalVariantVector)
+{
+    Helper::OptionalVariantVectorElement element;
+    element.optional_variant_vector = std::vector<std::string>{"one", "two", "three"};
+
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+    adapter << element;
+
+    auto correctNodes = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "VariantString", "one");
+        addChildNode(node, "VariantString", "two");
+        addChildNode(node, "VariantString", "three");
+
+        return node;
+    };
+
+    EXPECT_TRUE(Helper::compareNodes(adapter.getNode(), correctNodes()));
+}
+
+TEST_F(BaseSerializerTest, DeserializeOptionalVariantVector)
+{
+    auto elementNode = []() {
+        Helper::MockNode node{"BaseElement"};
+
+        addChildNode(node, "VariantString", "one");
+        addChildNode(node, "VariantString", "two");
+        addChildNode(node, "VariantString", "three");
+
+        return node;
+    };
+
+    auto elNode{elementNode()};
+
+    const Helper::MockNodeAdapter adapter{&elNode};
+
+    Helper::OptionalVariantVectorElement element;
+    adapter >> element;
+
+    // Check that the deserialized data matches the expected values
+    ASSERT_TRUE(element.optional_variant_vector.has_value());
+
+    // Verify that the value in the optional variant is indeed a vector of strings
+    ASSERT_TRUE(
+      std::holds_alternative<std::vector<std::string>>(element.optional_variant_vector.value()));
+
+    const auto & deserializedVector
+      = std::get<std::vector<std::string>>(element.optional_variant_vector.value());
+
+    // Compare the deserialized vector with the expected vector
+    EXPECT_EQ(deserializedVector.size(), 3);
+    EXPECT_EQ(deserializedVector[0], "one");
+    EXPECT_EQ(deserializedVector[1], "two");
+    EXPECT_EQ(deserializedVector[2], "three");
+}
+
 TEST_F(BaseSerializerTest, SerializeOptionalVariantFieldAsString)
 {
     Helper::OptionalVariantElement element;

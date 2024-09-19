@@ -4,6 +4,7 @@ add_library( ${LIB_NAME}
 		Array.hxx
 		Attributes.hxx
 		Base.hxx
+		FileDataHandler.hxx
 		Formatter.hxx
 		Formatter.cxx
 		Common.hxx
