@@ -1,61 +1,19 @@
 #include "BaseElementXML.hxx"
 
-#include "test/helper/structures/StructureBase.hxx"
-#include "../serializers/SerializersBaseElement.hxx"
+#include "helper/structures/StructureBase.hxx"
+#include "helper/serializers/SerializersBaseElement.hxx"
 
-#include "include/fileParse/XMLNodeAdapter.hxx"
+#include "fileParse/FileDataHandler.hxx"
 
 namespace Helper
 {
-    std::string testBaseElementDatabase()
+    std::optional<BaseElement> loadBaseElement(std::string_view fileName)
     {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += baseElement();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string baseElement()
-    {
-        return "\t<BaseElement>"
-               "\t\t<SampleText>TestText</SampleText>"
-               "\t\t<OptionalText>OptionalText</OptionalText>"
-               "\t\t<Integer>13</Integer>"
-               "\t\t<OptionalInteger>23</OptionalInteger>"
-               "\t\t<Double>3.1415926</Double>"
-               "\t\t<Size_t>18</Size_t>"
-               "\t\t<Boolean>true</Boolean>"
-               "\t\t<OptionalDouble>4.1415926</OptionalDouble>"
-               "\t\t<OptionalBoolean>false</OptionalBoolean>"
-               "\t\t<VariantString>VariantText</VariantString>"
-               "\t\t<VariantString1>VariantText1</VariantString1>"
-               "\t</BaseElement>";
-    }
-
-    BaseElement loadBaseElement(std::string_view fileName)
-    {
-        using FileParse::Child;
-
-        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
-
-        BaseElement base;
-        if(xmlNode.has_value())
-        {
-            xmlNode.value() >> Child{"BaseElement", base};
-        }
-
-        return base;
+        return Common::loadFromXMLFile<BaseElement>(fileName, "BaseElement");
     }
 
     int saveBaseElement(const BaseElement & base, std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{createTopNode("Test")};
-
-        xmlNode << Child{"BaseElement", base};
-
-        return xmlNode.writeToFile(fileName);
+        return Common::saveToXMLFile(base, fileName, "BaseElement");
     }
 }   // namespace Helper

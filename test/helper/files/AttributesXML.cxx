@@ -1,10 +1,9 @@
 #include "AttributesXML.hxx"
 
 #include "helper/structures/Attributes.hxx"
-#include "../serializers/SerializerAttributes.hxx"
+#include "helper/serializers/SerializerAttributes.hxx"
 
 #include "fileParse/Common.hxx"
-#include "fileParse/XMLNodeAdapter.hxx"
 #include "fileParse/FileDataHandler.hxx"
 
 namespace Helper

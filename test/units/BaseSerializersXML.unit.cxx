@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <gtest/gtest.h>
 
 #include "test/helper/files/BaseElementXML.hxx"
@@ -10,28 +11,27 @@ class BaseSerializerXMLTest : public testing::Test
 
 TEST_F(BaseSerializerXMLTest, TestReadingBaseElement)
 {
-    const std::string fileContent{Helper::testBaseElementDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "BaseElement.xml";
 
-    File::createFileFromString(fileName, fileContent);
+    const auto base{Helper::loadBaseElement(fileName.string())};
+    ASSERT_TRUE(base.has_value());
 
-    Helper::BaseElement base{Helper::loadBaseElement(fileName)};
-
-    EXPECT_EQ("TestText", base.text);
-    EXPECT_EQ(13, base.integer_number);
-    EXPECT_NEAR(3.1415926, base.double_number, 1e-6);
-    EXPECT_EQ(true, base.boolean_field);
-    EXPECT_EQ("OptionalText", base.optional_text);
-    EXPECT_EQ(23, base.optional_int);
-    EXPECT_EQ(18u, base.size_t_field);
-    ASSERT_EQ(true, base.optional_double.has_value());
-    EXPECT_NEAR(4.1415926, base.optional_double.value(), 1e-6);
-    ASSERT_EQ(true, base.boolean_optional.has_value());
-    if(base.boolean_optional.has_value())
+    EXPECT_EQ("TestText", base->text);
+    EXPECT_EQ(13, base->integer_number);
+    EXPECT_NEAR(3.1415926, base->double_number, 1e-6);
+    EXPECT_EQ(true, base->boolean_field);
+    EXPECT_EQ("OptionalText", base->optional_text);
+    EXPECT_EQ(23, base->optional_int);
+    EXPECT_EQ(18u, base->size_t_field);
+    ASSERT_EQ(true, base->optional_double.has_value());
+    EXPECT_NEAR(4.1415926, base->optional_double.value(), 1e-6);
+    ASSERT_EQ(true, base->boolean_optional.has_value());
+    if(base->boolean_optional.has_value())
     {
-        EXPECT_EQ(false, base.boolean_optional.value());
+        EXPECT_EQ(false, base->boolean_optional.value());
     }
-    if(auto str_ptr = std::get_if<std::string>(&base.variant_field))
+    if(auto str_ptr = std::get_if<std::string>(&base->variant_field))
     {
         EXPECT_EQ("VariantText", *str_ptr);
     }
@@ -41,8 +41,8 @@ TEST_F(BaseSerializerXMLTest, TestReadingBaseElement)
         FAIL();
     }
 
-    ASSERT_EQ(true, base.optional_variant.has_value());
-    if(auto str_ptr = std::get_if<std::string>(&base.optional_variant.value()))
+    ASSERT_EQ(true, base->optional_variant.has_value());
+    if(auto str_ptr = std::get_if<std::string>(&base->optional_variant.value()))
     {
         EXPECT_EQ("VariantText1", *str_ptr);
     }
@@ -51,9 +51,6 @@ TEST_F(BaseSerializerXMLTest, TestReadingBaseElement)
         std::cerr << "optional_variant_field does not hold a string value" << std::endl;
         FAIL();
     }
-
-
-    std::remove(fileName.c_str());
 }
 
 TEST_F(BaseSerializerXMLTest, TestWritingBaseElement)
@@ -74,50 +71,51 @@ TEST_F(BaseSerializerXMLTest, TestWritingBaseElement)
     const auto result{Helper::saveBaseElement(base, fileName)};
     EXPECT_EQ(0, result);
 
-    Helper::BaseElement loadedBase{Helper::loadBaseElement(fileName)};
+    const auto loadedBase{Helper::loadBaseElement(fileName)};
+        ASSERT_TRUE(loadedBase.has_value());
 
-    EXPECT_EQ(base.text, loadedBase.text);
+    EXPECT_EQ(base.text, loadedBase->text);
 
     constexpr auto tolerance{1e-6};
 
-    if(base.optional_double.has_value() && loadedBase.optional_double.has_value())
+    if(base.optional_double.has_value() && loadedBase->optional_double.has_value())
     {
-        EXPECT_NEAR(base.optional_double.value(), loadedBase.optional_double.value(), tolerance);
+        EXPECT_NEAR(base.optional_double.value(), loadedBase->optional_double.value(), tolerance);
     }
     else
     {
         EXPECT_EQ(base.optional_double.has_value(),
-                  loadedBase.optional_double.has_value());   // Both should be nullopt
+                  loadedBase->optional_double.has_value());   // Both should be nullopt
     }
 
-    EXPECT_EQ(base.boolean_optional, loadedBase.boolean_optional);
+    EXPECT_EQ(base.boolean_optional, loadedBase->boolean_optional);
 
-    if(base.boolean_optional.has_value() && loadedBase.boolean_optional.has_value())
+    if(base.boolean_optional.has_value() && loadedBase->boolean_optional.has_value())
     {
-        EXPECT_EQ(base.boolean_optional.value(), loadedBase.boolean_optional.value());
+        EXPECT_EQ(base.boolean_optional.value(), loadedBase->boolean_optional.value());
     }
     else
     {
         EXPECT_EQ(base.optional_double.has_value(),
-                  loadedBase.optional_double.has_value());   // Both should be nullopt
+                  loadedBase->optional_double.has_value());   // Both should be nullopt
     }
 
     EXPECT_NEAR(base.double_number,
-                loadedBase.double_number,
+                loadedBase->double_number,
                 tolerance);   // Assuming double_number is not optional
 
     if(std::holds_alternative<double>(base.variant_field)
-       && std::holds_alternative<double>(loadedBase.variant_field))
+       && std::holds_alternative<double>(loadedBase->variant_field))
     {
         EXPECT_NEAR(std::get<double>(base.variant_field),
-                    std::get<double>(loadedBase.variant_field),
+                    std::get<double>(loadedBase->variant_field),
                     tolerance);
     }
     else if(std::holds_alternative<std::string>(base.variant_field)
-            && std::holds_alternative<std::string>(loadedBase.variant_field))
+            && std::holds_alternative<std::string>(loadedBase->variant_field))
     {
         EXPECT_EQ(std::get<std::string>(base.variant_field),
-                  std::get<std::string>(loadedBase.variant_field));
+                  std::get<std::string>(loadedBase->variant_field));
     }
     else
     {
