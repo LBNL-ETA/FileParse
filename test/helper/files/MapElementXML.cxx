@@ -5,34 +5,11 @@
 #include "test/helper/structures/CMAStringOptions.hxx"
 #include "../serializers/SerializerCMAStringOptions.hxx"
 
-#include "include/fileParse/XMLNodeAdapter.hxx"
+#include "fileParse/XMLNodeAdapter.hxx"
+#include "fileParse/FileDataHandler.hxx"
 
 namespace Helper
 {
-
-    std::string testMapElementStringDatabase()
-    {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += mapElementString();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string mapElementString()
-    {
-        return "\t<OrderedMap>\n"
-               "\t\t<Key1>Value1</Key1>\n"
-               "\t\t<Key2>Value2</Key2>\n"
-               "\t\t<Key3>Value3</Key3>\n"
-               "\t</OrderedMap>\n"
-               "\t<UnorderedMap>\n"
-               "\t\t<K1>V1</K1>\n"
-               "\t\t<K2>V2</K2>\n"
-               "\t\t<K3>V3</K3>\n"
-               "\t</UnorderedMap>\n";
-    }
-
     std::string testMapElementDoubleDatabase()
     {
         static const std::string rootTag{"Test"};
@@ -71,7 +48,7 @@ namespace Helper
 
     std::string testMapElementEmptyStringDatabase()
     {
-        static const std::string rootTag{"Test"};
+        static const std::string rootTag{"MapString"};
         std::string fileContent{"<" + rootTag + ">\n"};
         fileContent += mapElementEmptyString();
         fileContent += "</" + rootTag + ">";
@@ -150,29 +127,14 @@ namespace Helper
                "\t</Element>\n";
     }
 
-    MapElementString loadMapElementString(std::string_view fileName)
+    std::optional<MapElementString> loadMapElementString(std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
-
-        MapElementString element;
-        if(xmlNode.has_value())
-        {
-            xmlNode.value() >> element;
-        }
-
-        return element;
+        return Common::loadFromXMLFile<MapElementString>(fileName, "MapString");
     }
 
     int saveMapElementDouble(const MapElementString & element, std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{createTopNode("Test")};
-
-        xmlNode << element;
-        return xmlNode.writeToFile(fileName);
+        return Common::saveToXMLFile(element, fileName, "MapString");
     }
 
     MapElementOptionalString loadMapElementOptionalString(std::string_view fileName)
