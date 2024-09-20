@@ -14,7 +14,7 @@ class DoubleMapSerializerTest : public testing::Test
 Helper::MockNode createStringDoubleMapElement()
 {
     Helper::MockNode node{"child"};
-    Helper::MockNode & mapNode = Helper::addChildNode(node, "DoubleMap");
+    Helper::MockNode & mapNode = Helper::addChildNode(node, "MapDouble");
 
     addChildNode(mapNode, "Key1", "37.582914");
     addChildNode(mapNode, "Key2", "92.143057");
@@ -53,7 +53,7 @@ TEST_F(DoubleMapSerializerTest, SerializeMapStringDouble)
 
     auto correctNodes = []() {
         Helper::MockNode node{"Root"};
-        Helper::MockNode & mapNode = Helper::addChildNode(node, "DoubleMap");
+        Helper::MockNode & mapNode = Helper::addChildNode(node, "MapDouble");
 
         addChildNode(mapNode, "Value1", "23.856912");
         addChildNode(mapNode, "Value2", "67.43128");

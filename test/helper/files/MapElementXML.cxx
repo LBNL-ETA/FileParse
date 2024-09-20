@@ -10,24 +10,6 @@
 
 namespace Helper
 {
-    std::string testMapElementDoubleDatabase()
-    {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += mapElementDouble();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string mapElementDouble()
-    {
-        return "\t<DoubleMap>\n"
-               "\t\t<Key1>37.582914</Key1>\n"
-               "\t\t<Key2>92.143057</Key2>\n"
-               "\t\t<Key3>15.907634</Key3>\n"
-               "\t</DoubleMap>\n";
-    }
-
     std::string testMapElementOptionalStringDatabase()
     {
         static const std::string rootTag{"Test"};
@@ -188,30 +170,14 @@ namespace Helper
         return xmlNode.writeToFile(fileName);
     }
 
-    MapElementDouble loadMapElementDouble(std::string_view fileName)
+    std::optional<MapElementDouble> loadMapElementDouble(std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
-
-        MapElementDouble element;
-        if(xmlNode.has_value())
-        {
-            xmlNode.value() >> element;
-        }
-
-        return element;
+        return Common::loadFromXMLFile<MapElementDouble>(fileName, "Test");
     }
 
     int saveMapElementDouble(const MapElementDouble & element, std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{createTopNode("Test")};
-
-        xmlNode << element;
-
-        return xmlNode.writeToFile(fileName);
+        return Common::saveToXMLFile(element, fileName, "Test");
     }
 
     MapElementEnumDouble loadMapElementEnumDouble(std::string_view fileName)
