@@ -97,29 +97,14 @@ namespace Helper
         return Common::saveToXMLFile(element, fileName, "OptionalStringMap");
     }
 
-    MapElementEnum loadMapElementEnum(std::string_view fileName)
+    std::optional<MapElementEnum> loadMapElementEnum(std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
-
-        MapElementEnum element;
-        if(xmlNode.has_value())
-        {
-            xmlNode.value() >> Child{"EnumMap", element};
-        }
-
-        return element;
+        return Common::loadFromXMLFile<MapElementEnum>(fileName, "EnumMap");
     }
 
     int saveMapElementEnum(const MapElementEnum & element, std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{createTopNode("Test")};
-
-        xmlNode << Child{"EnumMap", element};
-        return xmlNode.writeToFile(fileName);
+        return Common::saveToXMLFile(element, fileName, "EnumMap");
     }
 
     std::optional<MapElementDouble> loadMapElementDouble(std::string_view fileName)

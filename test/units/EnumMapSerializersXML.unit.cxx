@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <gtest/gtest.h>
 
 #include "test/helper/Utility.hxx"
@@ -12,21 +13,18 @@ class EnumMapSerializerXMLTest : public testing::Test
 
 TEST_F(EnumMapSerializerXMLTest, ReadingEnumAsKey_String)
 {
-    const std::string fileContent{Helper::testMapElementDayStringDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "MapEnumString.xml";
 
-    File::createFileFromString(fileName, fileContent);
-
-    const auto mapEl{Helper::loadMapElementEnum(fileName)};
+    const auto mapEl{Helper::loadMapElementEnum(fileName.string())};
+    ASSERT_TRUE(mapEl.has_value());
 
     using Helper::Day;
 
     const std::map<Day, std::string> correct{
       {Day::Friday, "Happy"}, {Day::Saturday, "Relax"}, {Day::Monday, "Back to Work"}};
 
-    Helper::checkMapEquality(correct, mapEl.days);
-
-    std::remove(fileName.c_str());
+    Helper::checkMapEquality(correct, mapEl->days);
 }
 
 TEST_F(EnumMapSerializerXMLTest, WritingEnumAsKey_String)
@@ -47,8 +45,9 @@ TEST_F(EnumMapSerializerXMLTest, WritingEnumAsKey_String)
     EXPECT_EQ(result, 0);
 
     const auto loadedMap{Helper::loadMapElementEnum(fileName)};
+    ASSERT_TRUE(loadedMap.has_value());
 
-    Helper::checkMapEquality(mapEl.days, loadedMap.days);
+    Helper::checkMapEquality(mapEl.days, loadedMap->days);
 
     std::remove(fileName.c_str());
 }
