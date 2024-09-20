@@ -31,7 +31,7 @@ namespace Helper
     [[nodiscard]] int saveMapElementOptionalString(const MapElementOptionalString & element,
                                                    std::string_view fileName);
 
-    [[nodiscard]] MapElementEnum loadMapElementEnum(std::string_view fileName);
+    [[nodiscard]] std::optional<MapElementEnum> loadMapElementEnum(std::string_view fileName);
     [[nodiscard]] int saveMapElementEnum(const MapElementEnum & element, std::string_view fileName);
 
     [[nodiscard]] std::optional<MapElementDouble> loadMapElementDouble(std::string_view fileName);
