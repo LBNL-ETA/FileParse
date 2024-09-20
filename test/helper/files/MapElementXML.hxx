@@ -12,9 +12,6 @@ namespace Helper
     struct MapElementEnumDouble;
     struct CMAElement;
 
-    [[nodiscard]] std::string testMapElementEmptyStringDatabase();
-    [[nodiscard]] std::string mapElementEmptyString();
-
     [[nodiscard]] std::string testMapElementDayStringDatabase();
     [[nodiscard]] std::string mapElementDayString();
 
