@@ -89,16 +89,13 @@ TEST_F(StringMapSerializerXMLTest, WritingOptionalStringMap)
 
 TEST_F(StringMapSerializerXMLTest, ReadingEmpty)
 {
-    const std::string fileContent{Helper::testMapElementEmptyStringDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "MapEmptyOptionalString.xml";
 
-    File::createFileFromString(fileName, fileContent);
-
-    const auto mapEl{Helper::loadMapElementString(fileName)};
+    const auto mapEl{Helper::loadMapElementString(fileName.string())};
+    ASSERT_TRUE(mapEl.has_value());
 
     EXPECT_EQ(0u, mapEl->ordered.size());
-
-    std::remove(fileName.c_str());
 }
 
 TEST_F(StringMapSerializerXMLTest, WritingEmpty)

@@ -10,21 +10,6 @@
 
 namespace Helper
 {
-    std::string testMapElementEmptyStringDatabase()
-    {
-        static const std::string rootTag{"MapString"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += mapElementEmptyString();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string mapElementEmptyString()
-    {
-        return "\t<OptionalStringMap>\n"
-               "\t</OptionalStringMap>\n";
-    }
-
     std::string testMapElementDayStringDatabase()
     {
         static const std::string rootTag{"Test"};
