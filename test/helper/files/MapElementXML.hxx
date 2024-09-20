@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <optional>
 
 namespace Helper
 {
@@ -10,9 +11,6 @@ namespace Helper
     struct MapElementDouble;
     struct MapElementEnumDouble;
     struct CMAElement;
-
-    [[nodiscard]] std::string testMapElementStringDatabase();
-    [[nodiscard]] std::string mapElementString();
 
     [[nodiscard]] std::string testMapElementDoubleDatabase();
     [[nodiscard]] std::string mapElementDouble();
@@ -33,7 +31,7 @@ namespace Helper
     [[nodiscard]] std::string cmaElement1();
     [[nodiscard]] std::string cmaElement2();
 
-    [[nodiscard]] MapElementString loadMapElementString(std::string_view fileName);
+    [[nodiscard]] std::optional<MapElementString> loadMapElementString(std::string_view fileName);
     [[nodiscard]] int saveMapElementDouble(const MapElementString & element,
                                            std::string_view fileName);
 

@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <gtest/gtest.h>
 
 #include "test/helper/Utility.hxx"
@@ -12,22 +13,19 @@ class StringMapSerializerXMLTest : public testing::Test
 
 TEST_F(StringMapSerializerXMLTest, ReadingStringMap)
 {
-    const std::string fileContent{Helper::testMapElementStringDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "MapString.xml";
 
-    File::createFileFromString(fileName, fileContent);
-
-    const auto mapEl{Helper::loadMapElementString(fileName)};
+    const auto mapEl{Helper::loadMapElementString(fileName.string())};
+    ASSERT_TRUE(mapEl.has_value());
 
     const std::map<std::string, std::string> correctOrdered{
       {"Key1", "Value1"}, {"Key2", "Value2"}, {"Key3", "Value3"}};
     const std::unordered_map<std::string, std::string> correctUnordered{
       {"K1", "V1"}, {"K2", "V2"}, {"K3", "V3"}};
 
-    Helper::checkMapEquality(correctOrdered, mapEl.ordered);
-    Helper::checkMapEquality(correctUnordered, mapEl.unordered);
-
-    std::remove(fileName.c_str());
+    Helper::checkMapEquality(correctOrdered, mapEl->ordered);
+    Helper::checkMapEquality(correctUnordered, mapEl->unordered);
 }
 
 TEST_F(StringMapSerializerXMLTest, WritingStringMap)
@@ -44,8 +42,9 @@ TEST_F(StringMapSerializerXMLTest, WritingStringMap)
     EXPECT_EQ(result, 0);
 
     const auto loadedMap{Helper::loadMapElementString(fileName)};
+        ASSERT_TRUE(loadedMap.has_value());
 
-    Helper::checkMapEquality(mapEl.ordered, loadedMap.ordered);
+    Helper::checkMapEquality(mapEl.ordered, loadedMap->ordered);
 
     std::remove(fileName.c_str());
 }
@@ -99,7 +98,7 @@ TEST_F(StringMapSerializerXMLTest, ReadingEmpty)
 
     const auto mapEl{Helper::loadMapElementString(fileName)};
 
-    EXPECT_EQ(0u, mapEl.ordered.size());
+    EXPECT_EQ(0u, mapEl->ordered.size());
 
     std::remove(fileName.c_str());
 }
@@ -117,7 +116,7 @@ TEST_F(StringMapSerializerXMLTest, WritingEmpty)
 
     const auto loadedVector{Helper::loadMapElementString(fileName)};
 
-    EXPECT_EQ(mapEl.ordered.size(), loadedVector.ordered.size());
+    EXPECT_EQ(mapEl.ordered.size(), loadedVector->ordered.size());
 
     std::remove(fileName.c_str());
 }
