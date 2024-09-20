@@ -82,7 +82,7 @@ namespace Helper
         using FileParse::Child;
         using FileParse::operator>>;
 
-        node >> Child{"DoubleMap", element.values};
+        node >> Child{"MapDouble", element.values};
 
         return node;
     }
@@ -93,7 +93,7 @@ namespace Helper
         using FileParse::Child;
         using FileParse::operator<<;
 
-        node << Child{"DoubleMap", element.values};
+        node << Child{"MapDouble", element.values};
 
         return node;
     }
