@@ -1,6 +1,6 @@
 #include "AttributesXML.hxx"
 
-#include "test/helper/structures/Attributes.hxx"
+#include "helper/structures/Attributes.hxx"
 #include "../serializers/SerializerAttributes.hxx"
 
 #include "fileParse/Common.hxx"
@@ -9,19 +9,13 @@
 
 namespace Helper
 {
-    AttributesTest loadAttributesElement(std::string_view fileName)
+    std::optional<AttributesTest> loadAttributesElement(std::string_view fileName)
     {
         return Common::loadFromXMLFile<AttributesTest>(fileName, "Test").value();
     }
 
     int saveAttributesElement(const AttributesTest & object, std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{createTopNode("Test")};
-
-        xmlNode << Child{"AttributesTest", object};
-
-        return xmlNode.writeToFile(fileName);
+        return Common::saveToXMLFile(object, fileName, "Test");
     }
 }   // namespace Helper
