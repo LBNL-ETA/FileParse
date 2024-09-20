@@ -54,21 +54,18 @@ TEST_F(EnumMapSerializerXMLTest, WritingEnumAsKey_String)
 
 TEST_F(EnumMapSerializerXMLTest, ReadingEnumAsKey_Double)
 {
-    const std::string fileContent{Helper::testMapElementDayDoubleDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "MapEnumAsKey.xml";
 
-    File::createFileFromString(fileName, fileContent);
-
-    const auto mapEl{Helper::loadMapElementEnumDouble(fileName)};
+    const auto mapEl{Helper::loadMapElementEnumDouble(fileName.string())};
+    ASSERT_TRUE(mapEl.has_value());
 
     using Helper::Day;
 
     const std::map<Day, double> correct{
       {Day::Monday, 47.8621}, {Day::Thursday, 83.2934}, {Day::Saturday, 12.7845}};
 
-    Helper::checkMapEquality(correct, mapEl.days);
-
-    std::remove(fileName.c_str());
+    Helper::checkMapEquality(correct, mapEl->days);
 }
 
 TEST_F(EnumMapSerializerXMLTest, WritingEnumAsKey_Double)
@@ -89,8 +86,9 @@ TEST_F(EnumMapSerializerXMLTest, WritingEnumAsKey_Double)
     EXPECT_EQ(result, 0);
 
     const auto loadedMap{Helper::loadMapElementEnumDouble(fileName)};
+    ASSERT_TRUE(loadedMap.has_value());
 
-    Helper::checkMapEquality(mapEl.days, loadedMap.days);
+    Helper::checkMapEquality(mapEl.days, loadedMap->days);
 
     std::remove(fileName.c_str());
 }
