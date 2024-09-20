@@ -10,42 +10,6 @@
 
 namespace Helper
 {
-    std::string testMapElementDayStringDatabase()
-    {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += mapElementDayString();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string mapElementDayString()
-    {
-        return "\t<EnumMap>\n"
-               "\t\t<Friday>Happy</Friday>\n"
-               "\t\t<Saturday>Relax</Saturday>\n"
-               "\t\t<Monday>Back to Work</Monday>\n"
-               "\t</EnumMap>\n";
-    }
-
-    std::string testMapElementDayDoubleDatabase()
-    {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += mapElementDayDouble();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string mapElementDayDouble()
-    {
-        return "\t<EnumDoubleMap>\n"
-               "\t\t<Monday>47.8621</Monday>\n"
-               "\t\t<Thursday>83.2934</Thursday>\n"
-               "\t\t<Saturday>12.7845</Saturday>\n"
-               "\t</EnumDoubleMap>\n";
-    }
-
     std::string testCMAElementDatabase()
     {
         static const std::string rootTag{"Test"};
@@ -117,30 +81,14 @@ namespace Helper
         return Common::saveToXMLFile(element, fileName, "Test");
     }
 
-    MapElementEnumDouble loadMapElementEnumDouble(std::string_view fileName)
+    std::optional<MapElementEnumDouble> loadMapElementEnumDouble(std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
-
-        MapElementEnumDouble element;
-        if(xmlNode.has_value())
-        {
-            xmlNode.value() >> Child{"EnumDoubleMap", element};
-        }
-
-        return element;
+        return Common::loadFromXMLFile<MapElementEnumDouble>(fileName, "EnumDoubleMap");
     }
 
     int saveMapElementEnumDouble(const MapElementEnumDouble & element, std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{createTopNode("Test")};
-
-        xmlNode << Child{"EnumDoubleMap", element};
-
-        return xmlNode.writeToFile(fileName);
+        return Common::saveToXMLFile(element, fileName, "EnumDoubleMap");
     }
 
     CMAElement loadCMAElement(std::string_view fileName)
