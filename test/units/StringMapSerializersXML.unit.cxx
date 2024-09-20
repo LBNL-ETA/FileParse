@@ -51,21 +51,18 @@ TEST_F(StringMapSerializerXMLTest, WritingStringMap)
 
 TEST_F(StringMapSerializerXMLTest, ReadingOptionalStringMap)
 {
-    const std::string fileContent{Helper::testMapElementOptionalStringDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "MapOptionalString.xml";
 
-    File::createFileFromString(fileName, fileContent);
-
-    const auto mapEl{Helper::loadMapElementOptionalString(fileName)};
+    const auto mapEl{Helper::loadMapElementOptionalString(fileName.string())};
+    ASSERT_TRUE(mapEl.has_value());
 
     const std::map<std::string, std::string> correct{
       {"Key1", "Optional1"}, {"Key2", "Optional2"}, {"Key3", "Optional3"}};
 
-    ASSERT_EQ(true, mapEl.values.has_value());
+    ASSERT_EQ(true, mapEl->values.has_value());
 
-    Helper::checkMapEquality(correct, mapEl.values.value());
-
-    std::remove(fileName.c_str());
+    Helper::checkMapEquality(correct, mapEl->values.value());
 }
 
 TEST_F(StringMapSerializerXMLTest, WritingOptionalStringMap)
@@ -77,14 +74,15 @@ TEST_F(StringMapSerializerXMLTest, WritingOptionalStringMap)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveMapElementOptionalDouble(mapEl, fileName)};
+    const auto result{Helper::saveMapElementOptionalString(mapEl, fileName)};
     EXPECT_EQ(result, 0);
 
     const auto loadedMap{Helper::loadMapElementOptionalString(fileName)};
+    ASSERT_TRUE(loadedMap.has_value());
 
-    ASSERT_EQ(true, loadedMap.values.has_value());
+    ASSERT_EQ(true, loadedMap->values.has_value());
 
-    Helper::checkMapEquality(mapEl.values.value(), loadedMap.values.value());
+    Helper::checkMapEquality(mapEl.values.value(), loadedMap->values.value());
 
     std::remove(fileName.c_str());
 }

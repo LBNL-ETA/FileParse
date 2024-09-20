@@ -12,9 +12,6 @@ namespace Helper
     struct MapElementEnumDouble;
     struct CMAElement;
 
-    [[nodiscard]] std::string testMapElementOptionalStringDatabase();
-    [[nodiscard]] std::string mapElementOptionalString();
-
     [[nodiscard]] std::string testMapElementEmptyStringDatabase();
     [[nodiscard]] std::string mapElementEmptyString();
 
@@ -32,8 +29,9 @@ namespace Helper
     [[nodiscard]] int saveMapElementDouble(const MapElementString & element,
                                            std::string_view fileName);
 
-    [[nodiscard]] MapElementOptionalString loadMapElementOptionalString(std::string_view fileName);
-    [[nodiscard]] int saveMapElementOptionalDouble(const MapElementOptionalString & element,
+    [[nodiscard]] std::optional<MapElementOptionalString>
+      loadMapElementOptionalString(std::string_view fileName);
+    [[nodiscard]] int saveMapElementOptionalString(const MapElementOptionalString & element,
                                                    std::string_view fileName);
 
     [[nodiscard]] MapElementEnum loadMapElementEnum(std::string_view fileName);
