@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <filesystem>
 
 #include "test/helper/structures/Attributes.hxx"
 #include "test/helper/files/AttributesXML.hxx"
@@ -6,12 +7,10 @@
 
 TEST(AttributesSerializerTest, Deserialize)
 {
-    const std::string fileContent{Helper::testAttributesDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "Attributes.xml";
 
-    File::createFileFromString(fileName, fileContent);
-
-    Helper::AttributesTest base{Helper::loadAttributesElement(fileName)};
+    Helper::AttributesTest base{Helper::loadAttributesElement(fileName.string())};
 
     EXPECT_EQ("Text", base.name);
     EXPECT_EQ(23, base.age);
@@ -23,8 +22,6 @@ TEST(AttributesSerializerTest, Deserialize)
     EXPECT_EQ("Charlie", base.nickname.value());
     ASSERT_TRUE(base.color.has_value());
     EXPECT_EQ(Helper::Color::Green, base.color.value());
-
-    std::remove(fileName.c_str());
 }
 
 TEST(AttributesSerializerTest, Serialize)
