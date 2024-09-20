@@ -10,24 +10,6 @@
 
 namespace Helper
 {
-    std::string testMapElementOptionalStringDatabase()
-    {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += mapElementOptionalString();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string mapElementOptionalString()
-    {
-        return "\t<OptionalStringMap>\n"
-               "\t\t<Key1>Optional1</Key1>\n"
-               "\t\t<Key2>Optional2</Key2>\n"
-               "\t\t<Key3>Optional3</Key3>\n"
-               "\t</OptionalStringMap>\n";
-    }
-
     std::string testMapElementEmptyStringDatabase()
     {
         static const std::string rootTag{"MapString"};
@@ -119,30 +101,15 @@ namespace Helper
         return Common::saveToXMLFile(element, fileName, "MapString");
     }
 
-    MapElementOptionalString loadMapElementOptionalString(std::string_view fileName)
+    std::optional<MapElementOptionalString> loadMapElementOptionalString(std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
-
-        MapElementOptionalString element;
-        if(xmlNode.has_value())
-        {
-            xmlNode.value() >> Child{"OptionalStringMap", element};
-        }
-
-        return element;
+        return Common::loadFromXMLFile<MapElementOptionalString>(fileName, "OptionalStringMap");
     }
 
-    int saveMapElementOptionalDouble(const MapElementOptionalString & element,
+    int saveMapElementOptionalString(const MapElementOptionalString & element,
                                      std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{createTopNode("Test")};
-        xmlNode << Child{"OptionalStringMap", element};
-
-        return xmlNode.writeToFile(fileName);
+        return Common::saveToXMLFile(element, fileName, "OptionalStringMap");
     }
 
     MapElementEnum loadMapElementEnum(std::string_view fileName)
