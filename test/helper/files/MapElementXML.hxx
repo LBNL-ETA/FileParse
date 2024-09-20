@@ -12,10 +12,6 @@ namespace Helper
     struct MapElementEnumDouble;
     struct CMAElement;
 
-    [[nodiscard]] std::string testCMAElementDatabase();
-    [[nodiscard]] std::string cmaElement1();
-    [[nodiscard]] std::string cmaElement2();
-
     [[nodiscard]] std::optional<MapElementString> loadMapElementString(std::string_view fileName);
     [[nodiscard]] int saveMapElementDouble(const MapElementString & element,
                                            std::string_view fileName);
@@ -36,6 +32,6 @@ namespace Helper
     [[nodiscard]] int saveMapElementEnumDouble(const MapElementEnumDouble & element,
                                                std::string_view fileName);
 
-    [[nodiscard]] CMAElement loadCMAElement(std::string_view fileName);
+    [[nodiscard]] std::optional<CMAElement> loadCMAElement(std::string_view fileName);
     [[nodiscard]] int saveCMAElement(const CMAElement & element, std::string_view fileName);
 }   // namespace Helper

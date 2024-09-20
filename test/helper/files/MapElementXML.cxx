@@ -10,36 +10,6 @@
 
 namespace Helper
 {
-    std::string testCMAElementDatabase()
-    {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += cmaElement1();
-        fileContent += cmaElement2();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string cmaElement1()
-    {
-        return "\t<Element>\n"
-               "\t\t<Glazing>Low</Glazing>\n"
-               "\t\t<Spacer>Low</Spacer>\n"
-               "\t\t<Conductivity>12.34</Conductivity>\n"
-               "\t\t<FilmCoefficient>2.98</FilmCoefficient>\n"
-               "\t</Element>\n";
-    }
-
-    std::string cmaElement2()
-    {
-        return "\t<Element>\n"
-               "\t\t<Glazing>High</Glazing>\n"
-               "\t\t<Spacer>High</Spacer>\n"
-               "\t\t<Conductivity>1.731</Conductivity>\n"
-               "\t\t<FilmCoefficient>7.39</FilmCoefficient>\n"
-               "\t</Element>\n";
-    }
-
     std::optional<MapElementString> loadMapElementString(std::string_view fileName)
     {
         return Common::loadFromXMLFile<MapElementString>(fileName, "MapString");
@@ -91,30 +61,13 @@ namespace Helper
         return Common::saveToXMLFile(element, fileName, "EnumDoubleMap");
     }
 
-    CMAElement loadCMAElement(std::string_view fileName)
+    std::optional<CMAElement> loadCMAElement(std::string_view fileName)
     {
-        using FileParse::Child;
-        using FileParse::operator>>;
-
-        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
-
-        CMAElement element;
-        if(xmlNode.has_value())
-        {
-            xmlNode.value() >> element;
-        }
-
-        return element;
+        return Common::loadFromXMLFile<CMAElement>(fileName, "Test");
     }
 
     int saveCMAElement(const CMAElement & element, std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{createTopNode("Test")};
-
-        xmlNode << element;
-
-        return xmlNode.writeToFile(fileName);
+        return Common::saveToXMLFile(element, fileName, "Test");
     }
 }   // namespace Helper
