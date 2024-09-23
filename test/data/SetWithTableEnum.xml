@@ -1,0 +1,14 @@
+<Test>
+	<SetElementEnum>
+		<Table>
+			<Value>
+				Wednesday
+			</Value>
+			<Value>
+				Friday
+			</Value>
+			<Value>
+				Sunday
+			</Value>
+		</Table>
+	</SetElementEnum></Test>
