@@ -4,34 +4,10 @@
 #include "../serializers/SerializersSet.hxx"
 
 #include "include/fileParse/XMLNodeAdapter.hxx"
+#include "fileParse/FileDataHandler.hxx"
 
 namespace Helper
 {
-    std::string testSetElementDoubleDatabase()
-    {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += setElementDouble();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string setElementDouble()
-    {
-        return "\t<SetElementDouble>\n"
-               "\t\t<Table>\n"
-               "\t\t\t<Value>\n"
-               "\t\t\t\t932.32\n"
-               "\t\t\t</Value>\n"
-               "\t\t\t<Value>\n"
-               "\t\t\t\t20.31\n"
-               "\t\t\t</Value>\n"
-               "\t\t\t<Value>\n"
-               "\t\t\t\t9.392\n"
-               "\t\t\t</Value>\n"
-               "\t\t</Table>\n"
-               "\t</SetElementDouble>";
-    }
 
     std::string testSetElementEmptyDatabase()
     {
@@ -102,30 +78,14 @@ namespace Helper
                "\t</SetElementEnum>";
     }
 
-    SetElementDouble loadSetElementDouble(std::string_view fileName)
+    std::optional<SetElementDouble> loadSetElementDouble(std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
-
-        SetElementDouble element;
-        if(xmlNode.has_value())
-        {
-            xmlNode.value() >> Child{"SetElementDouble", element};
-        }
-
-        return element;
+        return Common::loadFromXMLFile<SetElementDouble>(fileName, "SetElementDouble");
     }
 
     int saveSetElementDouble(const SetElementDouble & element, std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{createTopNode("Test")};
-
-        xmlNode << Child{"SetElementDouble", element};
-
-        return xmlNode.writeToFile(fileName);
+        return Common::saveToXMLFile(element, fileName, "SetElementDouble");
     }
 
     SetElementOptionalDouble loadSetElementOptionalDouble(std::string_view fileName)
@@ -144,11 +104,12 @@ namespace Helper
     }
 
     int saveSetElementOptionalDouble(const SetElementOptionalDouble & element,
-                                      std::string_view fileName)
+                                     std::string_view fileName)
     {
         using FileParse::Child;
 
-        auto xmlNode{createTopNode("Test")};;
+        auto xmlNode{createTopNode("Test")};
+        ;
 
         xmlNode << Child{"SetElementOptionalDouble", element};
 

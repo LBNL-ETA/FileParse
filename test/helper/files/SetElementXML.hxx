@@ -1,15 +1,13 @@
 #pragma once
 
 #include <string>
+#include <optional>
 
 namespace Helper
 {
     struct SetElementDouble;
     struct SetElementOptionalDouble;
     struct SetElementEnum;
-
-    [[nodiscard]] std::string testSetElementDoubleDatabase();
-    [[nodiscard]] std::string setElementDouble();
 
     [[nodiscard]] std::string testSetElementEmptyDatabase();
     [[nodiscard]] std::string setElementEmpty();
@@ -20,7 +18,7 @@ namespace Helper
     [[nodiscard]] std::string testSetElementEnumDatabase();
     [[nodiscard]] std::string setElementEnum();
 
-    [[nodiscard]] SetElementDouble loadSetElementDouble(std::string_view fileName);
+    [[nodiscard]] std::optional<SetElementDouble> loadSetElementDouble(std::string_view fileName);
     [[nodiscard]] int saveSetElementDouble(const SetElementDouble & element,
                                            std::string_view fileName);
 
