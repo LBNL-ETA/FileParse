@@ -1,0 +1,13 @@
+<EnumVectorElement>
+	<Table>
+		<Value>
+			Friday
+		</Value>
+		<Value>
+			Saturday
+		</Value>
+		<Value>
+			Sunday
+		</Value>
+	</Table>
+</EnumVectorElement>

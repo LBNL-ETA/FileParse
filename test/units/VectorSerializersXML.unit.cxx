@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <gtest/gtest.h>
 
 #include "test/helper/Utility.hxx"
@@ -12,18 +13,15 @@ class VectorSerializerXMLTest : public testing::Test
 
 TEST_F(VectorSerializerXMLTest, Reading)
 {
-    const std::string fileContent{Helper::testVectorElementDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "VectorElement.xml";
 
-    File::createFileFromString(fileName, fileContent);
-
-    const auto vectorEl{Helper::loadVectorElement(fileName)};
+    const auto vectorEl{Helper::loadVectorElement(fileName.string())};
+    ASSERT_TRUE(vectorEl.has_value());
 
     const std::vector<double> correct{23.41, 18.13, 5.0756};
     constexpr auto tolerance{1e-6};
-    Helper::checkVectorValues(correct, vectorEl.values, tolerance);
-
-    std::remove(fileName.c_str());
+    Helper::checkVectorValues(correct, vectorEl->values, tolerance);
 }
 
 TEST_F(VectorSerializerXMLTest, Writing)
@@ -41,41 +39,35 @@ TEST_F(VectorSerializerXMLTest, Writing)
     EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadVectorElement(fileName)};
+    ASSERT_TRUE(loadedVector.has_value());
 
     constexpr auto tolerance{1e-6};
-    Helper::checkVectorValues(vectorEl.values, loadedVector.values, tolerance);
+    Helper::checkVectorValues(vectorEl.values, loadedVector->values, tolerance);
 
     std::remove(fileName.c_str());
 }
 
 TEST_F(VectorSerializerXMLTest, ReadingOptional)
 {
-    const std::string fileContent{Helper::testVectorElementDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "VectorOptional.xml";
 
-    File::createFileFromString(fileName, fileContent);
-
-    const auto vectorEl{Helper::loadOptionalVectorElement(fileName)};
+    const auto vectorEl{Helper::loadOptionalVectorElement(fileName.string())};
+    ASSERT_TRUE(vectorEl.has_value());
 
     const std::vector<double> correct{33.41, 28.13, 6.0756};
     constexpr auto tolerance{1e-6};
-    Helper::checkVectorValues(correct, vectorEl.values.value(), tolerance);
-
-    std::remove(fileName.c_str());
+    Helper::checkVectorValues(correct, vectorEl->values.value(), tolerance);
 }
 
 TEST_F(VectorSerializerXMLTest, ReadingOptionalEmpty)
 {
-    const std::string fileContent{Helper::testVectorElementEmptyOptionalDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "Empty.xml";
 
-    File::createFileFromString(fileName, fileContent);
+    const auto vectorEl{Helper::loadOptionalVectorElement(fileName.string())};
 
-    const auto vectorEl{Helper::loadOptionalVectorElement(fileName)};
-
-    EXPECT_EQ(false, vectorEl.values.has_value());
-
-    std::remove(fileName.c_str());
+    EXPECT_EQ(false, vectorEl.has_value());
 }
 
 TEST_F(VectorSerializerXMLTest, WritingOptional)
@@ -91,9 +83,10 @@ TEST_F(VectorSerializerXMLTest, WritingOptional)
     EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadOptionalVectorElement(fileName)};
+    ASSERT_TRUE(loadedVector.has_value());
 
     constexpr auto tolerance{1e-6};
-    Helper::checkVectorValues(vectorEl.values.value(), loadedVector.values.value(), tolerance);
+    Helper::checkVectorValues(vectorEl.values.value(), loadedVector->values.value(), tolerance);
 
     std::remove(fileName.c_str());
 }
@@ -110,24 +103,21 @@ TEST_F(VectorSerializerXMLTest, WritingOptionalEmpty)
     EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadOptionalVectorElement(fileName)};
+    ASSERT_TRUE(loadedVector.has_value());
 
-    EXPECT_EQ(false, loadedVector.values.has_value());
+    EXPECT_EQ(false, loadedVector->values.has_value());
 
     std::remove(fileName.c_str());
 }
 
 TEST_F(VectorSerializerXMLTest, ReadingEmpty)
 {
-    const std::string fileContent{Helper::testEmptyVectorElementDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "Empty.xml";
 
-    File::createFileFromString(fileName, fileContent);
+    const auto vectorEl{Helper::loadOptionalVectorElement(fileName.string())};
 
-    const auto vectorEl{Helper::loadOptionalVectorElement(fileName)};
-
-    EXPECT_EQ(false, vectorEl.values.has_value());
-
-    std::remove(fileName.c_str());
+    EXPECT_EQ(false, vectorEl.has_value());
 }
 
 TEST_F(VectorSerializerXMLTest, WritingEmpty)
@@ -144,26 +134,24 @@ TEST_F(VectorSerializerXMLTest, WritingEmpty)
     EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadVectorElement(fileName)};
+    ASSERT_TRUE(loadedVector.has_value());
 
-    EXPECT_EQ(vectorEl.values.size(), loadedVector.values.size());
+    EXPECT_EQ(vectorEl.values.size(), loadedVector->values.size());
 
     std::remove(fileName.c_str());
 }
 
 TEST_F(VectorSerializerXMLTest, ReadingEnum)
 {
-    const std::string fileContent{Helper::testDayVectorElementDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "VectorEnum.xml";
 
-    File::createFileFromString(fileName, fileContent);
-
-    const auto vectorEl{Helper::loadEnumVectorElement(fileName)};
+    const auto vectorEl{Helper::loadEnumVectorElement(fileName.string())};
+    ASSERT_TRUE(vectorEl.has_value());
 
     const std::vector<Helper::Day> correct{
       Helper::Day::Friday, Helper::Day::Saturday, Helper::Day::Sunday};
-    Helper::checkVectorEquality(correct, vectorEl.days, Helper::toDayString);
-
-    std::remove(fileName.c_str());
+    Helper::checkVectorEquality(correct, vectorEl->days, Helper::toDayString);
 }
 
 TEST_F(VectorSerializerXMLTest, WritingEnum)
@@ -180,8 +168,9 @@ TEST_F(VectorSerializerXMLTest, WritingEnum)
     EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadEnumVectorElement(fileName)};
+    ASSERT_TRUE(loadedVector.has_value());
 
-    Helper::checkVectorEquality(vectorEl.days, loadedVector.days, Helper::toDayString);
+    Helper::checkVectorEquality(vectorEl.days, loadedVector->days, Helper::toDayString);
 
     std::remove(fileName.c_str());
 }
