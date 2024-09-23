@@ -8,76 +8,6 @@
 
 namespace Helper
 {
-
-    std::string testSetElementEmptyDatabase()
-    {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += setElementEmpty();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string setElementEmpty()
-    {
-        return "\t<SetElementDouble>\n"
-               "\t\t<Table>\n"
-               "\t\t</Table>\n"
-               "\t</SetElementDouble>";
-    }
-
-    std::string testSetElementOptionalDoubleDatabase()
-    {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += setElementOptionalDouble();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string setElementOptionalDouble()
-    {
-        return "\t<SetElementOptionalDouble>\n"
-               "\t\t<Table>\n"
-               "\t\t\t<Value>\n"
-               "\t\t\t\t43.215483\n"
-               "\t\t\t</Value>\n"
-               "\t\t\t<Value>\n"
-               "\t\t\t\t76.842907\n"
-               "\t\t\t</Value>\n"
-               "\t\t\t<Value>\n"
-               "\t\t\t\t12.689342\n"
-               "\t\t\t</Value>\n"
-               "\t\t</Table>\n"
-               "\t</SetElementOptionalDouble>";
-    }
-
-    std::string testSetElementEnumDatabase()
-    {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += setElementEnum();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string setElementEnum()
-    {
-        return "\t<SetElementEnum>\n"
-               "\t\t<Table>\n"
-               "\t\t\t<Value>\n"
-               "\t\t\t\tWednesday\n"
-               "\t\t\t</Value>\n"
-               "\t\t\t<Value>\n"
-               "\t\t\t\tFriday\n"
-               "\t\t\t</Value>\n"
-               "\t\t\t<Value>\n"
-               "\t\t\t\tSunday\n"
-               "\t\t\t</Value>\n"
-               "\t\t</Table>\n"
-               "\t</SetElementEnum>";
-    }
-
     std::optional<SetElementDouble> loadSetElementDouble(std::string_view fileName)
     {
         return Common::loadFromXMLFile<SetElementDouble>(fileName, "SetElementDouble");
@@ -88,58 +18,26 @@ namespace Helper
         return Common::saveToXMLFile(element, fileName, "SetElementDouble");
     }
 
-    SetElementOptionalDouble loadSetElementOptionalDouble(std::string_view fileName)
+    std::optional<SetElementOptionalDouble> loadSetElementOptionalDouble(std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
-
-        SetElementOptionalDouble element;
-        if(xmlNode.has_value())
-        {
-            xmlNode.value() >> Child{"SetElementOptionalDouble", element};
-        }
-
-        return element;
+        return Common::loadFromXMLFile<SetElementOptionalDouble>(fileName,
+                                                                 "SetElementOptionalDouble");
     }
 
     int saveSetElementOptionalDouble(const SetElementOptionalDouble & element,
                                      std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{createTopNode("Test")};
-        ;
-
-        xmlNode << Child{"SetElementOptionalDouble", element};
-
-        return xmlNode.writeToFile(fileName);
+        return Common::saveToXMLFile(element, fileName, "SetElementOptionalDouble");
     }
 
-    SetElementEnum loadSetElementEnum(std::string_view fileName)
+    std::optional<SetElementEnum> loadSetElementEnum(std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
-
-        SetElementEnum element;
-        if(xmlNode.has_value())
-        {
-            xmlNode.value() >> Child{"SetElementEnum", element};
-        }
-
-        return element;
+        return Common::loadFromXMLFile<SetElementEnum>(fileName, "SetElementEnum");
     }
 
     int saveSetElementEnum(const SetElementEnum & element, std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{createTopNode("Test")};
-
-        xmlNode << Child{"SetElementEnum", element};
-
-        return xmlNode.writeToFile(fileName);
+        return Common::saveToXMLFile(element, fileName, "SetElementEnum");
     }
 
 }   // namespace Helper
