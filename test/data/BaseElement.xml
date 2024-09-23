@@ -1,0 +1,13 @@
+<BaseElement>
+	<SampleText>TestText</SampleText>
+	<OptionalText>OptionalText</OptionalText>
+	<Integer>13</Integer>
+	<OptionalInteger>23</OptionalInteger>
+	<Double>3.1415926</Double>
+	<Size_t>18</Size_t>
+	<Boolean>true</Boolean>
+	<OptionalDouble>4.1415926</OptionalDouble>
+	<OptionalBoolean>false</OptionalBoolean>
+	<VariantString>VariantText</VariantString>
+	<VariantString1>VariantText1</VariantString1>
+</BaseElement>

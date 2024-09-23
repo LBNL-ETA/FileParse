@@ -1,0 +1,14 @@
+<Test>
+	<Element>
+		<Glazing>Low</Glazing>
+		<Spacer>Low</Spacer>
+		<Conductivity>12.34</Conductivity>
+		<FilmCoefficient>2.98</FilmCoefficient>
+	</Element>
+	<Element>
+		<Glazing>High</Glazing>
+		<Spacer>High</Spacer>
+		<Conductivity>1.731</Conductivity>
+		<FilmCoefficient>7.39</FilmCoefficient>
+	</Element>
+</Test>

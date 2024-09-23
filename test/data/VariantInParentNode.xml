@@ -1,0 +1,21 @@
+<Test>
+	<VariantParentTemperature>
+		<Name>
+			Parent Temperature
+		</Name>
+		<Temperature>
+			23.15
+		</Temperature>
+		<OptionalString>
+			test optional
+		</OptionalString>
+	</VariantParentTemperature>
+	<VariantParentHumidity>
+		<Name>
+			Parent Humidity
+		</Name>
+		<Humidity>
+			9.493743
+		</Humidity>
+	</VariantParentHumidity>
+</Test>

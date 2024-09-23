@@ -2,6 +2,7 @@
 
 #include "fileParse/Attributes.hxx"
 #include "fileParse/Base.hxx"
+#include "fileParse/Common.hxx"
 
 #include "test/helper/structures/Attributes.hxx"
 
@@ -11,6 +12,8 @@ namespace Helper
     inline const NodeAdapter & operator>>(const NodeAdapter & node,
                                           Helper::AttributesTest & element)
     {
+        using FileParse::Child;
+        node >> Child{"AttributesTest", element};
         FileParse::loadAttribute(node, "Name", element.name);
         FileParse::loadAttribute(node, "Age", element.age);
         FileParse::loadAttribute(node, "Height", element.height);

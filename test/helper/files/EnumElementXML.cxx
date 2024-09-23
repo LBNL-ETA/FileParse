@@ -1,73 +1,20 @@
 #include "EnumElementXML.hxx"
 
 #include "test/helper/structures/StructureEnum.hxx"
-#include "../serializers/SerializersEnum.hxx"
+#include "helper/serializers/SerializersEnum.hxx"
 
-#include "include/fileParse/XMLNodeAdapter.hxx"
+#include "fileParse/FileDataHandler.hxx"
 
 namespace Helper
 {
-    std::string testEnumDatabase()
+    std::optional<EnumElement> loadEnumElement(std::string_view fileName)
     {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += enumElement();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string enumElement()
-    {
-        return "\t<EnumElement>\n"
-               "\t\t<Day>\n"
-               "\t\t\tMonday\n"
-               "\t\t</Day>\n"
-               "\t\t<Color>\n"
-               "\t\t\tBlue\n"
-               "\t\t</Color>\n"
-               "\t</EnumElement>\n";
-    }
-
-    std::string testEnumDatabaseOptionalMissing() {
-        static const std::string rootTag{"Test"};
-        std::string fileContent{"<" + rootTag + ">\n"};
-        fileContent += enumElementOptionalMissing();
-        fileContent += "</" + rootTag + ">";
-        return fileContent;
-    }
-
-    std::string enumElementOptionalMissing() {
-        return "\t<EnumElement>\n"
-               "\t\t<Day>\n"
-               "\t\t\tMonday\n"
-               "\t\t</Day>\n"
-               "\t</EnumElement>\n";
-    }
-
-    EnumElement loadEnumElement(std::string_view fileName)
-    {
-        using FileParse::Child;
-
-        auto xmlNode{getTopNodeFromFile(fileName, "Test")};
-
-        EnumElement enumEl;
-        if(xmlNode.has_value())
-        {
-            xmlNode.value() >> Child{"EnumElement", enumEl};
-        }
-
-        return enumEl;
+        return Common::loadFromXMLFile<EnumElement>(fileName, "EnumElement");
     }
 
     int saveEnumElement(const EnumElement & element, std::string_view fileName)
     {
-        using FileParse::Child;
-
-        auto xmlNode{createTopNode("Test")};
-
-        xmlNode << Child{"EnumElement", element};
-
-        return xmlNode.writeToFile(fileName);
+        return Common::saveToXMLFile(element, fileName, "EnumElement");
     }
 
 }   // namespace Helper

@@ -1,0 +1,7 @@
+<Test>
+	<EnumMap>
+		<Friday>Happy</Friday>
+		<Saturday>Relax</Saturday>
+		<Monday>Back to Work</Monday>
+	</EnumMap>
+</Test>
