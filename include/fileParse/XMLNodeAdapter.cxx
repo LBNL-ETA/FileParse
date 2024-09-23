@@ -129,21 +129,29 @@ XMLNodeAdapter createTopNode(std::string_view topNodeName)
     return XMLNodeAdapter(XMLParser::XMLNode::createXMLTopNode(topNodeName.data()));
 }
 
-std::optional<XMLNodeAdapter> getTopNodeFromFile(std::string_view fileName, std::string_view topNodeName)
+std::optional<XMLNodeAdapter> getTopNodeFromFile(std::string_view fileName,
+                                                 std::string_view topNodeName)
 {
-    if(auto node{XMLParser::XMLNode::openFileHelper(fileName.data(), topNodeName.data())};
-       !node.isEmpty())
+    try
     {
-        return XMLNodeAdapter(node);
+        auto node = XMLParser::XMLNode::openFileHelperThrows(fileName.data(), topNodeName.data());
+        if(!node.isEmpty())
+        {
+            return XMLNodeAdapter(node);
+        }
     }
+    catch(const std::exception &)
+    {
+        // No need to log message for now. Empty optional will be returned indicating failure.
+    }
+    // Return empty optional if node is empty or an exception occurred
     return std::nullopt;
 }
 
 std::optional<XMLNodeAdapter> getTopNodeFromString(std::string_view xml,
-                                                 std::string_view topNodeName)
+                                                   std::string_view topNodeName)
 {
-    if(auto node{XMLParser::XMLNode::parseString(xml.data(), topNodeName.data())};
-       !node.isEmpty())
+    if(auto node{XMLParser::XMLNode::parseString(xml.data(), topNodeName.data())}; !node.isEmpty())
     {
         return XMLNodeAdapter(node);
     }

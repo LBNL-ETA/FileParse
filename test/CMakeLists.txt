@@ -89,12 +89,16 @@ add_executable(${PROJECT_TEST_NAME}
     units/VariantSerializersXML.unit.cxx
     units/VectorSerializers.unit.cxx
     units/VectorSerializersXML.unit.cxx
-    main.cpp
+    main.cxx
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/test)
 
 target_compile_features(${PROJECT_TEST_NAME} PRIVATE cxx_std_17)
 target_link_libraries(${PROJECT_TEST_NAME} gmock_main ${LIB_NAME})
+
+set(TEST_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data")
+target_compile_definitions(${PROJECT_TEST_NAME} PRIVATE TEST_DATA_DIR="${TEST_DATA_DIR}")
 
 add_test(NAME ${PROJECT_TEST_NAME}-runner COMMAND ${PROJECT_TEST_NAME} "${CMAKE_CURRENT_LIST_DIR}")

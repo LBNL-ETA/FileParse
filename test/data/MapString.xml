@@ -1,0 +1,12 @@
+<MapString>
+	<OrderedMap>
+		<Key1>Value1</Key1>
+		<Key2>Value2</Key2>
+		<Key3>Value3</Key3>
+	</OrderedMap>
+	<UnorderedMap>
+		<K1>V1</K1>
+		<K2>V2</K2>
+		<K3>V3</K3>
+	</UnorderedMap>
+</MapString>

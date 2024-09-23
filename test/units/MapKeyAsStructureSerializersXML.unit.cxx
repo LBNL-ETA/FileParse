@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <gtest/gtest.h>
 
 #include "test/helper/Utility.hxx"
@@ -7,44 +8,21 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-class MapKeyAsStructureSerializerXMLTest : public testing::Test
+TEST(MapKeyAsStructureSerializerXMLTest, Reading)
 {
-private:
-    const std::string m_FileName{"Test.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "CMAElement.xml";
 
-protected:
-    void SetUp() override
-    {
-        std::remove(m_FileName.c_str());
-    }
-
-    void TearDown() override
-    {
-        std::remove(m_FileName.c_str());
-    }
-
-public:
-    [[nodiscard]] std::string fileName() const
-    {
-        return m_FileName;
-    }
-};
-
-TEST_F(MapKeyAsStructureSerializerXMLTest, Reading)
-{
-    const std::string fileContent{Helper::testCMAElementDatabase()};
-
-    File::createFileFromString(fileName(), fileContent);
-
-    const auto mapEl{Helper::loadCMAElement(fileName())};
+    const auto mapEl{Helper::loadCMAElement(fileName.string())};
+    ASSERT_TRUE(mapEl.has_value());
 
     const Helper::CMAElement correct{{{"Low", "Low"}, {12.34, 2.98}},
                                      {{"High", "High"}, {1.731, 7.39}}};
 
-    Helper::checkMapEquality(correct.options, mapEl.options);
+    Helper::checkMapEquality(correct.options, mapEl->options);
 }
 
-TEST_F(MapKeyAsStructureSerializerXMLTest, Writing)
+TEST(MapKeyAsStructureSerializerXMLTest, Writing)
 {
     const Helper::CMAElement knownElement{{{"Low", "Low"}, {12.34, 2.98}},
                                           {{"High", "High"}, {1.731, 7.39}}};
@@ -65,11 +43,14 @@ TEST_F(MapKeyAsStructureSerializerXMLTest, Writing)
                                       "\t</Element>\n"
                                       "</Test>\n"};
 
-    const auto result{Helper::saveCMAElement(knownElement, fileName())};
+    const std::string fileName{"TestWrite.xml"};
+    const auto result{Helper::saveCMAElement(knownElement, fileName)};
     EXPECT_EQ(result, 0) << "Error saving CMAElement!";
 
-    const std::string serializedContent{File::loadToString(fileName())};
+    const std::string serializedContent{File::loadToString(fileName)};
 
     EXPECT_EQ(serializedContent, expectedContent)
       << "Serialized content does not match expected content!";
+
+    std::filesystem::remove(fileName);
 }

@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <gtest/gtest.h>
 
 #include "test/helper/Utility.hxx"
@@ -7,26 +8,20 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-class SetSerializerXMLTest : public testing::Test
-{};
-
-TEST_F(SetSerializerXMLTest, Reading)
+TEST(SetSerializerXMLTest, Reading)
 {
-    const std::string fileContent{Helper::testSetElementDoubleDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "SetWithTableDouble.xml";
 
-    File::createFileFromString(fileName, fileContent);
-
-    const auto setEl{Helper::loadSetElementDouble(fileName)};
+    const auto setEl{Helper::loadSetElementDouble(fileName.string())};
+    ASSERT_TRUE(setEl.has_value());
 
     const std::set<double> correct{932.32, 20.31, 9.392};
     constexpr auto tolerance{1e-6};
-    Helper::checkSetValues(correct, setEl.values, tolerance);
-
-    std::remove(fileName.c_str());
+    Helper::checkSetValues(correct, setEl->values, tolerance);
 }
 
-TEST_F(SetSerializerXMLTest, Writing)
+TEST(SetSerializerXMLTest, Writing)
 {
     Helper::SetElementDouble setEl;
     setEl.values = {1, 2, 3, 4, 5};
@@ -39,32 +34,30 @@ TEST_F(SetSerializerXMLTest, Writing)
     EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadSetElementDouble(fileName)};
+    ASSERT_TRUE(loadedVector.has_value());
 
     constexpr auto tolerance{1e-6};
-    Helper::checkSetValues(setEl.values, loadedVector.values, tolerance);
+    Helper::checkSetValues(setEl.values, loadedVector->values, tolerance);
 
     std::remove(fileName.c_str());
 }
 
-TEST_F(SetSerializerXMLTest, OptionalReading)
+TEST(SetSerializerXMLTest, OptionalReading)
 {
-    const std::string fileContent{Helper::testSetElementOptionalDoubleDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "SetWithTableOptional.xml";
 
-    File::createFileFromString(fileName, fileContent);
+    const auto setEl{Helper::loadSetElementOptionalDouble(fileName.string())};
+    ASSERT_TRUE(setEl.has_value());
 
-    const auto setEl{Helper::loadSetElementOptionalDouble(fileName)};
-
-    EXPECT_EQ(true, setEl.values.has_value());
+    EXPECT_EQ(true, setEl->values.has_value());
 
     const std::set<double> correct{43.215483, 76.842907, 12.689342};
     constexpr auto tolerance{1e-6};
-    Helper::checkSetValues(correct, setEl.values.value(), tolerance);
-
-    std::remove(fileName.c_str());
+    Helper::checkSetValues(correct, setEl->values.value(), tolerance);
 }
 
-TEST_F(SetSerializerXMLTest, OptionalWriting)
+TEST(SetSerializerXMLTest, OptionalWriting)
 {
     Helper::SetElementOptionalDouble setEl;
     setEl.values = {11, 12, 13, 14, 15};
@@ -77,30 +70,28 @@ TEST_F(SetSerializerXMLTest, OptionalWriting)
     EXPECT_EQ(result, 0);
 
     const auto loadedSet{Helper::loadSetElementOptionalDouble(fileName)};
+    ASSERT_TRUE(loadedSet.has_value());
 
-    EXPECT_EQ(true, loadedSet.values.has_value());
+    EXPECT_EQ(true, loadedSet->values.has_value());
 
     constexpr auto tolerance{1e-6};
-    Helper::checkSetValues(setEl.values.value(), loadedSet.values.value(), tolerance);
+    Helper::checkSetValues(setEl.values.value(), loadedSet->values.value(), tolerance);
 
     std::remove(fileName.c_str());
 }
 
-TEST_F(SetSerializerXMLTest, ReadingEmpty)
+TEST(SetSerializerXMLTest, ReadingEmpty)
 {
-    const std::string fileContent{Helper::testSetElementEmptyDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "SetWithTableEmpty.xml";
 
-    File::createFileFromString(fileName, fileContent);
+    const auto setEl{Helper::loadSetElementDouble(fileName.string())};
+    ASSERT_TRUE(setEl.has_value());
 
-    const auto setEl{Helper::loadSetElementDouble(fileName)};
-
-    EXPECT_EQ(0u, setEl.values.size());
-
-    std::remove(fileName.c_str());
+    EXPECT_EQ(0u, setEl->values.size());
 }
 
-TEST_F(SetSerializerXMLTest, WritingEmpty)
+TEST(SetSerializerXMLTest, WritingEmpty)
 {
     Helper::SetElementDouble setEl;
 
@@ -112,29 +103,27 @@ TEST_F(SetSerializerXMLTest, WritingEmpty)
     EXPECT_EQ(result, 0);
 
     const auto loadedSet{Helper::loadSetElementDouble(fileName)};
+    ASSERT_TRUE(loadedSet.has_value());
 
-    EXPECT_EQ(setEl.values.size(), loadedSet.values.size());
+    EXPECT_EQ(setEl.values.size(), loadedSet->values.size());
 
     std::remove(fileName.c_str());
 }
 
-TEST_F(SetSerializerXMLTest, ReadingEnum)
+TEST(SetSerializerXMLTest, ReadingEnum)
 {
-    const std::string fileContent{Helper::testSetElementEnumDatabase()};
-    const std::string fileName{"TestRead.xml"};
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "SetWithTableEnum.xml";
 
-    File::createFileFromString(fileName, fileContent);
-
-    const auto setEl{Helper::loadSetElementEnum(fileName)};
+    const auto setEl{Helper::loadSetElementEnum(fileName.string())};
+    ASSERT_TRUE(setEl.has_value());
 
     const std::set<Helper::Day> correct{
       Helper::Day::Wednesday, Helper::Day::Friday, Helper::Day::Sunday};
-    Helper::checkSetEquality(correct, setEl.days, Helper::toDayString);
-
-    std::remove(fileName.c_str());
+    Helper::checkSetEquality(correct, setEl->days, Helper::toDayString);
 }
 
-TEST_F(SetSerializerXMLTest, WritingEnum)
+TEST(SetSerializerXMLTest, WritingEnum)
 {
     Helper::SetElementEnum setEl;
     using Helper::Day;
@@ -148,8 +137,9 @@ TEST_F(SetSerializerXMLTest, WritingEnum)
     EXPECT_EQ(result, 0);
 
     const auto loadedSet{Helper::loadSetElementEnum(fileName)};
+    ASSERT_TRUE(loadedSet.has_value());
 
-    Helper::checkSetEquality(setEl.days, loadedSet.days, Helper::toDayString);
+    Helper::checkSetEquality(setEl.days, loadedSet->days, Helper::toDayString);
 
     std::remove(fileName.c_str());
 }
