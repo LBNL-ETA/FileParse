@@ -261,11 +261,9 @@ namespace FileParse
     inline NodeAdapter & operator<<(NodeAdapter & node, double value)
     {
         const auto & config{SerializationConfig::getInstance()};
-        std::ostringstream oss;
-        FileParse::formatDouble(
-          oss, value, config.precision, config.scientificLowerBound, config.scientificUpperBound);
 
-        node.addText(oss.str());
+        node.addText(FileParse::formatDouble(
+          value, config.precision, config.scientificLowerBound, config.scientificUpperBound));
 
         return node;
     }

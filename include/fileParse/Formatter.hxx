@@ -1,12 +1,11 @@
 #pragma once
 
-#include <sstream>
+#include <string>
 
 namespace FileParse
 {
-    extern void formatDouble(std::ostringstream & oss,
-                             double value,
-                             int precision,
-                             double scientificLowerBound = 0.001,
-                             double scientificUpperBound = 100000);
+    extern std::string formatDouble(double value,
+                                    int precision,
+                                    double scientificLowerBound = 0.001,
+                                    double scientificUpperBound = 100000);
 }
