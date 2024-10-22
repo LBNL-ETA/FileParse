@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "Formatter.hxx"
 
 namespace FileParse
@@ -36,28 +38,27 @@ namespace FileParse
         }
     }
 
-    void formatDouble(std::ostringstream & oss,
-                      double value,
+    std::string formatDouble(double value,
                       int precision,
                       double scientificLowerBound,
                       double scientificUpperBound)
     {
-        bool useScientific
-          = (std::abs(value) < scientificLowerBound || std::abs(value) > scientificUpperBound)
-            && value != 0.0;
+        bool useScientific = (std::abs(value) < scientificLowerBound || std::abs(value) > scientificUpperBound)
+                             && value != 0.0;
 
-        oss.setf(useScientific ? std::ios::scientific : std::ios::fixed, std::ios::floatfield);
-        oss.precision(precision);
-        oss << value;
+        std::ostringstream tempStream;
+        tempStream.setf(useScientific ? std::ios::scientific : std::ios::fixed, std::ios::floatfield);
+        tempStream.precision(precision);
+        tempStream << value;
 
-        std::string str = oss.str();
-        if(str.find('.') != std::string::npos)
+        std::string str = tempStream.str();  // Get the formatted string
+
+        // Trim trailing zeros if there is a decimal point in the string
+        if (str.find('.') != std::string::npos)
         {
             trimTrailingZeros(str, useScientific);
         }
 
-        // Reassign trimmed string to the ostringstream
-        oss.str(str);
-        oss.clear();
+        return str;  // Return the final formatted string
     }
 }   // namespace FileParse
