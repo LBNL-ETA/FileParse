@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
 
+set(FILEPARSE_REQUIRED_XMLPARSER_VERSION "v1.0.1" CACHE INTERNAL "Required xmlParser version for FileParse")
+
 if(NOT TARGET xmlParser)
 
     include(FetchContent)
@@ -7,7 +9,7 @@ if(NOT TARGET xmlParser)
     FetchContent_Declare(
       XMLParser
       GIT_REPOSITORY https://github.com/LBNL-ETA/XMLParser.git
-      GIT_TAG v1.0.1
+      GIT_TAG ${FILEPARSE_REQUIRED_XMLPARSER_VERSION}
     )
 
     FetchContent_MakeAvailable(XMLParser)
