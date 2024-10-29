@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(FileParse CXX)
+set(LIB_NAME ${PROJECT_NAME})
 
 # Set the runtime library to dynamic for all configurations in MSVC
 if (MSVC)
@@ -12,8 +13,6 @@ set(LIB_MAJOR_VERSION "1")
 set(LIB_MINOR_VERSION "0")
 set(LIB_PATCH_VERSION "1")
 set(LIB_VERSION_STRING "${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_PATCH_VERSION}")
-
-set(LIB_NAME ${PROJECT_NAME})
 
 # Set C++ standard and extensions
 set(CMAKE_CXX_STANDARD 17)
@@ -28,7 +27,19 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 # Include additional CMake files
-include(CMakeLists-xmlParser.txt)
+set(xmlParser_Branch "v1.0.1")
+
+include(FetchContent)
+FetchContent_Declare(
+  XMLParser
+  GIT_REPOSITORY https://github.com/LBNL-ETA/XMLParser.git
+  GIT_TAG ${xmlParser_Branch}
+)
+FetchContent_MakeAvailable(XMLParser)
+
+# Assuming the target name is xmlParser
+target_include_directories(xmlParser SYSTEM PUBLIC ${xmlParser_INCLUDE_DIRS})
+
 add_subdirectory(include/fileParse)
 
 # Include directories for targets
