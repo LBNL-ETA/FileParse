@@ -35,6 +35,3 @@ endif()
 
 target_compile_features(${LIB_NAME} PUBLIC cxx_std_17)
 target_link_libraries(${LIB_NAME} PUBLIC xmlParser)
-
-# Setting variable for parent projects so it can be checked if same version is used
-set_property(TARGET ${LIB_NAME} PROPERTY xmlParser_Branch ${xmlParser_Branch})

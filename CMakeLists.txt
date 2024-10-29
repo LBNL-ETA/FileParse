@@ -69,3 +69,6 @@ if (MSVC)
 
     # Repeat for other targets, including any third-party or external targets
 endif()
+
+# Setting variable for parent projects so it can be checked if same version is used
+set_property(TARGET ${LIB_NAME} PROPERTY xmlParser_Branch ${xmlParser_Branch})
