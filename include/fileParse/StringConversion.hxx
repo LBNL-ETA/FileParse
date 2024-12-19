@@ -64,6 +64,19 @@ namespace FileParse
         return from_string<T>(str);
     }
 
+    inline std::string toLower(std::string s)
+    {
+#ifdef _MSC_VER
+#    pragma warning(push)
+#    pragma warning(disable : 4244)
+#endif
+        std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+#ifdef _MSC_VER
+#    pragma warning(pop)
+#endif
+        return s;
+    }
+
     /// Enumerator to string conversion routines.
 
     /// Converts an enumerator value to a string.
@@ -77,9 +90,10 @@ namespace FileParse
                             const std::array<std::string, N> & values,
                             EnumType defaultValue)
     {
+        auto nameLower = toLower(std::string(name));
         for(std::size_t i = 0; i < values.size(); ++i)
         {
-            if(values[i] == name)
+            if(toLower(values[i]) == nameLower)
             {
                 return static_cast<EnumType>(i);
             }
