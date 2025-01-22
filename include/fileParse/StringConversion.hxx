@@ -94,8 +94,7 @@ namespace FileParse
     /// @param values An array of strings representing the enumerator values.
     /// @return The string representation of the enumerator value.
     template<typename EnumType, std::size_t N>
-    EnumType enumFromString(std::string_view name,
-                            const std::array<std::string, N> & values)
+    EnumType enumFromString(std::string_view name, const std::array<std::string, N> & values)
     {
         return enumFromString(name, values, static_cast<EnumType>(values.size() - 1u));
     }
@@ -105,7 +104,7 @@ namespace FileParse
     {
         std::string lowerStr(str);
         std::transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(), [](unsigned char c) {
-            return std::tolower(c);
+            return static_cast<char>(std::tolower(c));
         });
         return lowerStr;
     }
@@ -146,7 +145,8 @@ namespace FileParse
     EnumType enumFromStringCaseInsensitive(std::string_view name,
                                            const std::array<std::string, N> & values)
     {
-        return enumFromStringCaseInsensitive(name, values, static_cast<EnumType>(values.size() - 1u));
+        return enumFromStringCaseInsensitive(
+          name, values, static_cast<EnumType>(values.size() - 1u));
     }
 
     /// Converts an enumerator value to a string.
@@ -214,8 +214,7 @@ namespace FileParse
     /// @param enumMap A map of enumerator values to string representations.
     /// @return The enumerator value corresponding to the input string.
     template<typename T>
-    T enumFromString(std::string_view enumString,
-                     const std::map<T, std::string> & enumMap)
+    T enumFromString(std::string_view enumString, const std::map<T, std::string> & enumMap)
     {
         return enumFromString(enumString, enumMap, T{});
     }
