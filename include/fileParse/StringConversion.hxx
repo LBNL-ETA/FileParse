@@ -8,7 +8,6 @@
 #include <array>
 #include <map>
 #include <algorithm>
-#include <optional>
 
 namespace FileParse
 {
