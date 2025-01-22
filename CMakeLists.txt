@@ -27,7 +27,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 # Include additional CMake files
-set(xmlParser_Branch "v1.0.1")
+set(xmlParser_Branch "v1.0.2")
 
 include(FetchContent)
 FetchContent_Declare(
