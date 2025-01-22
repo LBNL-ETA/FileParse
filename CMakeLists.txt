@@ -11,7 +11,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 set(LIB_MAJOR_VERSION "1")
 set(LIB_MINOR_VERSION "0")
-set(LIB_PATCH_VERSION "1")
+set(LIB_PATCH_VERSION "2")
 set(LIB_VERSION_STRING "${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_PATCH_VERSION}")
 
 # Set C++ standard and extensions
@@ -72,3 +72,11 @@ endif()
 
 # Setting variable for parent projects so it can be checked if same version is used
 set_property(TARGET ${LIB_NAME} PROPERTY xmlParser_Branch ${xmlParser_Branch})
+
+if (MSVC)
+    # Set warning level to 4 for MSVC
+    add_compile_options(/W4)
+else()
+    # Set warning level to all for other compilers (e.g., GCC, Clang)
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
