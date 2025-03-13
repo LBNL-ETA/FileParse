@@ -11,11 +11,11 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 set(LIB_MAJOR_VERSION "1")
 set(LIB_MINOR_VERSION "0")
-set(LIB_PATCH_VERSION "3")
+set(LIB_PATCH_VERSION "5")
 set(LIB_VERSION_STRING "${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_PATCH_VERSION}")
 
 # Set C++ standard and extensions
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -27,7 +27,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 # Include additional CMake files
-set(xmlParser_Branch "v1.0.2")
+set(xmlParser_Branch "v1.0.3")
 
 include(FetchContent)
 FetchContent_Declare(
