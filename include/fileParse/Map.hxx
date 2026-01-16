@@ -32,37 +32,6 @@ namespace FileParse
         return node;
     }
 
-    /// Deserializes a child node into its associated map data.
-    /// @tparam NodeAdapter The type of the node adapter.
-    /// @tparam MapType The type of the map to be deserialized.
-    /// @param node The node to deserialize the map from.
-    /// @param value The Child object that will hold the deserialized map and provides node
-    /// hierarchy information.
-    /// @return Const reference to the node.
-    template<typename NodeAdapter, typename MapType>
-    inline std::enable_if_t<is_valid_map<MapType>::value, const NodeAdapter &>
-      operator>>(const NodeAdapter & node, Child<const MapType> & value)
-    {
-        if(value.nodeNames.empty())
-        {
-            return node;
-        }
-
-        NodeAdapter parentNode = node;
-        for(const auto & nodeName : value.nodeNames)
-        {
-            parentNode = parentNode.getChildByName(nodeName);
-            if(!parentNode.isValid())
-            {
-                return node;
-            }
-        }
-
-        parentNode >> value.data;
-
-        return node;
-    }
-
     /// Serializes a map as child nodes of a given node.
     /// @tparam NodeAdapter The type of the node adapter.
     /// @tparam MapType The type of the map to be serialized.
