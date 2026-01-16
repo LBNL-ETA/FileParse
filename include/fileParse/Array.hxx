@@ -83,7 +83,7 @@ namespace FileParse
             return node;
         }
 
-        opt_vec.data = std::vector<T>();
+        opt_vec.data = std::array<T, N>();
         node >> Child{opt_vec.nodeNames, opt_vec.data.value()};
 
         return node;
@@ -159,8 +159,6 @@ namespace FileParse
                                               std::function<EnumType(std::string_view)> converter)
     {
         static_assert(std::is_enum_v<EnumType>, "Provided type is not an enum!");
-
-        vec.clear();
 
         if(tags.empty())
         {
