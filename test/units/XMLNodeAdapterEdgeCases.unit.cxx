@@ -348,3 +348,41 @@ TEST(FileDataHandlerEdgeCases, SaveAndLoadFromFile)
     // Cleanup
     std::remove(tempFile.c_str());
 }
+
+TEST(FileDataHandlerEdgeCases, LoadFromFileWithInvalidContent)
+{
+    const std::string tempFile = "temp_invalid_content_test.xml";
+
+    // Create a file with invalid XML content
+    {
+        std::ofstream out(tempFile);
+        out << "this is not valid xml content";
+    }
+
+    // loadFromXMLFile should return nullopt for invalid content
+    auto result = Common::loadFromXMLFile<TestData>(tempFile, "TestData");
+
+    EXPECT_FALSE(result.has_value());
+
+    // Cleanup
+    std::remove(tempFile.c_str());
+}
+
+TEST(FileDataHandlerEdgeCases, LoadFromFileWithWrongRootNode)
+{
+    const std::string tempFile = "temp_wrong_root_test.xml";
+
+    // Create a file with valid XML but wrong root node
+    {
+        std::ofstream out(tempFile);
+        out << "<WrongRoot><Name>test</Name></WrongRoot>";
+    }
+
+    // loadFromXMLFile should return nullopt for wrong root node
+    auto result = Common::loadFromXMLFile<TestData>(tempFile, "TestData");
+
+    EXPECT_FALSE(result.has_value());
+
+    // Cleanup
+    std::remove(tempFile.c_str());
+}
