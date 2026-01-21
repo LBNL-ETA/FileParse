@@ -190,6 +190,65 @@ TEST(SetEdgeCases, SerializeOptionalSetWithValue)
     EXPECT_FALSE(adapter.getNode().child.empty());
 }
 
+TEST(SetEdgeCases, SerializeSetWithData)
+{
+    const std::set<int> data{10, 20, 30};
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+
+    adapter << FileParse::Child{{"Items", "Item"}, data};
+
+    // Should have Items node with 3 Item children
+    ASSERT_EQ(1u, adapter.getNode().child.size());
+    EXPECT_EQ("Items", adapter.getNode().child[0].tag);
+    EXPECT_EQ(3u, adapter.getNode().child[0].child.size());
+}
+
+TEST(SetEdgeCases, DeserializeSetWithData)
+{
+    auto mockData = []() {
+        Helper::MockNode node{"BaseElement"};
+        auto & itemsNode = Helper::addChildNode(node, "Items");
+        Helper::addChildNode(itemsNode, "Item", "100");
+        Helper::addChildNode(itemsNode, "Item", "200");
+        Helper::addChildNode(itemsNode, "Item", "300");
+        return node;
+    };
+
+    auto elementNode = mockData();
+    const Helper::MockNodeAdapter adapter{&elementNode};
+
+    std::set<int> data;
+    adapter >> FileParse::Child{{"Items", "Item"}, data};
+
+    ASSERT_EQ(3u, data.size());
+    EXPECT_TRUE(data.count(100) > 0);
+    EXPECT_TRUE(data.count(200) > 0);
+    EXPECT_TRUE(data.count(300) > 0);
+}
+
+TEST(SetEdgeCases, DeserializeOptionalSetWithData)
+{
+    auto mockData = []() {
+        Helper::MockNode node{"BaseElement"};
+        auto & itemsNode = Helper::addChildNode(node, "Items");
+        Helper::addChildNode(itemsNode, "Item", "1");
+        Helper::addChildNode(itemsNode, "Item", "2");
+        return node;
+    };
+
+    auto elementNode = mockData();
+    const Helper::MockNodeAdapter adapter{&elementNode};
+
+    std::optional<std::set<int>> data;
+    adapter >> FileParse::Child{{"Items", "Item"}, data};
+
+    ASSERT_TRUE(data.has_value());
+    EXPECT_EQ(2u, data.value().size());
+    EXPECT_TRUE(data.value().count(1) > 0);
+    EXPECT_TRUE(data.value().count(2) > 0);
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // StringConversion.hxx edge cases
 //////////////////////////////////////////////////////////////////////////////
@@ -412,6 +471,65 @@ TEST(VectorEdgeCases, SerializeOptionalVectorWithValue)
 
     // Should have children
     EXPECT_FALSE(adapter.getNode().child.empty());
+}
+
+TEST(VectorEdgeCases, SerializeVectorWithData)
+{
+    const std::vector<int> data{10, 20, 30};
+    Helper::MockNode elementNode("BaseElement");
+    Helper::MockNodeAdapter adapter{&elementNode};
+
+    adapter << FileParse::Child{{"Items", "Item"}, data};
+
+    // Should have Items node with 3 Item children
+    ASSERT_EQ(1u, adapter.getNode().child.size());
+    EXPECT_EQ("Items", adapter.getNode().child[0].tag);
+    EXPECT_EQ(3u, adapter.getNode().child[0].child.size());
+}
+
+TEST(VectorEdgeCases, DeserializeVectorWithData)
+{
+    auto mockData = []() {
+        Helper::MockNode node{"BaseElement"};
+        auto & itemsNode = Helper::addChildNode(node, "Items");
+        Helper::addChildNode(itemsNode, "Item", "100");
+        Helper::addChildNode(itemsNode, "Item", "200");
+        Helper::addChildNode(itemsNode, "Item", "300");
+        return node;
+    };
+
+    auto elementNode = mockData();
+    const Helper::MockNodeAdapter adapter{&elementNode};
+
+    std::vector<int> data;
+    adapter >> FileParse::Child{{"Items", "Item"}, data};
+
+    ASSERT_EQ(3u, data.size());
+    EXPECT_EQ(100, data[0]);
+    EXPECT_EQ(200, data[1]);
+    EXPECT_EQ(300, data[2]);
+}
+
+TEST(VectorEdgeCases, DeserializeOptionalVectorWithData)
+{
+    auto mockData = []() {
+        Helper::MockNode node{"BaseElement"};
+        auto & itemsNode = Helper::addChildNode(node, "Items");
+        Helper::addChildNode(itemsNode, "Item", "5");
+        Helper::addChildNode(itemsNode, "Item", "10");
+        return node;
+    };
+
+    auto elementNode = mockData();
+    const Helper::MockNodeAdapter adapter{&elementNode};
+
+    std::optional<std::vector<int>> data;
+    adapter >> FileParse::Child{{"Items", "Item"}, data};
+
+    ASSERT_TRUE(data.has_value());
+    ASSERT_EQ(2u, data.value().size());
+    EXPECT_EQ(5, data.value()[0]);
+    EXPECT_EQ(10, data.value()[1]);
 }
 
 //////////////////////////////////////////////////////////////////////////////
