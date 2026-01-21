@@ -71,6 +71,7 @@ add_executable(${PROJECT_TEST_NAME}
         units/ArraySerializers.unit.cxx
         units/AttributesSerializers.unit.cxx
         units/BaseSerializers.unit.cxx
+        units/EdgeCases.unit.cxx
         units/BaseSerializersXML.unit.cxx
         units/DoubleMapSerializers.unit.cxx
         units/DoubleMapSerializersXML.unit.cxx
@@ -88,8 +89,10 @@ add_executable(${PROJECT_TEST_NAME}
         units/SetSerializersXML.unit.cxx
         units/ToLower.unit.cxx
         units/VariantSerializersXML.unit.cxx
+        units/VariantEdgeCases.unit.cxx
         units/VectorSerializers.unit.cxx
         units/VectorSerializersXML.unit.cxx
+        units/XMLNodeAdapterEdgeCases.unit.cxx
         main.cxx
 )
 
