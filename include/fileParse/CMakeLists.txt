@@ -16,7 +16,9 @@ add_library( ${LIB_NAME}
 		Variant.hxx
 		Vector.hxx
 		XMLNodeAdapter.cxx
-		XMLNodeAdapter.hxx)
+		XMLNodeAdapter.hxx
+		JSONNodeAdapter.cxx
+		JSONNodeAdapter.hxx)
 
 if(NOT "${fPIC}")
   set(fPIC ON)
@@ -34,4 +36,4 @@ if ( MSVC )
 endif()
 
 target_compile_features(${LIB_NAME} PUBLIC cxx_std_17)
-target_link_libraries(${LIB_NAME} PUBLIC xmlParser)
+target_link_libraries(${LIB_NAME} PUBLIC xmlParser nlohmann_json::nlohmann_json)

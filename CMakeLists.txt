@@ -37,6 +37,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(XMLParser)
 
+set(nlohmann_json_Branch "v3.11.3")
+FetchContent_Declare(
+  nlohmann_json
+  GIT_REPOSITORY https://github.com/nlohmann/json.git
+  GIT_TAG ${nlohmann_json_Branch}
+)
+FetchContent_MakeAvailable(nlohmann_json)
+
 # Assuming the target name is xmlParser
 target_include_directories(xmlParser SYSTEM PUBLIC ${xmlParser_INCLUDE_DIRS})
 
