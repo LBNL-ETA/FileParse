@@ -239,7 +239,7 @@ TEST(UnifiedNodeAdapter, GetTopNodeFromStringXML)
 {
     const std::string xml = "<Root><Child>xml value</Child></Root>";
 
-    const auto node = Common::getTopNodeFromString(xml, "Root", FileParse::FileFormat::XML);
+    const auto node = Common::getTopNodeFromString(xml, "Root");
 
     ASSERT_TRUE(node.has_value());
     EXPECT_TRUE(std::holds_alternative<XMLNodeAdapter>(*node));
@@ -259,7 +259,7 @@ TEST(UnifiedNodeAdapter, GetTopNodeFromStringJSON)
 {
     const std::string json = R"({"Root": {"Child": "json value"}})";
 
-    const auto node = Common::getTopNodeFromString(json, "Root", FileParse::FileFormat::JSON);
+    const auto node = Common::getTopNodeFromString(json, "Root");
 
     ASSERT_TRUE(node.has_value());
     EXPECT_TRUE(std::holds_alternative<JSONNodeAdapter>(*node));
@@ -279,7 +279,7 @@ TEST(UnifiedNodeAdapter, GetTopNodeFromStringInvalidXML)
 {
     const std::string invalidXml = "not valid xml";
 
-    const auto node = Common::getTopNodeFromString(invalidXml, "Root", FileParse::FileFormat::XML);
+    const auto node = Common::getTopNodeFromString(invalidXml, "Root");
 
     EXPECT_FALSE(node.has_value());
 }
@@ -288,21 +288,21 @@ TEST(UnifiedNodeAdapter, GetTopNodeFromStringInvalidJSON)
 {
     const std::string invalidJson = "not valid json";
 
-    const auto node = Common::getTopNodeFromString(invalidJson, "Root", FileParse::FileFormat::JSON);
+    const auto node = Common::getTopNodeFromString(invalidJson, "Root");
 
     EXPECT_FALSE(node.has_value());
 }
 
 TEST(UnifiedNodeAdapter, GetTopNodeFromStringEmptyXML)
 {
-    const auto node = Common::getTopNodeFromString("", "Root", FileParse::FileFormat::XML);
+    const auto node = Common::getTopNodeFromString("", "Root");
 
     EXPECT_FALSE(node.has_value());
 }
 
 TEST(UnifiedNodeAdapter, GetTopNodeFromStringEmptyJSON)
 {
-    const auto node = Common::getTopNodeFromString("", "Root", FileParse::FileFormat::JSON);
+    const auto node = Common::getTopNodeFromString("", "Root");
 
     EXPECT_FALSE(node.has_value());
 }
@@ -311,7 +311,7 @@ TEST(UnifiedNodeAdapter, GetTopNodeFromStringWrongRootXML)
 {
     const std::string xml = "<WrongRoot><Child>value</Child></WrongRoot>";
 
-    const auto node = Common::getTopNodeFromString(xml, "ExpectedRoot", FileParse::FileFormat::XML);
+    const auto node = Common::getTopNodeFromString(xml, "ExpectedRoot");
 
     EXPECT_FALSE(node.has_value());
 }
@@ -320,16 +320,16 @@ TEST(UnifiedNodeAdapter, GetTopNodeFromStringWrongRootJSON)
 {
     const std::string json = R"({"WrongRoot": {"Child": "value"}})";
 
-    const auto node = Common::getTopNodeFromString(json, "ExpectedRoot", FileParse::FileFormat::JSON);
+    const auto node = Common::getTopNodeFromString(json, "ExpectedRoot");
 
     EXPECT_FALSE(node.has_value());
 }
 
 TEST(UnifiedNodeAdapter, GetTopNodeFromStringUnknownFormat)
 {
-    const std::string data = "<Root><Child>value</Child></Root>";
+    const std::string data = "This is plain text, not XML or JSON";
 
-    const auto node = Common::getTopNodeFromString(data, "Root", FileParse::FileFormat::Unknown);
+    const auto node = Common::getTopNodeFromString(data, "Root");
 
     EXPECT_FALSE(node.has_value());
 }
@@ -378,7 +378,7 @@ TEST(UnifiedNodeAdapter, RoundTripXMLWithVisit)
     EXPECT_NE(std::string::npos, content.find("TestXML"));
 
     // Deserialize
-    auto readNode = Common::getTopNodeFromString(content, "TestData", FileParse::FileFormat::XML);
+    const auto readNode = Common::getTopNodeFromString(content, "TestData");
     ASSERT_TRUE(readNode.has_value());
 
     UnifiedTestData loaded;
@@ -404,7 +404,7 @@ TEST(UnifiedNodeAdapter, RoundTripJSONWithVisit)
     EXPECT_NE(std::string::npos, content.find("TestJSON"));
 
     // Deserialize
-    auto readNode = Common::getTopNodeFromString(content, "TestData", FileParse::FileFormat::JSON);
+    const auto readNode = Common::getTopNodeFromString(content, "TestData");
     ASSERT_TRUE(readNode.has_value());
 
     UnifiedTestData loaded;
@@ -430,7 +430,7 @@ TEST(UnifiedNodeAdapter, FileRoundTripXML)
     EXPECT_EQ(0, writeResult);
 
     // Read back using auto-detect
-    auto readNode = Common::getTopNodeFromFile(tempFile, "TestData");
+    const auto readNode = Common::getTopNodeFromFile(tempFile, "TestData");
     ASSERT_TRUE(readNode.has_value());
     EXPECT_TRUE(std::holds_alternative<XMLNodeAdapter>(*readNode));
 
@@ -459,7 +459,7 @@ TEST(UnifiedNodeAdapter, FileRoundTripJSON)
     EXPECT_EQ(0, writeResult);
 
     // Read back using auto-detect
-    auto readNode = Common::getTopNodeFromFile(tempFile, "TestData");
+    const auto readNode = Common::getTopNodeFromFile(tempFile, "TestData");
     ASSERT_TRUE(readNode.has_value());
     EXPECT_TRUE(std::holds_alternative<JSONNodeAdapter>(*readNode));
 

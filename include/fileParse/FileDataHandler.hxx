@@ -205,6 +205,27 @@ namespace Common
     // Unified Functions (Auto-detect format)
     //////////////////////////////////////////////////////////////////////////
 
+    /// Deserializes an object from a string, automatically detecting format from content.
+    /// @tparam T The type of object to deserialize (must have operator>> defined).
+    /// @param data The string to parse.
+    /// @param nodeTypeName The name of the root element/property.
+    /// @return An optional containing the deserialized object, or std::nullopt on failure.
+    template<typename T>
+    std::optional<T> loadFromString(const std::string & data, const std::string & nodeTypeName)
+    {
+        using namespace FileParse;
+
+        switch(detectFormatFromStringContent(data))
+        {
+            case FileFormat::XML:
+                return loadFromXMLString<T>(data, nodeTypeName);
+            case FileFormat::JSON:
+                return loadFromJSONString<T>(data, nodeTypeName);
+            default:
+                return std::nullopt;
+        }
+    }
+
     /// Deserializes an object from a string with explicit format specification.
     /// @tparam T The type of object to deserialize (must have operator>> defined).
     /// @param data The string to parse.
@@ -346,24 +367,24 @@ namespace Common
         return std::nullopt;
     }
 
-    /// Retrieves the top-level node from a string with explicit format specification.
+    /// Retrieves the top-level node from a string, automatically detecting format from content.
     /// @param data The string to parse.
     /// @param topNodeName The name of the top node to retrieve.
-    /// @param format The file format (XML or JSON).
     /// @return An optional containing the NodeAdapter if successful, std::nullopt otherwise.
     [[nodiscard]] inline std::optional<NodeAdapter> getTopNodeFromString(std::string_view data,
-                                                                         std::string_view topNodeName,
-                                                                         FileParse::FileFormat format)
+                                                                         std::string_view topNodeName)
     {
-        switch(format)
+        using namespace FileParse;
+
+        switch(detectFormatFromStringContent(data))
         {
-            case FileParse::FileFormat::XML:
+            case FileFormat::XML:
                 if(auto node = getXMLTopNodeFromString(data, topNodeName))
                 {
                     return NodeAdapter{*node};
                 }
                 break;
-            case FileParse::FileFormat::JSON:
+            case FileFormat::JSON:
                 if(auto node = getJSONTopNodeFromString(data, topNodeName))
                 {
                     return NodeAdapter{*node};
@@ -374,4 +395,5 @@ namespace Common
         }
         return std::nullopt;
     }
+
 }   // namespace Common

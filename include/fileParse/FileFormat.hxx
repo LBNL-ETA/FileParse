@@ -101,6 +101,33 @@ namespace FileParse
         return FileFormat::Unknown;
     }
 
+    /// Detects file format by inspecting string contents.
+    /// @param content The string content to analyze.
+    /// @return The detected FileFormat, or FileFormat::Unknown if format cannot be determined.
+    /// @note This function looks for:
+    ///       - '{' as first non-whitespace character → JSON
+    ///       - '<' as first non-whitespace character → XML
+    inline FileFormat detectFormatFromStringContent(std::string_view content)
+    {
+        for(char ch : content)
+        {
+            if(std::isspace(static_cast<unsigned char>(ch)))
+            {
+                continue;
+            }
+            if(ch == '{')
+            {
+                return FileFormat::JSON;
+            }
+            if(ch == '<')
+            {
+                return FileFormat::XML;
+            }
+            break;
+        }
+        return FileFormat::Unknown;
+    }
+
     /// Detects file format using extension first, then content as fallback.
     /// @param fileName The path to the file to analyze.
     /// @return The detected FileFormat, or FileFormat::Unknown if format cannot be determined.
