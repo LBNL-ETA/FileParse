@@ -6,6 +6,7 @@
 #include <optional>
 
 #include "XMLNodeAdapter.hxx"
+#include "JSONNodeAdapter.hxx"
 
 namespace Common
 {
@@ -80,6 +81,69 @@ namespace Common
     std::string saveToXMLString(const T & object, const std::string & nodeName)
     {
         auto node = createTopNode(nodeName);
+
+        node << object;
+
+        return node.getContent();
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    // JSON Functions
+    //////////////////////////////////////////////////////////////////////////
+
+    template<typename T>
+    std::optional<T> loadFromJSONString(const std::string & data, const std::string & nodeTypeName)
+    {
+        const auto jsonNode = getJSONTopNodeFromString(data, nodeTypeName);
+
+        if(jsonNode.has_value())
+        {
+            T model;
+            jsonNode.value() >> model;
+            return model;
+        }
+
+        return std::nullopt;
+    }
+
+    template<typename T>
+    std::optional<T> loadFromJSONFile(std::string_view fileName, const std::string & nodeTypeName)
+    {
+        std::string fileNameStr(fileName);
+
+        // Check if file exists and is accessible; if not, create it with default content
+        if(std::ifstream f(fileNameStr.c_str()); !f.good())
+        {
+            const std::string fileContent = "{\"" + nodeTypeName + "\": {}}";
+            createFileFromString(fileNameStr, fileContent);
+        }
+
+        const auto jsonNode = getJSONTopNodeFromFile(fileNameStr, nodeTypeName);
+
+        if(jsonNode.has_value())
+        {
+            T model;
+            jsonNode.value() >> model;
+            return model;
+        }
+
+        return std::nullopt;
+    }
+
+    template<typename T>
+    int saveToJSONFile(const T & object, std::string_view fileName, const std::string & nodeName)
+    {
+        auto node = createJSONTopNode(nodeName);
+
+        node << object;
+
+        return node.writeToFile(fileName.data());
+    }
+
+    template<typename T>
+    std::string saveToJSONString(const T & object, const std::string & nodeName)
+    {
+        auto node = createJSONTopNode(nodeName);
 
         node << object;
 

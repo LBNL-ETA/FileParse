@@ -67,6 +67,8 @@ add_executable(${PROJECT_TEST_NAME}
         helper/files/VariantElementXML.cxx
         helper/files/VectorElementXML.hxx
         helper/files/VectorElementXML.cxx
+        helper/files/VectorElementJSON.hxx
+        helper/files/VectorElementJSON.cxx
 
         units/ArraySerializers.unit.cxx
         units/AttributesSerializers.unit.cxx
@@ -92,6 +94,7 @@ add_executable(${PROJECT_TEST_NAME}
         units/VariantEdgeCases.unit.cxx
         units/VectorSerializers.unit.cxx
         units/VectorSerializersXML.unit.cxx
+        units/VectorSerializersJSON.unit.cxx
         units/XMLNodeAdapterEdgeCases.unit.cxx
         units/JSONNodeAdapter.unit.cxx
         main.cxx
