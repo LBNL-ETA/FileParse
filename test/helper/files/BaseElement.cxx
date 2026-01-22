@@ -28,4 +28,15 @@ namespace Helper
     {
         return Common::saveToJSONFile(base, fileName, "BaseElement");
     }
+
+    // Unified functions (auto-detect format from extension or content)
+    std::optional<BaseElement> loadBaseElement(std::string_view fileName)
+    {
+        return Common::loadFromFile<BaseElement>(fileName, "BaseElement");
+    }
+
+    int saveBaseElement(const BaseElement & base, std::string_view fileName)
+    {
+        return Common::saveToFile(base, fileName, "BaseElement");
+    }
 }   // namespace Helper

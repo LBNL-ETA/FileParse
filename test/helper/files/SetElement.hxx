@@ -34,4 +34,16 @@ namespace Helper
 
     [[nodiscard]] std::optional<SetElementEnum> loadSetElementEnumJSON(std::string_view fileName);
     [[nodiscard]] int saveSetElementEnumJSON(const SetElementEnum & element, std::string_view fileName);
+
+    // Unified functions (auto-detect format)
+    [[nodiscard]] std::optional<SetElementDouble> loadSetElementDouble(std::string_view fileName);
+    [[nodiscard]] int saveSetElementDouble(const SetElementDouble & element, std::string_view fileName);
+
+    [[nodiscard]] std::optional<SetElementOptionalDouble>
+      loadSetElementOptionalDouble(std::string_view fileName);
+    [[nodiscard]] int saveSetElementOptionalDouble(const SetElementOptionalDouble & element,
+                                                   std::string_view fileName);
+
+    [[nodiscard]] std::optional<SetElementEnum> loadSetElementEnum(std::string_view fileName);
+    [[nodiscard]] int saveSetElementEnum(const SetElementEnum & element, std::string_view fileName);
 }   // namespace Helper

@@ -73,4 +73,35 @@ namespace Helper
         return Common::saveToJSONFile(element, fileName, "SetElementEnum");
     }
 
+    // Unified functions (auto-detect format)
+    std::optional<SetElementDouble> loadSetElementDouble(std::string_view fileName)
+    {
+        return Common::loadFromFile<SetElementDouble>(fileName, "SetElementDouble");
+    }
+
+    int saveSetElementDouble(const SetElementDouble & element, std::string_view fileName)
+    {
+        return Common::saveToFile(element, fileName, "SetElementDouble");
+    }
+
+    std::optional<SetElementOptionalDouble> loadSetElementOptionalDouble(std::string_view fileName)
+    {
+        return Common::loadFromFile<SetElementOptionalDouble>(fileName, "SetElementOptionalDouble");
+    }
+
+    int saveSetElementOptionalDouble(const SetElementOptionalDouble & element,
+                                     std::string_view fileName)
+    {
+        return Common::saveToFile(element, fileName, "SetElementOptionalDouble");
+    }
+
+    std::optional<SetElementEnum> loadSetElementEnum(std::string_view fileName)
+    {
+        return Common::loadFromFile<SetElementEnum>(fileName, "SetElementEnum");
+    }
+
+    int saveSetElementEnum(const SetElementEnum & element, std::string_view fileName)
+    {
+        return Common::saveToFile(element, fileName, "SetElementEnum");
+    }
 }   // namespace Helper

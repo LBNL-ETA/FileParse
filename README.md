@@ -5,6 +5,7 @@ A modern C++20 header-only library for serializing and deserializing C++ objects
 ## Features
 
 - **Dual Format Support**: Seamlessly serialize to both XML and JSON using the same code
+- **Automatic Format Detection**: Unified load/save functions detect format from file extension or content
 - **STL Container Support**: Built-in support for `std::vector`, `std::set`, `std::array`, `std::map`, `std::unordered_map`
 - **Modern C++ Types**: Full support for `std::optional` and `std::variant`
 - **Enum Serialization**: Convert enums to/from strings with custom converters
@@ -87,6 +88,12 @@ int main() {
     // Load from JSON
     auto loadedJSON = Common::loadFromJSONFile<Person>("person.json", "Person");
 
+    // Or use unified functions with automatic format detection
+    Common::saveToFile(person, "person.xml", "Person");   // Auto-detects XML from extension
+    Common::saveToFile(person, "person.json", "Person");  // Auto-detects JSON from extension
+
+    auto loaded = Common::loadFromFile<Person>("person.xml", "Person");  // Auto-detects format
+
     return 0;
 }
 ```
@@ -124,6 +131,46 @@ int main() {
 - **Child**: Wrapper that pairs data with a node path for navigation
 - **operator<<**: Serialization (C++ object → XML/JSON)
 - **operator>>**: Deserialization (XML/JSON → C++ object)
+
+### Unified File Operations
+
+FileParse provides unified functions that automatically detect the file format, allowing you to write format-agnostic code:
+
+```cpp
+#include <fileParse/FileDataHandler.hxx>
+
+// Save - format determined by file extension (.xml or .json)
+Common::saveToFile(myObject, "data.xml", "Root");   // Saves as XML
+Common::saveToFile(myObject, "data.json", "Root");  // Saves as JSON
+
+// Load - format detected from extension first, then file content
+auto obj1 = Common::loadFromFile<MyType>("data.xml", "Root");   // Loads XML
+auto obj2 = Common::loadFromFile<MyType>("data.json", "Root");  // Loads JSON
+```
+
+**Format Detection Behavior:**
+
+| Function | Detection Method |
+|----------|-----------------|
+| `saveToFile` | File extension only (`.xml` or `.json`) |
+| `loadFromFile` | Extension first, then content inspection as fallback |
+
+For loading, if the file extension is not recognized, the library inspects the file content:
+- First non-whitespace character `{` → JSON
+- First non-whitespace character `<` → XML
+
+**When to Use Format-Specific Functions:**
+
+Use `saveToXMLFile`/`saveToJSONFile` and `loadFromXMLFile`/`loadFromJSONFile` when:
+- Working with non-standard file extensions (e.g., `.config`, `.data`)
+- You need explicit control over the format regardless of extension
+- Performance is critical (skips format detection)
+
+```cpp
+// Non-standard extension - must specify format explicitly
+Common::saveToXMLFile(config, "settings.config", "Settings");
+auto config = Common::loadFromXMLFile<Config>("settings.config", "Settings");
+```
 
 ### Detailed Examples
 

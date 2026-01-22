@@ -28,4 +28,15 @@ namespace Helper
     {
         return Common::saveToJSONFile(element, fileName, "Test");
     }
+
+    // Unified functions (auto-detect format)
+    std::optional<VariantsAll> loadVariantAll(std::string_view fileName)
+    {
+        return Common::loadFromFile<VariantsAll>(fileName, "Test");
+    }
+
+    int saveVariantAll(const VariantsAll & element, std::string_view fileName)
+    {
+        return Common::saveToFile(element, fileName, "Test");
+    }
 }   // namespace Helper
