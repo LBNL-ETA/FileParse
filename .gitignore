@@ -1,0 +1,13 @@
+# Build directories
+build/
+cmake-build-*/
+
+# IDE files
+.idea/
+.vscode/
+*.user
+
+# Claude Code
+.claude/
+Claude.md
+JSON_IMPLEMENTATION_NOTES.md
