@@ -8,10 +8,14 @@
 #include <fstream>
 #include <sstream>
 #include <optional>
+#include <variant>
 
 #include "XMLNodeAdapter.hxx"
 #include "JSONNodeAdapter.hxx"
 #include "FileFormat.hxx"
+
+/// Type alias for a node adapter that can hold either XML or JSON adapter.
+using NodeAdapter = std::variant<XMLNodeAdapter, JSONNodeAdapter>;
 
 namespace Common
 {
@@ -290,5 +294,84 @@ namespace Common
             default:
                 return -1;
         }
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    // Unified Node Adapter Functions
+    //////////////////////////////////////////////////////////////////////////
+
+    /// Creates a top-level node with a specified name and format.
+    /// @param topNodeName The name of the top node.
+    /// @param format The file format (XML or JSON).
+    /// @return A NodeAdapter variant containing the appropriate adapter type.
+    [[nodiscard]] inline NodeAdapter createTopNode(std::string_view topNodeName,
+                                                   FileParse::FileFormat format)
+    {
+        switch(format)
+        {
+            case FileParse::FileFormat::JSON:
+                return createJSONTopNode(topNodeName);
+            case FileParse::FileFormat::XML:
+            default:
+                return createXMLTopNode(topNodeName);
+        }
+    }
+
+    /// Retrieves the top-level node from a file, automatically detecting format.
+    /// @param fileName The name of the file containing the data.
+    /// @param topNodeName The name of the top node to retrieve.
+    /// @return An optional containing the NodeAdapter if successful, std::nullopt otherwise.
+    [[nodiscard]] inline std::optional<NodeAdapter> getTopNodeFromFile(std::string_view fileName,
+                                                                       std::string_view topNodeName)
+    {
+        using namespace FileParse;
+
+        switch(detectFileFormat(fileName))
+        {
+            case FileFormat::XML:
+                if(auto node = getXMLTopNodeFromFile(fileName, topNodeName))
+                {
+                    return NodeAdapter{*node};
+                }
+                break;
+            case FileFormat::JSON:
+                if(auto node = getJSONTopNodeFromFile(fileName, topNodeName))
+                {
+                    return NodeAdapter{*node};
+                }
+                break;
+            default:
+                break;
+        }
+        return std::nullopt;
+    }
+
+    /// Retrieves the top-level node from a string with explicit format specification.
+    /// @param data The string to parse.
+    /// @param topNodeName The name of the top node to retrieve.
+    /// @param format The file format (XML or JSON).
+    /// @return An optional containing the NodeAdapter if successful, std::nullopt otherwise.
+    [[nodiscard]] inline std::optional<NodeAdapter> getTopNodeFromString(std::string_view data,
+                                                                         std::string_view topNodeName,
+                                                                         FileParse::FileFormat format)
+    {
+        switch(format)
+        {
+            case FileParse::FileFormat::XML:
+                if(auto node = getXMLTopNodeFromString(data, topNodeName))
+                {
+                    return NodeAdapter{*node};
+                }
+                break;
+            case FileParse::FileFormat::JSON:
+                if(auto node = getJSONTopNodeFromString(data, topNodeName))
+                {
+                    return NodeAdapter{*node};
+                }
+                break;
+            default:
+                break;
+        }
+        return std::nullopt;
     }
 }   // namespace Common

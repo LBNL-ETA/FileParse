@@ -84,6 +84,7 @@ add_executable(${PROJECT_TEST_NAME}
         units/VectorSerializers.unit.cxx
         units/XMLNodeAdapterEdgeCases.unit.cxx
         units/JSONNodeAdapter.unit.cxx
+        units/UnifiedNodeAdapter.unit.cxx
         units/FileFormat.unit.cxx
         units/BaseSerializersFile.unit.cxx
         units/VectorSerializersFile.unit.cxx
