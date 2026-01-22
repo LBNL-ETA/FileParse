@@ -276,3 +276,89 @@ TEST_F(UnifiedFileOperationsTest, ExplicitFunctionsStillWork)
     ASSERT_TRUE(xmlLoaded.has_value());
     EXPECT_EQ("Explicit", xmlLoaded->name);
 }
+
+//////////////////////////////////////////////////////////////////////////////
+// Unified loadFromString/saveToString tests
+//////////////////////////////////////////////////////////////////////////////
+
+TEST(UnifiedStringOperations, SaveToStringJSON)
+{
+    SimpleData original{"StringTest", 55};
+    std::string result = Common::saveToString(original, "Root", FileParse::FileFormat::JSON);
+
+    EXPECT_FALSE(result.empty());
+    EXPECT_NE(result.find("StringTest"), std::string::npos);
+    EXPECT_NE(result.find("55"), std::string::npos);
+}
+
+TEST(UnifiedStringOperations, SaveToStringXML)
+{
+    SimpleData original{"XMLString", 88};
+    std::string result = Common::saveToString(original, "Root", FileParse::FileFormat::XML);
+
+    EXPECT_FALSE(result.empty());
+    EXPECT_NE(result.find("XMLString"), std::string::npos);
+    EXPECT_NE(result.find("88"), std::string::npos);
+    EXPECT_NE(result.find("<Root>"), std::string::npos);
+}
+
+TEST(UnifiedStringOperations, SaveToStringUnknownFormat)
+{
+    SimpleData original{"Test", 1};
+    std::string result = Common::saveToString(original, "Root", FileParse::FileFormat::Unknown);
+
+    EXPECT_TRUE(result.empty());
+}
+
+TEST(UnifiedStringOperations, LoadFromStringJSON)
+{
+    std::string jsonData = R"({"Root": {"Name": "FromJSON", "Value": "42"}})";
+
+    auto loaded = Common::loadFromString<SimpleData>(jsonData, "Root", FileParse::FileFormat::JSON);
+    ASSERT_TRUE(loaded.has_value());
+    EXPECT_EQ("FromJSON", loaded->name);
+    EXPECT_EQ(42, loaded->value);
+}
+
+TEST(UnifiedStringOperations, LoadFromStringXML)
+{
+    std::string xmlData = R"(<Root><Name>FromXML</Name><Value>99</Value></Root>)";
+
+    auto loaded = Common::loadFromString<SimpleData>(xmlData, "Root", FileParse::FileFormat::XML);
+    ASSERT_TRUE(loaded.has_value());
+    EXPECT_EQ("FromXML", loaded->name);
+    EXPECT_EQ(99, loaded->value);
+}
+
+TEST(UnifiedStringOperations, LoadFromStringUnknownFormat)
+{
+    std::string data = "some data";
+    auto loaded = Common::loadFromString<SimpleData>(data, "Root", FileParse::FileFormat::Unknown);
+    EXPECT_FALSE(loaded.has_value());
+}
+
+TEST(UnifiedStringOperations, RoundTripJSON)
+{
+    SimpleData original{"RoundTrip", 123};
+
+    std::string serialized = Common::saveToString(original, "Root", FileParse::FileFormat::JSON);
+    ASSERT_FALSE(serialized.empty());
+
+    auto loaded = Common::loadFromString<SimpleData>(serialized, "Root", FileParse::FileFormat::JSON);
+    ASSERT_TRUE(loaded.has_value());
+    EXPECT_EQ(original.name, loaded->name);
+    EXPECT_EQ(original.value, loaded->value);
+}
+
+TEST(UnifiedStringOperations, RoundTripXML)
+{
+    SimpleData original{"RoundTrip", 456};
+
+    std::string serialized = Common::saveToString(original, "Root", FileParse::FileFormat::XML);
+    ASSERT_FALSE(serialized.empty());
+
+    auto loaded = Common::loadFromString<SimpleData>(serialized, "Root", FileParse::FileFormat::XML);
+    ASSERT_TRUE(loaded.has_value());
+    EXPECT_EQ(original.name, loaded->name);
+    EXPECT_EQ(original.value, loaded->value);
+}

@@ -201,6 +201,50 @@ namespace Common
     // Unified Functions (Auto-detect format)
     //////////////////////////////////////////////////////////////////////////
 
+    /// Deserializes an object from a string with explicit format specification.
+    /// @tparam T The type of object to deserialize (must have operator>> defined).
+    /// @param data The string to parse.
+    /// @param nodeTypeName The name of the root element/property.
+    /// @param format The file format (XML or JSON).
+    /// @return An optional containing the deserialized object, or std::nullopt on failure.
+    template<typename T>
+    std::optional<T> loadFromString(const std::string & data,
+                                    const std::string & nodeTypeName,
+                                    FileParse::FileFormat format)
+    {
+        switch(format)
+        {
+            case FileParse::FileFormat::XML:
+                return loadFromXMLString<T>(data, nodeTypeName);
+            case FileParse::FileFormat::JSON:
+                return loadFromJSONString<T>(data, nodeTypeName);
+            default:
+                return std::nullopt;
+        }
+    }
+
+    /// Serializes an object to a string with explicit format specification.
+    /// @tparam T The type of object to serialize (must have operator<< defined).
+    /// @param object The object to serialize.
+    /// @param nodeName The name of the root element/property.
+    /// @param format The file format (XML or JSON).
+    /// @return The string representation of the object, or empty string if format is unknown.
+    template<typename T>
+    std::string saveToString(const T & object,
+                             const std::string & nodeName,
+                             FileParse::FileFormat format)
+    {
+        switch(format)
+        {
+            case FileParse::FileFormat::XML:
+                return saveToXMLString(object, nodeName);
+            case FileParse::FileFormat::JSON:
+                return saveToJSONString(object, nodeName);
+            default:
+                return {};
+        }
+    }
+
     /// Deserializes an object from a file, automatically detecting format.
     /// @tparam T The type of object to deserialize (must have operator>> defined).
     /// @param fileName The path to the file (format detected from extension, then content).
