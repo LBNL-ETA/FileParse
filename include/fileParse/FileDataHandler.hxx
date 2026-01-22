@@ -1,3 +1,7 @@
+/// File: FileDataHandler.hxx
+/// @brief Provides high-level functions for loading and saving data structures
+///        to/from XML and JSON files or strings.
+
 #pragma once
 
 #include <string>
@@ -12,6 +16,9 @@ namespace Common
 {
     namespace
     {
+        /// Creates a file with the specified content.
+        /// @param fileName The name of the file to create.
+        /// @param fileContent The content to write to the file.
         void createFileFromString(std::string_view fileName, std::string_view fileContent)
         {
             std::ofstream out(fileName.data());
@@ -20,17 +27,23 @@ namespace Common
         }
     }   // namespace
 
+    //////////////////////////////////////////////////////////////////////////
+    // XML Functions
+    //////////////////////////////////////////////////////////////////////////
+
+    /// Deserializes an object from an XML string.
+    /// @tparam T The type of object to deserialize (must have operator>> defined).
+    /// @param data The XML string to parse.
+    /// @param nodeTypeName The name of the root XML element.
+    /// @return An optional containing the deserialized object, or std::nullopt on failure.
     template<typename T>
     std::optional<T> loadFromXMLString(const std::string & data, const std::string & nodeTypeName)
     {
-        // Attempt to load the top node for the given type
         const auto xmlNode = getTopNodeFromString(data, nodeTypeName);
 
-        // Create an instance of the type
         if(xmlNode.has_value())
         {
             T model;
-            // Assume that `operator>>` is overloaded for T and xmlNode type
             xmlNode.value() >> model;
             return model;
         }
@@ -38,27 +51,29 @@ namespace Common
         return std::nullopt;
     }
 
+    /// Deserializes an object from an XML file.
+    /// If the file doesn't exist, creates an empty XML file with the specified root element.
+    /// @tparam T The type of object to deserialize (must have operator>> defined).
+    /// @param fileName The path to the XML file.
+    /// @param nodeTypeName The name of the root XML element.
+    /// @return An optional containing the deserialized object, or std::nullopt on failure.
     template<typename T>
     std::optional<T> loadFromXMLFile(std::string_view fileName, const std::string & nodeTypeName)
     {
-        // Convert std::string_view to std::string for file operations
         std::string fileNameStr(fileName);
 
-        // Check if file exists and is accessible; if not, create it with default content
         if(std::ifstream f(fileNameStr.c_str()); !f.good())
         {
             const std::string fileContent = "<" + nodeTypeName + ">\n</" + nodeTypeName + ">";
             createFileFromString(fileNameStr, fileContent);
         }
 
-        // Attempt to load the top node for the given type
         const auto xmlNode = getTopNodeFromFile(fileNameStr, nodeTypeName);
 
 
         if(xmlNode.has_value())
         {
             T model;
-            // Assume that `operator>>` is overloaded for T and xmlNode type
             xmlNode.value() >> model;
             return model;
         }
@@ -66,9 +81,14 @@ namespace Common
         return std::nullopt;
     }
 
+    /// Serializes an object to an XML file.
+    /// @tparam T The type of object to serialize (must have operator<< defined).
+    /// @param object The object to serialize.
+    /// @param fileName The path to the output XML file.
+    /// @param nodeName The name of the root XML element.
+    /// @return 0 on success, non-zero on failure.
     template<typename T>
     int saveToXMLFile(const T & object, std::string_view fileName, const std::string & nodeName)
-
     {
         auto node = createTopNode(nodeName);
 
@@ -77,6 +97,11 @@ namespace Common
         return node.writeToFile(fileName.data());
     }
 
+    /// Serializes an object to an XML string.
+    /// @tparam T The type of object to serialize (must have operator<< defined).
+    /// @param object The object to serialize.
+    /// @param nodeName The name of the root XML element.
+    /// @return The XML string representation of the object.
     template<typename T>
     std::string saveToXMLString(const T & object, const std::string & nodeName)
     {
@@ -91,6 +116,11 @@ namespace Common
     // JSON Functions
     //////////////////////////////////////////////////////////////////////////
 
+    /// Deserializes an object from a JSON string.
+    /// @tparam T The type of object to deserialize (must have operator>> defined).
+    /// @param data The JSON string to parse.
+    /// @param nodeTypeName The name of the root JSON property.
+    /// @return An optional containing the deserialized object, or std::nullopt on failure.
     template<typename T>
     std::optional<T> loadFromJSONString(const std::string & data, const std::string & nodeTypeName)
     {
@@ -106,12 +136,17 @@ namespace Common
         return std::nullopt;
     }
 
+    /// Deserializes an object from a JSON file.
+    /// If the file doesn't exist, creates an empty JSON file with the specified root property.
+    /// @tparam T The type of object to deserialize (must have operator>> defined).
+    /// @param fileName The path to the JSON file.
+    /// @param nodeTypeName The name of the root JSON property.
+    /// @return An optional containing the deserialized object, or std::nullopt on failure.
     template<typename T>
     std::optional<T> loadFromJSONFile(std::string_view fileName, const std::string & nodeTypeName)
     {
         std::string fileNameStr(fileName);
 
-        // Check if file exists and is accessible; if not, create it with default content
         if(std::ifstream f(fileNameStr.c_str()); !f.good())
         {
             const std::string fileContent = "{\"" + nodeTypeName + "\": {}}";
@@ -130,6 +165,12 @@ namespace Common
         return std::nullopt;
     }
 
+    /// Serializes an object to a JSON file.
+    /// @tparam T The type of object to serialize (must have operator<< defined).
+    /// @param object The object to serialize.
+    /// @param fileName The path to the output JSON file.
+    /// @param nodeName The name of the root JSON property.
+    /// @return 0 on success, non-zero on failure.
     template<typename T>
     int saveToJSONFile(const T & object, std::string_view fileName, const std::string & nodeName)
     {
@@ -140,6 +181,11 @@ namespace Common
         return node.writeToFile(fileName.data());
     }
 
+    /// Serializes an object to a JSON string.
+    /// @tparam T The type of object to serialize (must have operator<< defined).
+    /// @param object The object to serialize.
+    /// @param nodeName The name of the root JSON property.
+    /// @return The JSON string representation of the object.
     template<typename T>
     std::string saveToJSONString(const T & object, const std::string & nodeName)
     {

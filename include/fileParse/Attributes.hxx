@@ -12,32 +12,43 @@
 
 namespace FileParse
 {
+    /// Type trait to check if a type is a basic serializable type.
+    /// @tparam T The type to check.
     template<typename T>
     struct is_basic_type : std::false_type
     {};
 
-    // Specializations for allowed types
+    /// Specialization of is_basic_type for int.
     template<>
     struct is_basic_type<int> : std::true_type
     {};
 
+    /// Specialization of is_basic_type for double.
     template<>
     struct is_basic_type<double> : std::true_type
     {};
 
+    /// Specialization of is_basic_type for float.
     template<>
     struct is_basic_type<float> : std::true_type
     {};
 
+    /// Specialization of is_basic_type for size_t.
     template<>
     struct is_basic_type<size_t> : std::true_type
     {};
 
+    /// Specialization of is_basic_type for std::string.
     template<>
     struct is_basic_type<std::string> : std::true_type
     {};
 
-    // Generic saveAttribute for basic types, excluding std::string
+    /// Saves a basic type value as an XML attribute.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The type of the value (must be a basic type, excluding std::string).
+    /// @param node The node to add the attribute to.
+    /// @param name The attribute name.
+    /// @param value The value to save.
     template<typename NodeAdapter,
              typename T,
              typename std::
@@ -48,14 +59,23 @@ namespace FileParse
         node.addAttribute(name, std::to_string(value));
     }
 
-    // Specialization for std::string
+    /// Saves a string value as an XML attribute.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @param node The node to add the attribute to.
+    /// @param name The attribute name.
+    /// @param value The string value to save.
     template<typename NodeAdapter>
     void saveAttribute(NodeAdapter & node, const std::string & name, const std::string & value)
     {
         node.addAttribute(name, value);
     }
 
-    // Generic loadAttribute for basic types, excluding std::string
+    /// Loads a basic type value from an XML attribute.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The type of the value (must be a basic type, excluding std::string).
+    /// @param node The node to read the attribute from.
+    /// @param name The attribute name.
+    /// @param attribute The variable to store the loaded value.
     template<typename NodeAdapter,
              typename T,
              typename std::
@@ -71,7 +91,11 @@ namespace FileParse
         }
     }
 
-    // Specialization for std::string
+    /// Loads a string value from an XML attribute.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @param node The node to read the attribute from.
+    /// @param name The attribute name.
+    /// @param attribute The variable to store the loaded string.
     template<typename NodeAdapter>
     void loadAttribute(const NodeAdapter & node, const std::string & name, std::string & attribute)
     {
@@ -80,12 +104,19 @@ namespace FileParse
             attribute = value.value();
     }
 
-    // Traits to check if a type is an enumeration
+    /// Type trait to check if a type is an enumeration.
+    /// @tparam T The type to check.
     template<typename T>
     struct is_enum_type : std::is_enum<T>
     {};
 
-    // Save attribute for enumerations with custom conversion functions
+    /// Saves an enumeration value as an XML attribute using a converter function.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The enumeration type.
+    /// @param node The node to add the attribute to.
+    /// @param name The attribute name.
+    /// @param value The enumeration value to save.
+    /// @param enumToString Function to convert the enum to its string representation.
     template<typename NodeAdapter,
              typename T,
              typename std::enable_if<is_enum_type<T>::value, int>::type = 0>
@@ -97,7 +128,13 @@ namespace FileParse
         node.addAttribute(name, enumToString(value));
     }
 
-    // Load attribute for enumerations with custom conversion functions
+    /// Loads an enumeration value from an XML attribute using a converter function.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The enumeration type.
+    /// @param node The node to read the attribute from.
+    /// @param name The attribute name.
+    /// @param attribute The variable to store the loaded enum value.
+    /// @param stringToEnum Function to convert a string to its enum representation.
     template<typename NodeAdapter,
              typename T,
              typename std::enable_if<is_enum_type<T>::value, int>::type = 0>
@@ -112,10 +149,16 @@ namespace FileParse
     }
 
     //////////////////////////////////////////////////////////////////
-    // Need to handle optional values as well
+    // Optional value attribute handlers
     //////////////////////////////////////////////////////////////////
 
-    // Generic saveAttribute for optional basic types, excluding std::string
+    /// Saves an optional basic type value as an XML attribute.
+    /// If the optional is empty, no attribute is written.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The type of the value (must be a basic type, excluding std::string).
+    /// @param node The node to add the attribute to.
+    /// @param name The attribute name.
+    /// @param value The optional value to save.
     template<typename NodeAdapter,
              typename T,
              typename std::
@@ -129,7 +172,12 @@ namespace FileParse
         }
     }
 
-    // Specialization for std::optional<std::string>
+    /// Saves an optional string value as an XML attribute.
+    /// If the optional is empty, no attribute is written.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @param node The node to add the attribute to.
+    /// @param name The attribute name.
+    /// @param value The optional string value to save.
     template<typename NodeAdapter>
     void saveAttribute(NodeAdapter & node,
                        const std::string & name,
@@ -141,7 +189,14 @@ namespace FileParse
         }
     }
 
-    // Save attribute for std::optional<T> where T is an enum, with custom conversion functions
+    /// Saves an optional enumeration value as an XML attribute using a converter function.
+    /// If the optional is empty, no attribute is written.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The enumeration type.
+    /// @param node The node to add the attribute to.
+    /// @param name The attribute name.
+    /// @param value The optional enumeration value to save.
+    /// @param enumToString Function to convert the enum to its string representation.
     template<typename NodeAdapter,
              typename T,
              typename std::enable_if<is_enum_type<T>::value, int>::type = 0>
@@ -156,7 +211,13 @@ namespace FileParse
         }
     }
 
-    // Explicit overload for std::optional<T> where T is a basic type, excluding std::string
+    /// Loads an optional basic type value from an XML attribute.
+    /// If the attribute doesn't exist, the optional remains unchanged.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The type of the value (must be a basic type, excluding std::string).
+    /// @param node The node to read the attribute from.
+    /// @param name The attribute name.
+    /// @param attribute The optional variable to store the loaded value.
     template<typename NodeAdapter,
              typename T,
              typename std::
@@ -173,7 +234,12 @@ namespace FileParse
         }
     }
 
-    // Explicit overload for std::optional<std::string>
+    /// Loads an optional string value from an XML attribute.
+    /// If the attribute doesn't exist, the optional remains unchanged.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @param node The node to read the attribute from.
+    /// @param name The attribute name.
+    /// @param attribute The optional variable to store the loaded string.
     template<typename NodeAdapter>
     void loadAttribute(const NodeAdapter & node,
                        const std::string & name,
@@ -186,7 +252,14 @@ namespace FileParse
         }
     }
 
-    // Load attribute for std::optional<T> where T is an enum, with custom conversion functions
+    /// Loads an optional enumeration value from an XML attribute using a converter function.
+    /// If the attribute doesn't exist, the optional remains unchanged.
+    /// @tparam NodeAdapter The type of the node adapter.
+    /// @tparam T The enumeration type.
+    /// @param node The node to read the attribute from.
+    /// @param name The attribute name.
+    /// @param attribute The optional variable to store the loaded enum value.
+    /// @param stringToEnum Function to convert a string to its enum representation.
     template<typename NodeAdapter,
              typename T,
              typename std::enable_if<is_enum_type<T>::value, int>::type = 0>
