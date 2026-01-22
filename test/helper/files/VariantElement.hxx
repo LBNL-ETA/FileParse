@@ -15,4 +15,8 @@ namespace Helper
     // JSON functions
     [[nodiscard]] std::optional<VariantsAll> loadVariantAllJSON(std::string_view fileName);
     [[nodiscard]] int saveVariantAllJSON(const VariantsAll & element, std::string_view fileName);
+
+    // Unified functions (auto-detect format)
+    [[nodiscard]] std::optional<VariantsAll> loadVariantAll(std::string_view fileName);
+    [[nodiscard]] int saveVariantAll(const VariantsAll & element, std::string_view fileName);
 }   // namespace Helper

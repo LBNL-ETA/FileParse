@@ -29,4 +29,14 @@ namespace Helper
         return Common::saveToJSONFile(element, fileName, "EnumElement");
     }
 
+    // Unified functions (auto-detect format)
+    std::optional<EnumElement> loadEnumElement(std::string_view fileName)
+    {
+        return Common::loadFromFile<EnumElement>(fileName, "EnumElement");
+    }
+
+    int saveEnumElement(const EnumElement & element, std::string_view fileName)
+    {
+        return Common::saveToFile(element, fileName, "EnumElement");
+    }
 }   // namespace Helper

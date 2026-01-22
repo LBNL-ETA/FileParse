@@ -14,4 +14,8 @@ namespace Helper
     // JSON functions
     [[nodiscard]] std::optional<EnumElement> loadEnumElementJSON(std::string_view fileName);
     [[nodiscard]] int saveEnumElementJSON(const EnumElement& element, std::string_view fileName);
+
+    // Unified functions (auto-detect format)
+    [[nodiscard]] std::optional<EnumElement> loadEnumElement(std::string_view fileName);
+    [[nodiscard]] int saveEnumElement(const EnumElement& element, std::string_view fileName);
 }   // namespace Helper

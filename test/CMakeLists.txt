@@ -69,42 +69,32 @@ add_executable(${PROJECT_TEST_NAME}
         helper/files/VectorElement.cxx
 
         units/ArraySerializers.unit.cxx
-        units/AttributesSerializers.unit.cxx
         units/BaseSerializers.unit.cxx
         units/EdgeCases.unit.cxx
-        units/BaseSerializersXML.unit.cxx
         units/DoubleMapSerializers.unit.cxx
-        units/DoubleMapSerializersXML.unit.cxx
         units/EnumeratorsBase.unit.cxx
         units/EnumSerializers.unit.cxx
-        units/EnumSerializersXML.unit.cxx
         units/EnumMapSerializers.unit.cxx
-        units/EnumMapSerializersXML.unit.cxx
-        units/StringMapSerializersXML.unit.cxx
         units/MapKeyAsEnumSerializers.unit.cxx
         units/MapKeyAsStructureSerializers.unit.cxx
-        units/MapKeyAsStructureSerializersXML.unit.cxx
         units/MapSameChilds.unit.cxx
         units/SetSerializers.unit.cxx
-        units/SetSerializersXML.unit.cxx
         units/ToLower.unit.cxx
-        units/VariantSerializersXML.unit.cxx
         units/VariantEdgeCases.unit.cxx
         units/VectorSerializers.unit.cxx
-        units/VectorSerializersXML.unit.cxx
-        units/VectorSerializersJSON.unit.cxx
-        units/BaseSerializersJSON.unit.cxx
-        units/SetSerializersJSON.unit.cxx
-        units/EnumSerializersJSON.unit.cxx
-        units/DoubleMapSerializersJSON.unit.cxx
-        units/EnumMapSerializersJSON.unit.cxx
-        units/StringMapSerializersJSON.unit.cxx
-        units/MapKeyAsStructureSerializersJSON.unit.cxx
-        units/VariantSerializersJSON.unit.cxx
-        units/AttributesSerializersJSON.unit.cxx
         units/XMLNodeAdapterEdgeCases.unit.cxx
         units/JSONNodeAdapter.unit.cxx
         units/FileFormat.unit.cxx
+        units/BaseSerializersFile.unit.cxx
+        units/VectorSerializersFile.unit.cxx
+        units/SetSerializersFile.unit.cxx
+        units/EnumSerializersFile.unit.cxx
+        units/DoubleMapSerializersFile.unit.cxx
+        units/EnumMapSerializersFile.unit.cxx
+        units/StringMapSerializersFile.unit.cxx
+        units/MapKeyAsStructureSerializersFile.unit.cxx
+        units/VariantSerializersFile.unit.cxx
+        units/AttributesSerializersFile.unit.cxx
         main.cxx
 )
 

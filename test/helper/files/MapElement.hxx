@@ -59,4 +59,26 @@ namespace Helper
 
     [[nodiscard]] std::optional<CMAElement> loadCMAElementJSON(std::string_view fileName);
     [[nodiscard]] int saveCMAElementJSON(const CMAElement & element, std::string_view fileName);
+
+    // Unified functions (auto-detect format)
+    [[nodiscard]] std::optional<MapElementString> loadMapElementString(std::string_view fileName);
+    [[nodiscard]] int saveMapElementString(const MapElementString & element, std::string_view fileName);
+
+    [[nodiscard]] std::optional<MapElementOptionalString>
+      loadMapElementOptionalString(std::string_view fileName);
+    [[nodiscard]] int saveMapElementOptionalString(const MapElementOptionalString & element,
+                                                   std::string_view fileName);
+
+    [[nodiscard]] std::optional<MapElementEnum> loadMapElementEnum(std::string_view fileName);
+    [[nodiscard]] int saveMapElementEnum(const MapElementEnum & element, std::string_view fileName);
+
+    [[nodiscard]] std::optional<MapElementDouble> loadMapElementDouble(std::string_view fileName);
+    [[nodiscard]] int saveMapElementDouble(const MapElementDouble & element, std::string_view fileName);
+
+    [[nodiscard]] std::optional<MapElementEnumDouble> loadMapElementEnumDouble(std::string_view fileName);
+    [[nodiscard]] int saveMapElementEnumDouble(const MapElementEnumDouble & element,
+                                               std::string_view fileName);
+
+    [[nodiscard]] std::optional<CMAElement> loadCMAElement(std::string_view fileName);
+    [[nodiscard]] int saveCMAElement(const CMAElement & element, std::string_view fileName);
 }   // namespace Helper

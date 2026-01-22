@@ -132,4 +132,66 @@ namespace Helper
     {
         return Common::saveToJSONFile(element, fileName, "Test");
     }
+
+    // Unified functions (auto-detect format)
+    std::optional<MapElementString> loadMapElementString(std::string_view fileName)
+    {
+        return Common::loadFromFile<MapElementString>(fileName, "MapString");
+    }
+
+    int saveMapElementString(const MapElementString & element, std::string_view fileName)
+    {
+        return Common::saveToFile(element, fileName, "MapString");
+    }
+
+    std::optional<MapElementOptionalString> loadMapElementOptionalString(std::string_view fileName)
+    {
+        return Common::loadFromFile<MapElementOptionalString>(fileName, "OptionalStringMap");
+    }
+
+    int saveMapElementOptionalString(const MapElementOptionalString & element,
+                                     std::string_view fileName)
+    {
+        return Common::saveToFile(element, fileName, "OptionalStringMap");
+    }
+
+    std::optional<MapElementEnum> loadMapElementEnum(std::string_view fileName)
+    {
+        return Common::loadFromFile<MapElementEnum>(fileName, "EnumMap");
+    }
+
+    int saveMapElementEnum(const MapElementEnum & element, std::string_view fileName)
+    {
+        return Common::saveToFile(element, fileName, "EnumMap");
+    }
+
+    std::optional<MapElementDouble> loadMapElementDouble(std::string_view fileName)
+    {
+        return Common::loadFromFile<MapElementDouble>(fileName, "Test");
+    }
+
+    int saveMapElementDouble(const MapElementDouble & element, std::string_view fileName)
+    {
+        return Common::saveToFile(element, fileName, "Test");
+    }
+
+    std::optional<MapElementEnumDouble> loadMapElementEnumDouble(std::string_view fileName)
+    {
+        return Common::loadFromFile<MapElementEnumDouble>(fileName, "EnumDoubleMap");
+    }
+
+    int saveMapElementEnumDouble(const MapElementEnumDouble & element, std::string_view fileName)
+    {
+        return Common::saveToFile(element, fileName, "EnumDoubleMap");
+    }
+
+    std::optional<CMAElement> loadCMAElement(std::string_view fileName)
+    {
+        return Common::loadFromFile<CMAElement>(fileName, "Test");
+    }
+
+    int saveCMAElement(const CMAElement & element, std::string_view fileName)
+    {
+        return Common::saveToFile(element, fileName, "Test");
+    }
 }   // namespace Helper

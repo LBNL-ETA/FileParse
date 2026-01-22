@@ -27,4 +27,15 @@ namespace Helper
     {
         return Common::saveToJSONFile(object, fileName, "Test");
     }
+
+    // Unified functions (auto-detect format)
+    std::optional<AttributesTest> loadAttributesElement(std::string_view fileName)
+    {
+        return Common::loadFromFile<AttributesTest>(fileName, "Test");
+    }
+
+    int saveAttributesElement(const AttributesTest & object, std::string_view fileName)
+    {
+        return Common::saveToFile(object, fileName, "Test");
+    }
 }   // namespace Helper
