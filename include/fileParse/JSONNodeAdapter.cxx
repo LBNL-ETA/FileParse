@@ -314,8 +314,8 @@ void JSONNodeAdapter::addAttribute(std::string_view name, std::string_view value
         *pimpl_->jsonPtr_ = nlohmann::json::object();
     }
 
-    // Store attribute as a regular property
-    (*pimpl_->jsonPtr_)[std::string(name)] = std::string(value);
+    // Store attribute with @ prefix to distinguish from child nodes
+    (*pimpl_->jsonPtr_)["@" + std::string(name)] = std::string(value);
 }
 
 std::optional<std::string> JSONNodeAdapter::getAttribute(std::string_view name) const
@@ -325,7 +325,8 @@ std::optional<std::string> JSONNodeAdapter::getAttribute(std::string_view name) 
         return std::nullopt;
     }
 
-    const std::string nameStr(name);
+    // Look for attribute with @ prefix
+    const std::string nameStr = "@" + std::string(name);
     if(pimpl_->jsonPtr_->contains(nameStr))
     {
         const auto & val = (*pimpl_->jsonPtr_)[nameStr];

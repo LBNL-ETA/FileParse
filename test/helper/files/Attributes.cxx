@@ -17,4 +17,14 @@ namespace Helper
     {
         return Common::saveToXMLFile(object, fileName, "Test");
     }
+
+    std::optional<AttributesTest> loadAttributesElementJSON(std::string_view fileName)
+    {
+        return Common::loadFromJSONFile<AttributesTest>(fileName, "Test");
+    }
+
+    int saveAttributesElementJSON(const AttributesTest & object, std::string_view fileName)
+    {
+        return Common::saveToJSONFile(object, fileName, "Test");
+    }
 }   // namespace Helper

@@ -101,6 +101,7 @@ add_executable(${PROJECT_TEST_NAME}
         units/StringMapSerializersJSON.unit.cxx
         units/MapKeyAsStructureSerializersJSON.unit.cxx
         units/VariantSerializersJSON.unit.cxx
+        units/AttributesSerializersJSON.unit.cxx
         units/XMLNodeAdapterEdgeCases.unit.cxx
         units/JSONNodeAdapter.unit.cxx
         main.cxx

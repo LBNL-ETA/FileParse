@@ -476,3 +476,61 @@ TEST(JSONNodeAdapter, MixedChildrenAndAttributes)
     ASSERT_TRUE(childNode.has_value());
     EXPECT_EQ("child content", childNode.value().getText());
 }
+
+TEST(JSONNodeAdapter, AttributesPrefixedWithAtSymbol)
+{
+    auto root = createJSONTopNode("Root");
+    root.addAttribute("name", "test");
+
+    // Verify @ prefix appears in JSON output
+    auto content = root.getContent();
+    EXPECT_NE(std::string::npos, content.find("@name"));
+    EXPECT_NE(std::string::npos, content.find("test"));
+}
+
+TEST(JSONNodeAdapter, AttributesDontCollideWithChildNodes)
+{
+    auto root = createJSONTopNode("Root");
+
+    // Add an attribute named "name"
+    root.addAttribute("name", "attr_value");
+
+    // Add a child node also named "name"
+    auto child = root.addChild("name");
+    child.addText("child_value");
+
+    // Both should be retrievable separately
+    EXPECT_EQ("attr_value", root.getAttribute("name").value());
+
+    auto childNode = root.getFirstChildByName("name");
+    ASSERT_TRUE(childNode.has_value());
+    EXPECT_EQ("child_value", childNode.value().getText());
+}
+
+TEST(JSONNodeAdapter, AttributeRoundTrip)
+{
+    const std::string tempFile = "temp_attr_roundtrip_test.json";
+
+    // Create node with attributes
+    auto writeNode = createJSONTopNode("TestDoc");
+    writeNode.addAttribute("version", "2.0");
+    writeNode.addAttribute("author", "Test Author");
+    auto child = writeNode.addChild("Data");
+    child.addText("content");
+
+    int result = writeNode.writeToFile(tempFile);
+    EXPECT_EQ(0, result);
+
+    // Read back and verify attributes
+    auto readNode = getJSONTopNodeFromFile(tempFile, "TestDoc");
+    ASSERT_TRUE(readNode.has_value());
+
+    EXPECT_EQ("2.0", readNode.value().getAttribute("version").value());
+    EXPECT_EQ("Test Author", readNode.value().getAttribute("author").value());
+
+    auto dataChild = readNode.value().getFirstChildByName("Data");
+    ASSERT_TRUE(dataChild.has_value());
+    EXPECT_EQ("content", dataChild.value().getText());
+
+    std::remove(tempFile.c_str());
+}
