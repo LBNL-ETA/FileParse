@@ -124,3 +124,43 @@ TEST_F(BaseSerializerJSONTest, TestWritingBaseElement)
 
     std::remove(fileName.c_str());
 }
+
+// Tests demonstrating unified load/save functions that auto-detect format
+TEST_F(BaseSerializerJSONTest, UnifiedLoadFromJSON)
+{
+    std::filesystem::path productPath{TEST_DATA_DIR};
+    const auto fileName = productPath / "BaseElement.json";
+
+    // Using unified loadBaseElement which auto-detects JSON from extension
+    const auto base{Helper::loadBaseElement(fileName.string())};
+    ASSERT_TRUE(base.has_value());
+
+    EXPECT_EQ("TestText", base->text);
+    EXPECT_EQ(13, base->integer_number);
+}
+
+TEST_F(BaseSerializerJSONTest, UnifiedSaveAndLoadJSON)
+{
+    const std::string fileName = "temp_unified_base_test.json";
+
+    Helper::BaseElement base;
+    base.text = "UnifiedTest";
+    base.integer_number = 99;
+    base.double_number = 2.5;
+    base.boolean_field = true;
+    base.size_t_field = 10;
+    base.variant_field = std::string("variant");
+
+    // Using unified saveBaseElement which auto-detects JSON from extension
+    int result = Helper::saveBaseElement(base, fileName);
+    EXPECT_EQ(0, result);
+
+    // Using unified loadBaseElement which auto-detects JSON from extension
+    auto loaded = Helper::loadBaseElement(fileName);
+    ASSERT_TRUE(loaded.has_value());
+
+    EXPECT_EQ("UnifiedTest", loaded->text);
+    EXPECT_EQ(99, loaded->integer_number);
+
+    std::remove(fileName.c_str());
+}

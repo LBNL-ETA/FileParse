@@ -5,6 +5,7 @@ add_library( ${LIB_NAME}
 		Attributes.hxx
 		Base.hxx
 		FileDataHandler.hxx
+		FileFormat.hxx
 		Formatter.hxx
 		Formatter.cxx
 		Common.hxx

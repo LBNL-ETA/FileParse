@@ -104,6 +104,7 @@ add_executable(${PROJECT_TEST_NAME}
         units/AttributesSerializersJSON.unit.cxx
         units/XMLNodeAdapterEdgeCases.unit.cxx
         units/JSONNodeAdapter.unit.cxx
+        units/FileFormat.unit.cxx
         main.cxx
 )
 

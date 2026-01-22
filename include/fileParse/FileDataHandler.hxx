@@ -11,6 +11,7 @@
 
 #include "XMLNodeAdapter.hxx"
 #include "JSONNodeAdapter.hxx"
+#include "FileFormat.hxx"
 
 namespace Common
 {
@@ -194,5 +195,56 @@ namespace Common
         node << object;
 
         return node.getContent();
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    // Unified Functions (Auto-detect format)
+    //////////////////////////////////////////////////////////////////////////
+
+    /// Deserializes an object from a file, automatically detecting format.
+    /// @tparam T The type of object to deserialize (must have operator>> defined).
+    /// @param fileName The path to the file (format detected from extension, then content).
+    /// @param nodeTypeName The name of the root element/property.
+    /// @return An optional containing the deserialized object, or std::nullopt on failure.
+    /// @note Uses detectFileFormat() to determine format. For files with non-standard
+    ///       extensions, use loadFromXMLFile() or loadFromJSONFile() directly.
+    template<typename T>
+    std::optional<T> loadFromFile(std::string_view fileName, const std::string & nodeTypeName)
+    {
+        using namespace FileParse;
+
+        switch(detectFileFormat(fileName))
+        {
+            case FileFormat::XML:
+                return loadFromXMLFile<T>(fileName, nodeTypeName);
+            case FileFormat::JSON:
+                return loadFromJSONFile<T>(fileName, nodeTypeName);
+            default:
+                return std::nullopt;
+        }
+    }
+
+    /// Serializes an object to a file, automatically detecting format from extension.
+    /// @tparam T The type of object to serialize (must have operator<< defined).
+    /// @param object The object to serialize.
+    /// @param fileName The path to the output file (format detected from extension).
+    /// @param nodeName The name of the root element/property.
+    /// @return 0 on success, -1 if format cannot be determined, or other non-zero on write failure.
+    /// @note Uses detectFileFormatFromExtension() to determine format. For files with
+    ///       non-standard extensions, use saveToXMLFile() or saveToJSONFile() directly.
+    template<typename T>
+    int saveToFile(const T & object, std::string_view fileName, const std::string & nodeName)
+    {
+        using namespace FileParse;
+
+        switch(detectFileFormatFromExtension(fileName))
+        {
+            case FileFormat::XML:
+                return saveToXMLFile(object, fileName, nodeName);
+            case FileFormat::JSON:
+                return saveToJSONFile(object, fileName, nodeName);
+            default:
+                return -1;
+        }
     }
 }   // namespace Common
