@@ -87,14 +87,18 @@ private:
 /// Creates a top-level XML node with a specified name.
 /// @param topNodeName The name of the top node.
 /// @return The top node adapter.
-[[nodiscard]] XMLNodeAdapter createTopNode(std::string_view topNodeName);
+[[nodiscard]] XMLNodeAdapter createXMLTopNode(std::string_view topNodeName);
 
 /// Retrieves the top-level XML node from a file.
 /// @param fileName The name of the file containing the XML data.
 /// @param topNodeName The name of the top node to retrieve.
 /// @return An optional containing the top node adapter if successful, std::nullopt otherwise.
-[[nodiscard]] std::optional<XMLNodeAdapter> getTopNodeFromFile(std::string_view fileName,
-                                                       std::string_view topNodeName);
+[[nodiscard]] std::optional<XMLNodeAdapter> getXMLTopNodeFromFile(std::string_view fileName,
+                                                                  std::string_view topNodeName);
 
-[[nodiscard]] std::optional<XMLNodeAdapter> getTopNodeFromString(std::string_view xml,
-                                                       std::string_view topNodeName);
+/// Retrieves the top-level XML node from a string.
+/// @param xml The XML string to parse.
+/// @param topNodeName The name of the top node to retrieve.
+/// @return An optional containing the top node adapter if successful, std::nullopt otherwise.
+[[nodiscard]] std::optional<XMLNodeAdapter> getXMLTopNodeFromString(std::string_view xml,
+                                                                    std::string_view topNodeName);

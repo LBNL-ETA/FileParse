@@ -13,7 +13,7 @@
 
 TEST(XMLNodeAdapterEdgeCases, CreateTopNode)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
 
     EXPECT_FALSE(node.isEmpty());
     EXPECT_EQ("TestRoot", node.getCurrentTag());
@@ -21,14 +21,14 @@ TEST(XMLNodeAdapterEdgeCases, CreateTopNode)
 
 TEST(XMLNodeAdapterEdgeCases, GetTextEmpty)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     // Node has no text, getText should return empty string
     EXPECT_EQ("", node.getText());
 }
 
 TEST(XMLNodeAdapterEdgeCases, GetTextWithContent)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     node.addText("Hello World");
 
     EXPECT_EQ("Hello World", node.getText());
@@ -36,7 +36,7 @@ TEST(XMLNodeAdapterEdgeCases, GetTextWithContent)
 
 TEST(XMLNodeAdapterEdgeCases, GetChildNodesEmpty)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     auto children = node.getChildNodes();
 
     EXPECT_TRUE(children.empty());
@@ -44,7 +44,7 @@ TEST(XMLNodeAdapterEdgeCases, GetChildNodesEmpty)
 
 TEST(XMLNodeAdapterEdgeCases, GetChildNodesWithChildren)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     [[maybe_unused]] auto c1 = node.addChild("Child1");
     [[maybe_unused]] auto c2 = node.addChild("Child2");
 
@@ -55,7 +55,7 @@ TEST(XMLNodeAdapterEdgeCases, GetChildNodesWithChildren)
 
 TEST(XMLNodeAdapterEdgeCases, GetFirstChildByNameFound)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     auto child1 = node.addChild("Child1");
     child1.addText("First");
     auto child2 = node.addChild("Child2");
@@ -70,7 +70,7 @@ TEST(XMLNodeAdapterEdgeCases, GetFirstChildByNameFound)
 
 TEST(XMLNodeAdapterEdgeCases, GetFirstChildByNameNotFound)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     [[maybe_unused]] auto c1 = node.addChild("Child1");
     [[maybe_unused]] auto c2 = node.addChild("Child2");
 
@@ -81,7 +81,7 @@ TEST(XMLNodeAdapterEdgeCases, GetFirstChildByNameNotFound)
 
 TEST(XMLNodeAdapterEdgeCases, GetChildNodesByNameEmpty)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     [[maybe_unused]] auto c1 = node.addChild("Other1");
     [[maybe_unused]] auto c2 = node.addChild("Other2");
 
@@ -92,7 +92,7 @@ TEST(XMLNodeAdapterEdgeCases, GetChildNodesByNameEmpty)
 
 TEST(XMLNodeAdapterEdgeCases, GetChildNodesByNameMultiple)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     [[maybe_unused]] auto c1 = node.addChild("Item");
     [[maybe_unused]] auto c2 = node.addChild("Other");
     [[maybe_unused]] auto c3 = node.addChild("Item");
@@ -105,7 +105,7 @@ TEST(XMLNodeAdapterEdgeCases, GetChildNodesByNameMultiple)
 
 TEST(XMLNodeAdapterEdgeCases, NChildNode)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     [[maybe_unused]] auto c1 = node.addChild("Item");
     [[maybe_unused]] auto c2 = node.addChild("Other");
     [[maybe_unused]] auto c3 = node.addChild("Item");
@@ -117,7 +117,7 @@ TEST(XMLNodeAdapterEdgeCases, NChildNode)
 
 TEST(XMLNodeAdapterEdgeCases, HasChildNode)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     [[maybe_unused]] auto c = node.addChild("Child");
 
     EXPECT_TRUE(node.hasChildNode("Child"));
@@ -126,7 +126,7 @@ TEST(XMLNodeAdapterEdgeCases, HasChildNode)
 
 TEST(XMLNodeAdapterEdgeCases, GetAttributeNotFound)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
 
     auto attr = node.getAttribute("nonexistent");
 
@@ -135,7 +135,7 @@ TEST(XMLNodeAdapterEdgeCases, GetAttributeNotFound)
 
 TEST(XMLNodeAdapterEdgeCases, GetAttributeFound)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     node.addAttribute("myattr", "myvalue");
 
     auto attr = node.getAttribute("myattr");
@@ -146,7 +146,7 @@ TEST(XMLNodeAdapterEdgeCases, GetAttributeFound)
 
 TEST(XMLNodeAdapterEdgeCases, AddMultipleAttributes)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     node.addAttribute("attr1", "value1");
     node.addAttribute("attr2", "value2");
 
@@ -156,7 +156,7 @@ TEST(XMLNodeAdapterEdgeCases, AddMultipleAttributes)
 
 TEST(XMLNodeAdapterEdgeCases, GetContent)
 {
-    auto node = createTopNode("TestRoot");
+    auto node = createXMLTopNode("TestRoot");
     auto child = node.addChild("Child");
     child.addText("content");
 
@@ -174,7 +174,7 @@ TEST(XMLNodeAdapterEdgeCases, GetContent)
 TEST(XMLNodeAdapterEdgeCases, GetTopNodeFromStringValid)
 {
     const std::string xml = "<Root><Child>value</Child></Root>";
-    auto node = getTopNodeFromString(xml, "Root");
+    auto node = getXMLTopNodeFromString(xml, "Root");
 
     ASSERT_TRUE(node.has_value());
     EXPECT_EQ("Root", node.value().getCurrentTag());
@@ -183,7 +183,7 @@ TEST(XMLNodeAdapterEdgeCases, GetTopNodeFromStringValid)
 TEST(XMLNodeAdapterEdgeCases, GetTopNodeFromStringInvalid)
 {
     const std::string xml = "not valid xml";
-    auto node = getTopNodeFromString(xml, "Root");
+    auto node = getXMLTopNodeFromString(xml, "Root");
 
     EXPECT_FALSE(node.has_value());
 }
@@ -191,7 +191,7 @@ TEST(XMLNodeAdapterEdgeCases, GetTopNodeFromStringInvalid)
 TEST(XMLNodeAdapterEdgeCases, GetTopNodeFromStringEmpty)
 {
     const std::string xml = "";
-    auto node = getTopNodeFromString(xml, "Root");
+    auto node = getXMLTopNodeFromString(xml, "Root");
 
     EXPECT_FALSE(node.has_value());
 }
@@ -199,14 +199,14 @@ TEST(XMLNodeAdapterEdgeCases, GetTopNodeFromStringEmpty)
 TEST(XMLNodeAdapterEdgeCases, GetTopNodeFromStringWrongRoot)
 {
     const std::string xml = "<WrongRoot><Child>value</Child></WrongRoot>";
-    auto node = getTopNodeFromString(xml, "ExpectedRoot");
+    auto node = getXMLTopNodeFromString(xml, "ExpectedRoot");
 
     EXPECT_FALSE(node.has_value());
 }
 
 TEST(XMLNodeAdapterEdgeCases, GetTopNodeFromFileNonExistent)
 {
-    auto node = getTopNodeFromFile("this_file_does_not_exist_12345.xml", "Root");
+    auto node = getXMLTopNodeFromFile("this_file_does_not_exist_12345.xml", "Root");
 
     EXPECT_FALSE(node.has_value());
 }
@@ -220,7 +220,7 @@ TEST(XMLNodeAdapterEdgeCases, GetTopNodeFromFileInvalidContent)
         out << "this is not valid xml";
     }
 
-    auto node = getTopNodeFromFile(tempFile, "Root");
+    auto node = getXMLTopNodeFromFile(tempFile, "Root");
 
     EXPECT_FALSE(node.has_value());
 
@@ -237,7 +237,7 @@ TEST(XMLNodeAdapterEdgeCases, GetTopNodeFromFileValid)
         out << "<Root><Child>test</Child></Root>";
     }
 
-    auto node = getTopNodeFromFile(tempFile, "Root");
+    auto node = getXMLTopNodeFromFile(tempFile, "Root");
 
     ASSERT_TRUE(node.has_value());
     EXPECT_EQ("Root", node.value().getCurrentTag());
@@ -251,7 +251,7 @@ TEST(XMLNodeAdapterEdgeCases, WriteToFileAndReadBack)
     const std::string tempFile = "temp_write_test.xml";
 
     // Create and write
-    auto writeNode = createTopNode("TestDoc");
+    auto writeNode = createXMLTopNode("TestDoc");
     auto child = writeNode.addChild("Data");
     child.addText("test value");
 
@@ -259,7 +259,7 @@ TEST(XMLNodeAdapterEdgeCases, WriteToFileAndReadBack)
     EXPECT_EQ(0, result);   // 0 indicates success
 
     // Read back
-    auto readNode = getTopNodeFromFile(tempFile, "TestDoc");
+    auto readNode = getXMLTopNodeFromFile(tempFile, "TestDoc");
     ASSERT_TRUE(readNode.has_value());
 
     auto dataChild = readNode.value().getFirstChildByName("Data");

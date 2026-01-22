@@ -124,13 +124,13 @@ std::optional<std::string> XMLNodeAdapter::getAttribute(std::string_view name) c
     return std::nullopt;
 }
 
-XMLNodeAdapter createTopNode(std::string_view topNodeName)
+XMLNodeAdapter createXMLTopNode(std::string_view topNodeName)
 {
     return XMLNodeAdapter(XMLParser::XMLNode::createXMLTopNode(topNodeName.data()));
 }
 
-std::optional<XMLNodeAdapter> getTopNodeFromFile(std::string_view fileName,
-                                                 std::string_view topNodeName)
+std::optional<XMLNodeAdapter> getXMLTopNodeFromFile(std::string_view fileName,
+                                                    std::string_view topNodeName)
 {
     try
     {
@@ -148,8 +148,8 @@ std::optional<XMLNodeAdapter> getTopNodeFromFile(std::string_view fileName,
     return std::nullopt;
 }
 
-std::optional<XMLNodeAdapter> getTopNodeFromString(std::string_view xml,
-                                                   std::string_view topNodeName)
+std::optional<XMLNodeAdapter> getXMLTopNodeFromString(std::string_view xml,
+                                                      std::string_view topNodeName)
 {
     if(auto node{XMLParser::XMLNode::parseString(xml.data(), topNodeName.data())}; !node.isEmpty())
     {

@@ -40,7 +40,7 @@ namespace Common
     template<typename T>
     std::optional<T> loadFromXMLString(const std::string & data, const std::string & nodeTypeName)
     {
-        const auto xmlNode = getTopNodeFromString(data, nodeTypeName);
+        const auto xmlNode = getXMLTopNodeFromString(data, nodeTypeName);
 
         if(xmlNode.has_value())
         {
@@ -69,7 +69,7 @@ namespace Common
             createFileFromString(fileNameStr, fileContent);
         }
 
-        const auto xmlNode = getTopNodeFromFile(fileNameStr, nodeTypeName);
+        const auto xmlNode = getXMLTopNodeFromFile(fileNameStr, nodeTypeName);
 
 
         if(xmlNode.has_value())
@@ -91,7 +91,7 @@ namespace Common
     template<typename T>
     int saveToXMLFile(const T & object, std::string_view fileName, const std::string & nodeName)
     {
-        auto node = createTopNode(nodeName);
+        auto node = createXMLTopNode(nodeName);
 
         node << object;
 
@@ -106,7 +106,7 @@ namespace Common
     template<typename T>
     std::string saveToXMLString(const T & object, const std::string & nodeName)
     {
-        auto node = createTopNode(nodeName);
+        auto node = createXMLTopNode(nodeName);
 
         node << object;
 
