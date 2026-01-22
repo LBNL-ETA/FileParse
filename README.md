@@ -172,6 +172,23 @@ Common::saveToXMLFile(config, "settings.config", "Settings");
 auto config = Common::loadFromXMLFile<Config>("settings.config", "Settings");
 ```
 
+**Unified String Operations:**
+
+For string-based serialization with explicit format control:
+
+```cpp
+#include <fileParse/FileDataHandler.hxx>
+#include <fileParse/FileFormat.hxx>
+
+// Serialize to string with explicit format
+std::string xml = Common::saveToString(myObject, "Root", FileParse::FileFormat::XML);
+std::string json = Common::saveToString(myObject, "Root", FileParse::FileFormat::JSON);
+
+// Deserialize from string with explicit format
+auto obj1 = Common::loadFromString<MyType>(xmlData, "Root", FileParse::FileFormat::XML);
+auto obj2 = Common::loadFromString<MyType>(jsonData, "Root", FileParse::FileFormat::JSON);
+```
+
 ### Detailed Examples
 
 | Topic | Description |
