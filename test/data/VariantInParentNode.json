@@ -1,0 +1,13 @@
+{
+    "Test": {
+        "VariantParentTemperature": {
+            "Name": "Parent Temperature",
+            "Temperature": "23.15",
+            "OptionalString": "test optional"
+        },
+        "VariantParentHumidity": {
+            "Name": "Parent Humidity",
+            "Humidity": "9.493743"
+        }
+    }
+}

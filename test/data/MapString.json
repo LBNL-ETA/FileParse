@@ -1,0 +1,14 @@
+{
+    "MapString": {
+        "OrderedMap": {
+            "Key1": "Value1",
+            "Key2": "Value2",
+            "Key3": "Value3"
+        },
+        "UnorderedMap": {
+            "K1": "V1",
+            "K2": "V2",
+            "K3": "V3"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "BaseElement": {
+        "SampleText": "TestText",
+        "OptionalText": "OptionalText",
+        "Integer": "13",
+        "OptionalInteger": "23",
+        "Double": "3.1415926",
+        "Size_t": "18",
+        "Boolean": "true",
+        "OptionalDouble": "4.1415926",
+        "OptionalBoolean": "false",
+        "VariantString": "VariantText",
+        "VariantString1": "VariantText1"
+    }
+}

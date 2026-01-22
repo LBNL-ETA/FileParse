@@ -67,6 +67,16 @@ add_executable(${PROJECT_TEST_NAME}
         helper/files/VariantElementXML.cxx
         helper/files/VectorElementXML.hxx
         helper/files/VectorElementXML.cxx
+        helper/files/BaseElementJSON.hxx
+        helper/files/BaseElementJSON.cxx
+        helper/files/SetElementJSON.hxx
+        helper/files/SetElementJSON.cxx
+        helper/files/EnumElementJSON.hxx
+        helper/files/EnumElementJSON.cxx
+        helper/files/MapElementJSON.hxx
+        helper/files/MapElementJSON.cxx
+        helper/files/VariantElementJSON.hxx
+        helper/files/VariantElementJSON.cxx
         helper/files/VectorElementJSON.hxx
         helper/files/VectorElementJSON.cxx
 
@@ -95,6 +105,14 @@ add_executable(${PROJECT_TEST_NAME}
         units/VectorSerializers.unit.cxx
         units/VectorSerializersXML.unit.cxx
         units/VectorSerializersJSON.unit.cxx
+        units/BaseSerializersJSON.unit.cxx
+        units/SetSerializersJSON.unit.cxx
+        units/EnumSerializersJSON.unit.cxx
+        units/DoubleMapSerializersJSON.unit.cxx
+        units/EnumMapSerializersJSON.unit.cxx
+        units/StringMapSerializersJSON.unit.cxx
+        units/MapKeyAsStructureSerializersJSON.unit.cxx
+        units/VariantSerializersJSON.unit.cxx
         units/XMLNodeAdapterEdgeCases.unit.cxx
         units/JSONNodeAdapter.unit.cxx
         main.cxx
@@ -103,7 +121,7 @@ add_executable(${PROJECT_TEST_NAME}
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/test)
 
-target_compile_features(${PROJECT_TEST_NAME} PRIVATE cxx_std_17)
+target_compile_features(${PROJECT_TEST_NAME} PRIVATE cxx_std_20)
 target_link_libraries(${PROJECT_TEST_NAME} gmock_main ${LIB_NAME})
 
 set(TEST_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data")

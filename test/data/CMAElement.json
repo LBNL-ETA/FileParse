@@ -1,0 +1,18 @@
+{
+    "Test": {
+        "Element": [
+            {
+                "Glazing": "Low",
+                "Spacer": "Low",
+                "Conductivity": "12.34",
+                "FilmCoefficient": "2.98"
+            },
+            {
+                "Glazing": "High",
+                "Spacer": "High",
+                "Conductivity": "1.731",
+                "FilmCoefficient": "7.39"
+            }
+        ]
+    }
+}
