@@ -1,7 +1,7 @@
 #include <filesystem>
 #include <gtest/gtest.h>
 
-#include "test/helper/files/VariantElementJSON.hxx"
+#include "test/helper/files/VariantElement.hxx"
 #include "test/helper/structures/StructureVariant.hxx"
 
 #include "test/helper/FileManipulation.hxx"

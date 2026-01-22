@@ -3,7 +3,7 @@
 
 #include "test/helper/Utility.hxx"
 
-#include "test/helper/files/MapElementJSON.hxx"
+#include "test/helper/files/MapElement.hxx"
 #include "test/helper/structures/StructureMap.hxx"
 
 #include "test/helper/FileManipulation.hxx"
@@ -38,7 +38,7 @@ TEST_F(StringMapSerializerJSONTest, WritingStringMap)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveMapElementDoubleJSON(mapEl, fileName)};
+    const auto result{Helper::saveMapElementStringJSON(mapEl, fileName)};
     EXPECT_EQ(result, 0);
 
     const auto loadedMap{Helper::loadMapElementStringJSON(fileName)};
@@ -106,7 +106,7 @@ TEST_F(StringMapSerializerJSONTest, WritingEmpty)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveMapElementDoubleJSON(mapEl, fileName)};
+    const auto result{Helper::saveMapElementStringJSON(mapEl, fileName)};
     EXPECT_EQ(result, 0);
 
     const auto loadedVector{Helper::loadMapElementStringJSON(fileName)};

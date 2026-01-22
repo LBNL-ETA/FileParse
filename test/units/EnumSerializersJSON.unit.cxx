@@ -3,7 +3,7 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-#include "test/helper/files/EnumElementJSON.hxx"
+#include "test/helper/files/EnumElement.hxx"
 #include "test/helper/structures/StructureEnum.hxx"
 
 class EnumSerializerJSONTest : public testing::Test

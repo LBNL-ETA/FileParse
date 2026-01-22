@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "test/helper/files/BaseElementXML.hxx"
+#include "test/helper/files/BaseElement.hxx"
 #include "test/helper/structures/StructureBase.hxx"
 #include "test/helper/serializers/SerializersBaseElement.hxx"
 

@@ -3,7 +3,7 @@
 
 #include "test/helper/Utility.hxx"
 
-#include "test/helper/files/MapElementXML.hxx"
+#include "test/helper/files/MapElement.hxx"
 #include "test/helper/structures/StructureMap.hxx"
 
 #include "test/helper/FileManipulation.hxx"
@@ -16,7 +16,7 @@ TEST_F(StringMapSerializerXMLTest, ReadingStringMap)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "MapString.xml";
 
-    const auto mapEl{Helper::loadMapElementString(fileName.string())};
+    const auto mapEl{Helper::loadMapElementStringXML(fileName.string())};
     ASSERT_TRUE(mapEl.has_value());
 
     const std::map<std::string, std::string> correctOrdered{
@@ -38,10 +38,10 @@ TEST_F(StringMapSerializerXMLTest, WritingStringMap)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveMapElementDouble(mapEl, fileName)};
+    const auto result{Helper::saveMapElementStringXML(mapEl, fileName)};
     EXPECT_EQ(result, 0);
 
-    const auto loadedMap{Helper::loadMapElementString(fileName)};
+    const auto loadedMap{Helper::loadMapElementStringXML(fileName)};
         ASSERT_TRUE(loadedMap.has_value());
 
     Helper::checkMapEquality(mapEl.ordered, loadedMap->ordered);
@@ -54,7 +54,7 @@ TEST_F(StringMapSerializerXMLTest, ReadingOptionalStringMap)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "MapOptionalString.xml";
 
-    const auto mapEl{Helper::loadMapElementOptionalString(fileName.string())};
+    const auto mapEl{Helper::loadMapElementOptionalStringXML(fileName.string())};
     ASSERT_TRUE(mapEl.has_value());
 
     const std::map<std::string, std::string> correct{
@@ -74,10 +74,10 @@ TEST_F(StringMapSerializerXMLTest, WritingOptionalStringMap)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveMapElementOptionalString(mapEl, fileName)};
+    const auto result{Helper::saveMapElementOptionalStringXML(mapEl, fileName)};
     EXPECT_EQ(result, 0);
 
-    const auto loadedMap{Helper::loadMapElementOptionalString(fileName)};
+    const auto loadedMap{Helper::loadMapElementOptionalStringXML(fileName)};
     ASSERT_TRUE(loadedMap.has_value());
 
     ASSERT_EQ(true, loadedMap->values.has_value());
@@ -92,7 +92,7 @@ TEST_F(StringMapSerializerXMLTest, ReadingEmpty)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "MapEmptyOptionalString.xml";
 
-    const auto mapEl{Helper::loadMapElementString(fileName.string())};
+    const auto mapEl{Helper::loadMapElementStringXML(fileName.string())};
     ASSERT_TRUE(mapEl.has_value());
 
     EXPECT_EQ(0u, mapEl->ordered.size());
@@ -106,10 +106,10 @@ TEST_F(StringMapSerializerXMLTest, WritingEmpty)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveMapElementDouble(mapEl, fileName)};
+    const auto result{Helper::saveMapElementStringXML(mapEl, fileName)};
     EXPECT_EQ(result, 0);
 
-    const auto loadedVector{Helper::loadMapElementString(fileName)};
+    const auto loadedVector{Helper::loadMapElementStringXML(fileName)};
 
     EXPECT_EQ(mapEl.ordered.size(), loadedVector->ordered.size());
 

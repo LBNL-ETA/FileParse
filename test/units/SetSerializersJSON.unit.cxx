@@ -3,7 +3,7 @@
 
 #include "test/helper/Utility.hxx"
 
-#include "test/helper/files/SetElementJSON.hxx"
+#include "test/helper/files/SetElement.hxx"
 #include "test/helper/structures/StructureSet.hxx"
 
 #include "test/helper/FileManipulation.hxx"

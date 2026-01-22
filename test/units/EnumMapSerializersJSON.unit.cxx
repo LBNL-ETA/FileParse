@@ -3,7 +3,7 @@
 
 #include "test/helper/Utility.hxx"
 
-#include "test/helper/files/MapElementJSON.hxx"
+#include "test/helper/files/MapElement.hxx"
 #include "test/helper/structures/StructureMap.hxx"
 
 #include "test/helper/FileManipulation.hxx"

@@ -53,32 +53,20 @@ add_executable(${PROJECT_TEST_NAME}
         helper/structures/StructureVariant.hxx
         helper/structures/StructureVector.hxx
 
-        helper/files/AttributesXML.hxx
-        helper/files/AttributesXML.cxx
-        helper/files/BaseElementXML.hxx
-        helper/files/BaseElementXML.cxx
-        helper/files/SetElementXML.hxx
-        helper/files/SetElementXML.cxx
-        helper/files/EnumElementXML.hxx
-        helper/files/EnumElementXML.cxx
-        helper/files/MapElementXML.hxx
-        helper/files/MapElementXML.cxx
-        helper/files/VariantElementXML.hxx
-        helper/files/VariantElementXML.cxx
-        helper/files/VectorElementXML.hxx
-        helper/files/VectorElementXML.cxx
-        helper/files/BaseElementJSON.hxx
-        helper/files/BaseElementJSON.cxx
-        helper/files/SetElementJSON.hxx
-        helper/files/SetElementJSON.cxx
-        helper/files/EnumElementJSON.hxx
-        helper/files/EnumElementJSON.cxx
-        helper/files/MapElementJSON.hxx
-        helper/files/MapElementJSON.cxx
-        helper/files/VariantElementJSON.hxx
-        helper/files/VariantElementJSON.cxx
-        helper/files/VectorElementJSON.hxx
-        helper/files/VectorElementJSON.cxx
+        helper/files/Attributes.hxx
+        helper/files/Attributes.cxx
+        helper/files/BaseElement.hxx
+        helper/files/BaseElement.cxx
+        helper/files/SetElement.hxx
+        helper/files/SetElement.cxx
+        helper/files/EnumElement.hxx
+        helper/files/EnumElement.cxx
+        helper/files/MapElement.hxx
+        helper/files/MapElement.cxx
+        helper/files/VariantElement.hxx
+        helper/files/VariantElement.cxx
+        helper/files/VectorElement.hxx
+        helper/files/VectorElement.cxx
 
         units/ArraySerializers.unit.cxx
         units/AttributesSerializers.unit.cxx

@@ -2,14 +2,14 @@
 #include <filesystem>
 
 #include "test/helper/structures/Attributes.hxx"
-#include "test/helper/files/AttributesXML.hxx"
+#include "test/helper/files/Attributes.hxx"
 
 TEST(AttributesSerializerTest, Deserialize)
 {
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "Attributes.xml";
 
-    const auto base{Helper::loadAttributesElement(fileName.string())};
+    const auto base{Helper::loadAttributesElementXML(fileName.string())};
     ASSERT_TRUE(base.has_value());
 
     EXPECT_EQ("Text", base->name);
@@ -31,11 +31,11 @@ TEST(AttributesSerializerTest, Serialize)
 
     const std::string fileName{"TestWrite.xml"};
     std::remove(fileName.c_str());
-    auto result{Helper::saveAttributesElement(base, fileName)};
+    auto result{Helper::saveAttributesElementXML(base, fileName)};
 
     EXPECT_EQ(0, result);
 
-    const auto loadedBase{Helper::loadAttributesElement(fileName)};
+    const auto loadedBase{Helper::loadAttributesElementXML(fileName)};
     ASSERT_TRUE(loadedBase.has_value());
 
     EXPECT_EQ(base.name, loadedBase->name);

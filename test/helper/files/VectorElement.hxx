@@ -9,6 +9,20 @@ namespace Helper
     struct OptionalVectorElement;
     struct EnumVectorElement;
 
+    // XML functions
+    [[nodiscard]] std::optional<VectorElement> loadVectorElementXML(std::string_view fileName);
+    [[nodiscard]] int saveVectorElementXML(const VectorElement & element, std::string_view fileName);
+
+    [[nodiscard]] std::optional<OptionalVectorElement>
+      loadOptionalVectorElementXML(std::string_view fileName);
+    [[nodiscard]] int saveOptionalVectorElementXML(const OptionalVectorElement & element,
+                                                   std::string_view fileName);
+
+    [[nodiscard]] std::optional<EnumVectorElement> loadEnumVectorElementXML(std::string_view fileName);
+    [[nodiscard]] int saveEnumVectorElementXML(const EnumVectorElement & element,
+                                               std::string_view fileName);
+
+    // JSON functions
     [[nodiscard]] std::optional<VectorElement> loadVectorElementJSON(std::string_view fileName);
     [[nodiscard]] int saveVectorElementJSON(const VectorElement & element, std::string_view fileName);
 

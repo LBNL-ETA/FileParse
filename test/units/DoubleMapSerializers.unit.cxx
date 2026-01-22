@@ -2,7 +2,7 @@
 
 #include "test/helper/Utility.hxx"
 
-#include "test/helper/files/MapElementXML.hxx"
+#include "test/helper/files/MapElement.hxx"
 #include "test/helper/structures/StructureMap.hxx"
 #include "test/helper/serializers/SerializersMap.hxx"
 

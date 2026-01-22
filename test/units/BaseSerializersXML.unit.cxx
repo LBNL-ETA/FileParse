@@ -1,7 +1,7 @@
 #include <filesystem>
 #include <gtest/gtest.h>
 
-#include "test/helper/files/BaseElementXML.hxx"
+#include "test/helper/files/BaseElement.hxx"
 #include "test/helper/structures/StructureBase.hxx"
 
 #include "test/helper/FileManipulation.hxx"
@@ -14,7 +14,7 @@ TEST_F(BaseSerializerXMLTest, TestReadingBaseElement)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "BaseElement.xml";
 
-    const auto base{Helper::loadBaseElement(fileName.string())};
+    const auto base{Helper::loadBaseElementXML(fileName.string())};
     ASSERT_TRUE(base.has_value());
 
     EXPECT_EQ("TestText", base->text);
@@ -68,10 +68,10 @@ TEST_F(BaseSerializerXMLTest, TestWritingBaseElement)
     // ensure deletion.
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveBaseElement(base, fileName)};
+    const auto result{Helper::saveBaseElementXML(base, fileName)};
     EXPECT_EQ(0, result);
 
-    const auto loadedBase{Helper::loadBaseElement(fileName)};
+    const auto loadedBase{Helper::loadBaseElementXML(fileName)};
         ASSERT_TRUE(loadedBase.has_value());
 
     EXPECT_EQ(base.text, loadedBase->text);

@@ -3,7 +3,7 @@
 
 #include "test/helper/Utility.hxx"
 
-#include "test/helper/files/MapElementXML.hxx"
+#include "test/helper/files/MapElement.hxx"
 #include "test/helper/structures/StructureMap.hxx"
 
 class DoubleMapSerializerXMLTest : public testing::Test
@@ -14,7 +14,7 @@ TEST_F(DoubleMapSerializerXMLTest, Reading)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "MapDouble.xml";
 
-    const auto mapEl{Helper::loadMapElementDouble(fileName.string())};
+    const auto mapEl{Helper::loadMapElementDoubleXML(fileName.string())};
     ASSERT_TRUE(mapEl.has_value());
 
     const std::map<std::string, double> correct{
@@ -37,9 +37,9 @@ TEST_F(DoubleMapSerializerXMLTest, Writing)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveMapElementDouble(mapEl, fileName)};
+    const auto result{Helper::saveMapElementDoubleXML(mapEl, fileName)};
     EXPECT_EQ(result, 0);
-    const auto loadedMap{Helper::loadMapElementDouble(fileName)};
+    const auto loadedMap{Helper::loadMapElementDoubleXML(fileName)};
     ASSERT_TRUE(loadedMap.has_value());
 
     constexpr auto tolerance{1e-6};

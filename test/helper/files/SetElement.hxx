@@ -9,6 +9,20 @@ namespace Helper
     struct SetElementOptionalDouble;
     struct SetElementEnum;
 
+    // XML functions
+    [[nodiscard]] std::optional<SetElementDouble> loadSetElementDoubleXML(std::string_view fileName);
+    [[nodiscard]] int saveSetElementDoubleXML(const SetElementDouble & element,
+                                              std::string_view fileName);
+
+    [[nodiscard]] std::optional<SetElementOptionalDouble>
+      loadSetElementOptionalDoubleXML(std::string_view fileName);
+    [[nodiscard]] int saveSetElementOptionalDoubleXML(const SetElementOptionalDouble & element,
+                                                      std::string_view fileName);
+
+    [[nodiscard]] std::optional<SetElementEnum> loadSetElementEnumXML(std::string_view fileName);
+    [[nodiscard]] int saveSetElementEnumXML(const SetElementEnum & element, std::string_view fileName);
+
+    // JSON functions
     [[nodiscard]] std::optional<SetElementDouble> loadSetElementDoubleJSON(std::string_view fileName);
     [[nodiscard]] int saveSetElementDoubleJSON(const SetElementDouble & element,
                                                std::string_view fileName);

@@ -1,7 +1,7 @@
 #include <filesystem>
 #include <gtest/gtest.h>
 
-#include "test/helper/files/VariantElementXML.hxx"
+#include "test/helper/files/VariantElement.hxx"
 #include "test/helper/structures/StructureVariant.hxx"
 
 #include "test/helper/FileManipulation.hxx"
@@ -11,7 +11,7 @@ TEST(VariantSerializerXMLTest, Reading)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "VariantInParentNode.xml";
 
-    const auto variantEl{Helper::loadVariantAll(fileName.string())};
+    const auto variantEl{Helper::loadVariantAllXML(fileName.string())};
     ASSERT_TRUE(variantEl.has_value());
 
     ASSERT_EQ(variantEl->values.size(), 2);
@@ -49,10 +49,10 @@ TEST(VariantSerializerXMLTest, Serialization)
     humidityParent.value = Helper::ElementHumidity{"9.493743"};
     original.values.push_back(humidityParent);
 
-    const auto result{Helper::saveVariantAll(original, fileName)};
+    const auto result{Helper::saveVariantAllXML(original, fileName)};
     EXPECT_EQ(result, 0);
 
-    const auto deserialized{Helper::loadVariantAll(fileName)};
+    const auto deserialized{Helper::loadVariantAllXML(fileName)};
     ASSERT_TRUE(deserialized.has_value());
 
     ASSERT_EQ(deserialized->values.size(), 2);

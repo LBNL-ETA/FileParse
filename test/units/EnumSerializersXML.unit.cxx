@@ -3,7 +3,7 @@
 
 #include "test/helper/FileManipulation.hxx"
 
-#include "test/helper/files/EnumElementXML.hxx"
+#include "test/helper/files/EnumElement.hxx"
 #include "test/helper/structures/StructureEnum.hxx"
 
 class EnumSerializerXMLTest : public testing::Test
@@ -14,7 +14,7 @@ TEST_F(EnumSerializerXMLTest, TestReading)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "EnumElement.xml";
 
-    const auto element{Helper::loadEnumElement(fileName.string())};
+    const auto element{Helper::loadEnumElementXML(fileName.string())};
     ASSERT_TRUE(element.has_value());
 
     EXPECT_EQ(Helper::Day::Monday, element->day);
@@ -34,11 +34,11 @@ TEST_F(EnumSerializerXMLTest, TestWriting)
     // ensure deletion.
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveEnumElement(enumEl, fileName)};
+    const auto result{Helper::saveEnumElementXML(enumEl, fileName)};
 
     EXPECT_EQ(0, result);
 
-    const auto loadedEnum{Helper::loadEnumElement(fileName)};
+    const auto loadedEnum{Helper::loadEnumElementXML(fileName)};
     ASSERT_TRUE(loadedEnum.has_value());
 
     EXPECT_EQ(Helper::Day::Friday, loadedEnum->day);
@@ -53,7 +53,7 @@ TEST_F(EnumSerializerXMLTest, TestReadingOptionalMissing)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "EnumElementMissing.xml";
 
-    const auto element{Helper::loadEnumElement(fileName.string())};
+    const auto element{Helper::loadEnumElementXML(fileName.string())};
     ASSERT_TRUE(element.has_value());
 
     EXPECT_EQ(static_cast<int>(Helper::Day::Monday), static_cast<int>(element->day));
@@ -69,11 +69,11 @@ TEST_F(EnumSerializerXMLTest, TestWritingOptionalMissing)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveEnumElement(enumEl, fileName)};
+    const auto result{Helper::saveEnumElementXML(enumEl, fileName)};
 
     EXPECT_EQ(0, result);
 
-    const auto loadedEnum{Helper::loadEnumElement(fileName)};
+    const auto loadedEnum{Helper::loadEnumElementXML(fileName)};
     ASSERT_TRUE(loadedEnum.has_value());
 
     EXPECT_EQ(static_cast<int>(Helper::Day::Friday), static_cast<int>(loadedEnum->day));

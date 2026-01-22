@@ -3,7 +3,7 @@
 
 #include "test/helper/Utility.hxx"
 
-#include "test/helper/files/VectorElementXML.hxx"
+#include "test/helper/files/VectorElement.hxx"
 #include "test/helper/structures/StructureVector.hxx"
 
 #include "test/helper/FileManipulation.hxx"
@@ -16,7 +16,7 @@ TEST_F(VectorSerializerXMLTest, Reading)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "VectorElement.xml";
 
-    const auto vectorEl{Helper::loadVectorElement(fileName.string())};
+    const auto vectorEl{Helper::loadVectorElementXML(fileName.string())};
     ASSERT_TRUE(vectorEl.has_value());
 
     const std::vector<double> correct{23.41, 18.13, 5.0756};
@@ -35,10 +35,10 @@ TEST_F(VectorSerializerXMLTest, Writing)
     // ensure deletion.
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveVectorElement(vectorEl, fileName)};
+    const auto result{Helper::saveVectorElementXML(vectorEl, fileName)};
     EXPECT_EQ(result, 0);
 
-    const auto loadedVector{Helper::loadVectorElement(fileName)};
+    const auto loadedVector{Helper::loadVectorElementXML(fileName)};
     ASSERT_TRUE(loadedVector.has_value());
 
     constexpr auto tolerance{1e-6};
@@ -52,7 +52,7 @@ TEST_F(VectorSerializerXMLTest, ReadingOptional)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "VectorOptional.xml";
 
-    const auto vectorEl{Helper::loadOptionalVectorElement(fileName.string())};
+    const auto vectorEl{Helper::loadOptionalVectorElementXML(fileName.string())};
     ASSERT_TRUE(vectorEl.has_value());
 
     const std::vector<double> correct{33.41, 28.13, 6.0756};
@@ -65,7 +65,7 @@ TEST_F(VectorSerializerXMLTest, ReadingOptionalEmpty)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "Empty.xml";
 
-    const auto vectorEl{Helper::loadOptionalVectorElement(fileName.string())};
+    const auto vectorEl{Helper::loadOptionalVectorElementXML(fileName.string())};
 
     EXPECT_EQ(false, vectorEl.has_value());
 }
@@ -79,10 +79,10 @@ TEST_F(VectorSerializerXMLTest, WritingOptional)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveOptionalVectorElement(vectorEl, fileName)};
+    const auto result{Helper::saveOptionalVectorElementXML(vectorEl, fileName)};
     EXPECT_EQ(result, 0);
 
-    const auto loadedVector{Helper::loadOptionalVectorElement(fileName)};
+    const auto loadedVector{Helper::loadOptionalVectorElementXML(fileName)};
     ASSERT_TRUE(loadedVector.has_value());
 
     constexpr auto tolerance{1e-6};
@@ -99,10 +99,10 @@ TEST_F(VectorSerializerXMLTest, WritingOptionalEmpty)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveOptionalVectorElement(vectorEl, fileName)};
+    const auto result{Helper::saveOptionalVectorElementXML(vectorEl, fileName)};
     EXPECT_EQ(result, 0);
 
-    const auto loadedVector{Helper::loadOptionalVectorElement(fileName)};
+    const auto loadedVector{Helper::loadOptionalVectorElementXML(fileName)};
     ASSERT_TRUE(loadedVector.has_value());
 
     EXPECT_EQ(false, loadedVector->values.has_value());
@@ -115,7 +115,7 @@ TEST_F(VectorSerializerXMLTest, ReadingEmpty)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "Empty.xml";
 
-    const auto vectorEl{Helper::loadOptionalVectorElement(fileName.string())};
+    const auto vectorEl{Helper::loadOptionalVectorElementXML(fileName.string())};
 
     EXPECT_EQ(false, vectorEl.has_value());
 }
@@ -130,10 +130,10 @@ TEST_F(VectorSerializerXMLTest, WritingEmpty)
     // ensure deletion.
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveVectorElement(vectorEl, fileName)};
+    const auto result{Helper::saveVectorElementXML(vectorEl, fileName)};
     EXPECT_EQ(result, 0);
 
-    const auto loadedVector{Helper::loadVectorElement(fileName)};
+    const auto loadedVector{Helper::loadVectorElementXML(fileName)};
     ASSERT_TRUE(loadedVector.has_value());
 
     EXPECT_EQ(vectorEl.values.size(), loadedVector->values.size());
@@ -146,7 +146,7 @@ TEST_F(VectorSerializerXMLTest, ReadingEnum)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "VectorEnum.xml";
 
-    const auto vectorEl{Helper::loadEnumVectorElement(fileName.string())};
+    const auto vectorEl{Helper::loadEnumVectorElementXML(fileName.string())};
     ASSERT_TRUE(vectorEl.has_value());
 
     const std::vector<Helper::Day> correct{
@@ -164,10 +164,10 @@ TEST_F(VectorSerializerXMLTest, WritingEnum)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveEnumVectorElement(vectorEl, fileName)};
+    const auto result{Helper::saveEnumVectorElementXML(vectorEl, fileName)};
     EXPECT_EQ(result, 0);
 
-    const auto loadedVector{Helper::loadEnumVectorElement(fileName)};
+    const auto loadedVector{Helper::loadEnumVectorElementXML(fileName)};
     ASSERT_TRUE(loadedVector.has_value());
 
     Helper::checkVectorEquality(vectorEl.days, loadedVector->days, Helper::toDayString);

@@ -1,4 +1,4 @@
-#include "AttributesXML.hxx"
+#include "Attributes.hxx"
 
 #include "helper/structures/Attributes.hxx"
 #include "helper/serializers/SerializerAttributes.hxx"
@@ -8,12 +8,12 @@
 
 namespace Helper
 {
-    std::optional<AttributesTest> loadAttributesElement(std::string_view fileName)
+    std::optional<AttributesTest> loadAttributesElementXML(std::string_view fileName)
     {
         return Common::loadFromXMLFile<AttributesTest>(fileName, "Test").value();
     }
 
-    int saveAttributesElement(const AttributesTest & object, std::string_view fileName)
+    int saveAttributesElementXML(const AttributesTest & object, std::string_view fileName)
     {
         return Common::saveToXMLFile(object, fileName, "Test");
     }

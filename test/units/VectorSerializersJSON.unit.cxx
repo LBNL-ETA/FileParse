@@ -3,7 +3,7 @@
 
 #include "test/helper/Utility.hxx"
 
-#include "test/helper/files/VectorElementJSON.hxx"
+#include "test/helper/files/VectorElement.hxx"
 #include "test/helper/structures/StructureVector.hxx"
 
 #include "test/helper/FileManipulation.hxx"

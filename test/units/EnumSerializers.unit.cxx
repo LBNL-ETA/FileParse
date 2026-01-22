@@ -2,7 +2,7 @@
 
 #include "test/helper/MockNodeAdapter.hxx"
 
-#include "test/helper/files/EnumElementXML.hxx"
+#include "test/helper/files/EnumElement.hxx"
 #include "test/helper/structures/StructureEnum.hxx"
 #include "test/helper/serializers/SerializersEnum.hxx"
 

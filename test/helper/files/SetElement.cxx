@@ -1,13 +1,46 @@
-#include "SetElementJSON.hxx"
+#include "SetElement.hxx"
 
 #include "test/helper/structures/StructureSet.hxx"
 #include "../serializers/SerializersSet.hxx"
 
-#include "include/fileParse/JSONNodeAdapter.hxx"
 #include "fileParse/FileDataHandler.hxx"
 
 namespace Helper
 {
+    // XML functions
+    std::optional<SetElementDouble> loadSetElementDoubleXML(std::string_view fileName)
+    {
+        return Common::loadFromXMLFile<SetElementDouble>(fileName, "SetElementDouble");
+    }
+
+    int saveSetElementDoubleXML(const SetElementDouble & element, std::string_view fileName)
+    {
+        return Common::saveToXMLFile(element, fileName, "SetElementDouble");
+    }
+
+    std::optional<SetElementOptionalDouble> loadSetElementOptionalDoubleXML(std::string_view fileName)
+    {
+        return Common::loadFromXMLFile<SetElementOptionalDouble>(fileName,
+                                                                 "SetElementOptionalDouble");
+    }
+
+    int saveSetElementOptionalDoubleXML(const SetElementOptionalDouble & element,
+                                        std::string_view fileName)
+    {
+        return Common::saveToXMLFile(element, fileName, "SetElementOptionalDouble");
+    }
+
+    std::optional<SetElementEnum> loadSetElementEnumXML(std::string_view fileName)
+    {
+        return Common::loadFromXMLFile<SetElementEnum>(fileName, "SetElementEnum");
+    }
+
+    int saveSetElementEnumXML(const SetElementEnum & element, std::string_view fileName)
+    {
+        return Common::saveToXMLFile(element, fileName, "SetElementEnum");
+    }
+
+    // JSON functions
     std::optional<SetElementDouble> loadSetElementDoubleJSON(std::string_view fileName)
     {
         return Common::loadFromJSONFile<SetElementDouble>(fileName, "SetElementDouble");

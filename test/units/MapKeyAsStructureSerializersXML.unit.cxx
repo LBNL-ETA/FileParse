@@ -3,7 +3,7 @@
 
 #include "test/helper/Utility.hxx"
 
-#include "test/helper/files/MapElementXML.hxx"
+#include "test/helper/files/MapElement.hxx"
 #include "test/helper/structures/CMAStringOptions.hxx"
 
 #include "test/helper/FileManipulation.hxx"
@@ -13,7 +13,7 @@ TEST(MapKeyAsStructureSerializerXMLTest, Reading)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "CMAElement.xml";
 
-    const auto mapEl{Helper::loadCMAElement(fileName.string())};
+    const auto mapEl{Helper::loadCMAElementXML(fileName.string())};
     ASSERT_TRUE(mapEl.has_value());
 
     const Helper::CMAElement correct{{{"Low", "Low"}, {12.34, 2.98}},
@@ -44,7 +44,7 @@ TEST(MapKeyAsStructureSerializerXMLTest, Writing)
                                       "</Test>\n"};
 
     const std::string fileName{"TestWrite.xml"};
-    const auto result{Helper::saveCMAElement(knownElement, fileName)};
+    const auto result{Helper::saveCMAElementXML(knownElement, fileName)};
     EXPECT_EQ(result, 0) << "Error saving CMAElement!";
 
     const std::string serializedContent{File::loadToString(fileName)};

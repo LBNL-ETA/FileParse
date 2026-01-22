@@ -3,7 +3,7 @@
 
 #include "test/helper/Utility.hxx"
 
-#include "test/helper/files/MapElementXML.hxx"
+#include "test/helper/files/MapElement.hxx"
 #include "test/helper/structures/StructureMap.hxx"
 
 #include "test/helper/FileManipulation.hxx"
@@ -16,7 +16,7 @@ TEST_F(EnumMapSerializerXMLTest, ReadingEnumAsKey_String)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "MapEnumString.xml";
 
-    const auto mapEl{Helper::loadMapElementEnum(fileName.string())};
+    const auto mapEl{Helper::loadMapElementEnumXML(fileName.string())};
     ASSERT_TRUE(mapEl.has_value());
 
     using Helper::Day;
@@ -41,10 +41,10 @@ TEST_F(EnumMapSerializerXMLTest, WritingEnumAsKey_String)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveMapElementEnum(mapEl, fileName)};
+    const auto result{Helper::saveMapElementEnumXML(mapEl, fileName)};
     EXPECT_EQ(result, 0);
 
-    const auto loadedMap{Helper::loadMapElementEnum(fileName)};
+    const auto loadedMap{Helper::loadMapElementEnumXML(fileName)};
     ASSERT_TRUE(loadedMap.has_value());
 
     Helper::checkMapEquality(mapEl.days, loadedMap->days);
@@ -57,7 +57,7 @@ TEST_F(EnumMapSerializerXMLTest, ReadingEnumAsKey_Double)
     std::filesystem::path productPath{TEST_DATA_DIR};
     const auto fileName = productPath / "MapEnumAsKey.xml";
 
-    const auto mapEl{Helper::loadMapElementEnumDouble(fileName.string())};
+    const auto mapEl{Helper::loadMapElementEnumDoubleXML(fileName.string())};
     ASSERT_TRUE(mapEl.has_value());
 
     using Helper::Day;
@@ -82,10 +82,10 @@ TEST_F(EnumMapSerializerXMLTest, WritingEnumAsKey_Double)
 
     std::remove(fileName.c_str());
 
-    const auto result{Helper::saveMapElementEnumDouble(mapEl, fileName)};
+    const auto result{Helper::saveMapElementEnumDoubleXML(mapEl, fileName)};
     EXPECT_EQ(result, 0);
 
-    const auto loadedMap{Helper::loadMapElementEnumDouble(fileName)};
+    const auto loadedMap{Helper::loadMapElementEnumDoubleXML(fileName)};
     ASSERT_TRUE(loadedMap.has_value());
 
     Helper::checkMapEquality(mapEl.days, loadedMap->days);

@@ -1,4 +1,4 @@
-#include "MapElementJSON.hxx"
+#include "MapElement.hxx"
 
 #include "test/helper/structures/StructureMap.hxx"
 #include "../serializers/SerializersMap.hxx"
@@ -9,12 +9,75 @@
 
 namespace Helper
 {
+    // XML functions
+    std::optional<MapElementString> loadMapElementStringXML(std::string_view fileName)
+    {
+        return Common::loadFromXMLFile<MapElementString>(fileName, "MapString");
+    }
+
+    int saveMapElementStringXML(const MapElementString & element, std::string_view fileName)
+    {
+        return Common::saveToXMLFile(element, fileName, "MapString");
+    }
+
+    std::optional<MapElementOptionalString> loadMapElementOptionalStringXML(std::string_view fileName)
+    {
+        return Common::loadFromXMLFile<MapElementOptionalString>(fileName, "OptionalStringMap");
+    }
+
+    int saveMapElementOptionalStringXML(const MapElementOptionalString & element,
+                                        std::string_view fileName)
+    {
+        return Common::saveToXMLFile(element, fileName, "OptionalStringMap");
+    }
+
+    std::optional<MapElementEnum> loadMapElementEnumXML(std::string_view fileName)
+    {
+        return Common::loadFromXMLFile<MapElementEnum>(fileName, "EnumMap");
+    }
+
+    int saveMapElementEnumXML(const MapElementEnum & element, std::string_view fileName)
+    {
+        return Common::saveToXMLFile(element, fileName, "EnumMap");
+    }
+
+    std::optional<MapElementDouble> loadMapElementDoubleXML(std::string_view fileName)
+    {
+        return Common::loadFromXMLFile<MapElementDouble>(fileName, "Test");
+    }
+
+    int saveMapElementDoubleXML(const MapElementDouble & element, std::string_view fileName)
+    {
+        return Common::saveToXMLFile(element, fileName, "Test");
+    }
+
+    std::optional<MapElementEnumDouble> loadMapElementEnumDoubleXML(std::string_view fileName)
+    {
+        return Common::loadFromXMLFile<MapElementEnumDouble>(fileName, "EnumDoubleMap");
+    }
+
+    int saveMapElementEnumDoubleXML(const MapElementEnumDouble & element, std::string_view fileName)
+    {
+        return Common::saveToXMLFile(element, fileName, "EnumDoubleMap");
+    }
+
+    std::optional<CMAElement> loadCMAElementXML(std::string_view fileName)
+    {
+        return Common::loadFromXMLFile<CMAElement>(fileName, "Test");
+    }
+
+    int saveCMAElementXML(const CMAElement & element, std::string_view fileName)
+    {
+        return Common::saveToXMLFile(element, fileName, "Test");
+    }
+
+    // JSON functions
     std::optional<MapElementString> loadMapElementStringJSON(std::string_view fileName)
     {
         return Common::loadFromJSONFile<MapElementString>(fileName, "MapString");
     }
 
-    int saveMapElementDoubleJSON(const MapElementString & element, std::string_view fileName)
+    int saveMapElementStringJSON(const MapElementString & element, std::string_view fileName)
     {
         return Common::saveToJSONFile(element, fileName, "MapString");
     }
