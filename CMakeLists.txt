@@ -30,23 +30,29 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 set(xmlParser_Branch "feature/disable-wide-char")
 
 include(FetchContent)
-FetchContent_Declare(
-  XMLParser
-  GIT_REPOSITORY https://github.com/LBNL-ETA/XMLParser.git
-  GIT_TAG ${xmlParser_Branch}
-)
-FetchContent_MakeAvailable(XMLParser)
+
+if(NOT TARGET xmlParser)
+    FetchContent_Declare(
+      XMLParser
+      GIT_REPOSITORY https://github.com/LBNL-ETA/XMLParser.git
+      GIT_TAG ${xmlParser_Branch}
+    )
+    FetchContent_MakeAvailable(XMLParser)
+
+    # Assuming the target name is xmlParser
+    target_include_directories(xmlParser SYSTEM PUBLIC ${xmlParser_INCLUDE_DIRS})
+endif()
 
 set(nlohmann_json_Branch "v3.11.3")
-FetchContent_Declare(
-  nlohmann_json
-  GIT_REPOSITORY https://github.com/nlohmann/json.git
-  GIT_TAG ${nlohmann_json_Branch}
-)
-FetchContent_MakeAvailable(nlohmann_json)
 
-# Assuming the target name is xmlParser
-target_include_directories(xmlParser SYSTEM PUBLIC ${xmlParser_INCLUDE_DIRS})
+if(NOT TARGET nlohmann_json)
+    FetchContent_Declare(
+      nlohmann_json
+      GIT_REPOSITORY https://github.com/nlohmann/json.git
+      GIT_TAG ${nlohmann_json_Branch}
+    )
+    FetchContent_MakeAvailable(nlohmann_json)
+endif()
 
 add_subdirectory(include/fileParse)
 
