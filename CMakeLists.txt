@@ -2,11 +2,6 @@ cmake_minimum_required(VERSION 3.5)
 project(FileParse CXX)
 set(LIB_NAME ${PROJECT_NAME})
 
-# Set the runtime library to dynamic for all configurations in MSVC
-if (MSVC)
-    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-endif()
-
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 set(LIB_MAJOR_VERSION "1")
