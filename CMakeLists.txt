@@ -67,18 +67,6 @@ if(BUILD_FileParse_tests)
     add_subdirectory(test)
 endif()
 
-# Explicitly set the runtime library for each target
-if (MSVC)
-    set_target_properties(${LIB_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-
-    # Set runtime for tests if enabled
-    if(TARGET FileParse-test)
-        set_target_properties(FileParse-test PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-    endif()
-
-    # Repeat for other targets, including any third-party or external targets
-endif()
-
 # Setting variable for parent projects so it can be checked if same version is used
 set_property(TARGET ${LIB_NAME} PROPERTY xmlParser_Branch ${xmlParser_Branch})
 
