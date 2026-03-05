@@ -31,6 +31,7 @@ if(NOT TARGET xmlParser)
       XMLParser
       GIT_REPOSITORY https://github.com/LBNL-ETA/XMLParser.git
       GIT_TAG ${xmlParser_Branch}
+      GIT_SHALLOW TRUE
     )
     FetchContent_MakeAvailable(XMLParser)
 
@@ -40,11 +41,16 @@ endif()
 
 set(nlohmann_json_Branch "v3.11.3")
 
+set(JSON_BuildTests OFF CACHE BOOL "" FORCE)
+set(JSON_Install OFF CACHE BOOL "" FORCE)
+set(JSON_MultipleHeaders OFF CACHE BOOL "" FORCE)
+
 if(NOT TARGET nlohmann_json)
     FetchContent_Declare(
       nlohmann_json
       GIT_REPOSITORY https://github.com/nlohmann/json.git
       GIT_TAG ${nlohmann_json_Branch}
+      GIT_SHALLOW TRUE
     )
     FetchContent_MakeAvailable(nlohmann_json)
 endif()
