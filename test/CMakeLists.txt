@@ -39,6 +39,7 @@ add_executable(${PROJECT_TEST_NAME}
         helper/serializers/SerializersSet.hxx
         helper/serializers/SerializersVariant.hxx
         helper/serializers/SerializersVector.hxx
+        helper/serializers/SerializersLanguages.hxx
 
         helper/structures/Attributes.hxx
         helper/structures/CMAEnumOptions.hxx
@@ -52,6 +53,7 @@ add_executable(${PROJECT_TEST_NAME}
         helper/structures/StructureMap.hxx
         helper/structures/StructureVariant.hxx
         helper/structures/StructureVector.hxx
+        helper/structures/StructureLanguages.hxx
 
         helper/files/Attributes.hxx
         helper/files/Attributes.cxx
@@ -96,6 +98,28 @@ add_executable(${PROJECT_TEST_NAME}
         units/MapKeyAsStructureSerializersFile.unit.cxx
         units/VariantSerializersFile.unit.cxx
         units/AttributesSerializersFile.unit.cxx
+        units/languages/LanguageTestHelper.hxx
+        units/languages/English.unit.cxx
+        units/languages/ChineseSimplified.unit.cxx
+        units/languages/ChineseTraditional.unit.cxx
+        units/languages/Japanese.unit.cxx
+        units/languages/Korean.unit.cxx
+        units/languages/Arabic.unit.cxx
+        units/languages/Hebrew.unit.cxx
+        units/languages/Russian.unit.cxx
+        units/languages/Greek.unit.cxx
+        units/languages/Hindi.unit.cxx
+        units/languages/Thai.unit.cxx
+        units/languages/Georgian.unit.cxx
+        units/languages/Armenian.unit.cxx
+        units/languages/German.unit.cxx
+        units/languages/French.unit.cxx
+        units/languages/Spanish.unit.cxx
+        units/languages/Portuguese.unit.cxx
+        units/languages/Turkish.unit.cxx
+        units/languages/Vietnamese.unit.cxx
+        units/languages/Polish.unit.cxx
+        units/languages/Czech.unit.cxx
         main.cxx
 )
 
