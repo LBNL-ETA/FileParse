@@ -123,6 +123,11 @@ add_executable(${PROJECT_TEST_NAME}
         units/languages/Serbian.unit.cxx
         units/languages/SerbianLatin.unit.cxx
         units/languages/Swedish.unit.cxx
+        units/languages/Amharic.unit.cxx
+        units/languages/Bengali.unit.cxx
+        units/languages/Tamil.unit.cxx
+        units/languages/Ukrainian.unit.cxx
+        units/languages/Emoji.unit.cxx
         main.cxx
 )
 
