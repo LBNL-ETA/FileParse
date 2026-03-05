@@ -6,51 +6,82 @@ on:
   pull_request:
     branches: [ '**' ]
 
+env:
+  BUILD_TYPE: Release
+
 jobs:
-  build-and-test:
-    name: ${{ matrix.os }} Build and Test
+  windows:
+    name: ${{ matrix.os }}-${{ matrix.arch }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        # For more specific OS versions, you can specify them explicitly:
-        # os: [ubuntu-20.04, windows-2019, macos-11]
+        os: [windows-2025, windows-2022]
+        arch: [x86, x64]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up CMake
-        uses: jwlawson/actions-setup-cmake@v1
-        with:
-          cmake-version: "3.20.0"  # Specify the minimum version you need
-
-      - name: Install dependencies (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          choco install -y ninja
-          choco install -y llvm  # Clang on Windows if needed
-          # choco install -y visualstudio2019community
-        shell: pwsh
-
-      - name: Install dependencies (Ubuntu)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ninja-build clang
-      - name: Install dependencies (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          brew update
-          brew install ninja
-          brew install llvm
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Configure CMake
-        run: |
-          cmake -S . -B build -G Ninja -DCMAKE_CXX_COMPILER=clang++
-          # Or specify other options as needed
-      - name: Build
-        run: cmake --build build
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-      - name: Run tests
-        run: ctest --test-dir build --output-on-failure
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C RELEASE -V
+
+  mac:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-14, macos-15, macos-26, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C RELEASE -V
+
+  linux:
+    name: ${{ matrix.os }}-${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04]
+        arch: [x86_64, aarch64]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install QEMU for aarch64 emulation
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: all
+
+      - name: Upgrade gcc
+        run: sudo apt-get install -y gcc g++
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C RELEASE -V

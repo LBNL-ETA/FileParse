@@ -49,6 +49,12 @@ if(NOT TARGET nlohmann_json)
     FetchContent_MakeAvailable(nlohmann_json)
 endif()
 
+# Generate dependency diagram from template
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/doc/FileParse.md.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/doc/FileParse.md
+)
+
 add_subdirectory(include/fileParse)
 
 # Include directories for targets

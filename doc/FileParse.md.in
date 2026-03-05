@@ -1,0 +1,11 @@
+```mermaid
+graph TD
+    %% Package definitions
+    xmlParser[xmlParser<br/><font color='red'>${xmlParser_Branch}</font>]
+    nlohmann_json[nlohmann_json<br/><font color='red'>${nlohmann_json_Branch}</font>]
+    FileParse[FileParse<br/><font color='red'>Version_${LIB_VERSION_STRING}</font>]
+
+    %% Package relations
+    FileParse --> xmlParser
+    FileParse --> nlohmann_json
+```
