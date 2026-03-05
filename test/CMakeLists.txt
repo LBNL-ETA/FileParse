@@ -120,6 +120,9 @@ add_executable(${PROJECT_TEST_NAME}
         units/languages/Vietnamese.unit.cxx
         units/languages/Polish.unit.cxx
         units/languages/Czech.unit.cxx
+        units/languages/Serbian.unit.cxx
+        units/languages/SerbianLatin.unit.cxx
+        units/languages/Swedish.unit.cxx
         main.cxx
 )
 
