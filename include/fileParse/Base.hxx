@@ -378,8 +378,11 @@ namespace FileParse
         return node;
     }
 
-    /// Extracts a value from the node and stores it in an optional. If the node is not empty, the
-    /// value is extracted and stored in the optional.
+    /// Extracts a value from the node and stores it in an optional. The optional
+    /// is populated only when the node both exists AND carries content (at
+    /// least one child node, or non-empty text). An empty self-closing element
+    /// such as `<X/>` (or `<X></X>`) leaves the optional as nullopt -- present-
+    /// but-empty elements are treated as semantically equivalent to "missing".
     /// @tparam NodeAdapter The type of the node adapter.
     /// @tparam T The type of the value to be extracted into the optional.
     /// @param node The node from which the value is to be extracted.
@@ -388,7 +391,7 @@ namespace FileParse
     template<typename NodeAdapter, typename T>
     inline const NodeAdapter & operator>>(const NodeAdapter & node, std::optional<T> & opt)
     {
-        if(!node.isEmpty())
+        if(!node.isEmpty() && (!node.getChildNodes().empty() || !node.getText().empty()))
         {
             T value;
             node >> value;

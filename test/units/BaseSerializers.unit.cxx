@@ -133,6 +133,17 @@ Helper::MockNode createOptionalIntegerEmptyElement()
     return node;
 }
 
+// Optional field is present as a self-closing / empty element (no children, no
+// text). Schema-wise this is equivalent to "missing" -- the optional should
+// stay nullopt rather than be populated with a default-constructed value.
+Helper::MockNode createOptionalIntegerSelfClosingElement()
+{
+    Helper::MockNode node{"BaseElement"};
+    addChildNode(node, "OptionalInteger", "");
+
+    return node;
+}
+
 TEST_F(BaseSerializerTest, DeserializeOptionalInteger)
 {
     auto elementNode(createOptionalIntegerElement());
@@ -147,6 +158,17 @@ TEST_F(BaseSerializerTest, DeserializeOptionalInteger)
 TEST_F(BaseSerializerTest, DeserializeOptionalIntegerEmpty)
 {
     auto elementNode(createOptionalIntegerEmptyElement());
+    const Helper::MockNodeAdapter adapter{&elementNode};
+
+    Helper::OptionalIntegerElement element;
+    adapter >> element;
+
+    EXPECT_EQ(false, element.optional_int.has_value());
+}
+
+TEST_F(BaseSerializerTest, DeserializeOptionalIntegerSelfClosing)
+{
+    auto elementNode(createOptionalIntegerSelfClosingElement());
     const Helper::MockNodeAdapter adapter{&elementNode};
 
     Helper::OptionalIntegerElement element;
