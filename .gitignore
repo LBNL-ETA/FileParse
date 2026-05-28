@@ -2,6 +2,9 @@
 build/
 cmake-build-*/
 
+# Personal CMake presets (per-developer toolchain overrides)
+CMakeUserPresets.json
+
 # IDE files
 .idea/
 .vscode/
