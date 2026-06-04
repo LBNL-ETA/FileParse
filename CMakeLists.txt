@@ -13,7 +13,7 @@ set(LIB_VERSION_STRING "${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_PATCH_VE
 # FETCHCONTENT_SOURCE_DIR_<NAME> to ${sourceDir}/../<DepName> for each declared
 # dependency. If a sibling working copy is missing, unset that variable here so
 # FetchContent falls back to the declared remote instead of erroring out.
-foreach(_lbnl_dep XMLPARSER NLOHMANN_JSON)
+foreach(_lbnl_dep XMLPARSER NLOHMANN_JSON GOOGLETEST)
     if(FETCHCONTENT_SOURCE_DIR_${_lbnl_dep})
         if(NOT EXISTS "${FETCHCONTENT_SOURCE_DIR_${_lbnl_dep}}/CMakeLists.txt")
             message(STATUS
@@ -28,6 +28,13 @@ endforeach()
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Enable MSVC parallel (multi-processor) compilation for all targets defined
+# below (library, tests, and fetched dependencies). Must precede the
+# add_subdirectory() calls, since add_compile_options only affects later targets.
+if(MSVC)
+    add_compile_options(/MP)
+endif()
 
 include(GNUInstallDirs)
 
