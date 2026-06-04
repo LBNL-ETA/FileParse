@@ -4,13 +4,31 @@
         {
             "name": "default",
             "hidden": true,
-            "description": "Base: fetches all dependencies (XMLParser, nlohmann_json) from their declared remotes via FetchContent.",
+            "description": "Base: fetches all dependencies (XMLParser, nlohmann_json) from their declared remotes via FetchContent. Inherited by default-debug and default-release.",
             "binaryDir": "${sourceDir}/build/default"
+        },
+        {
+            "name": "default-debug",
+            "displayName": "Default (Debug)",
+            "inherits": "default",
+            "binaryDir": "${sourceDir}/build/default-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "default-release",
+            "displayName": "Default (Release)",
+            "inherits": "default",
+            "binaryDir": "${sourceDir}/build/default-release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
         },
         {
             "name": "local",
             "hidden": true,
-            "description": "Base: prefers sibling working copies of dependencies (../XMLParser, ../json, ../googletest); falls back to remote per-dep when missing.",
+            "description": "Base: prefers sibling working copies of dependencies (../XMLParser, ../json, ../googletest); falls back to remote per-dep when missing. Inherited by local-debug, local-release, and personal compiler presets.",
             "inherits": "default",
             "cacheVariables": {
                 "FETCHCONTENT_SOURCE_DIR_XMLPARSER":     "${sourceDir}/../XMLParser",
@@ -19,84 +37,22 @@
             }
         },
         {
-            "name": "windows",
-            "hidden": true,
-            "description": "OS mixin: Visual Studio generator on Windows hosts. Enabled only when the host is Windows.",
-            "generator": "Visual Studio 17 2022",
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
+            "name": "local-debug",
+            "displayName": "Local (Debug)",
+            "inherits": "local",
+            "binaryDir": "${sourceDir}/build/local-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
-            "name": "unix",
-            "hidden": true,
-            "description": "OS mixin: Ninja generator on macOS/Linux hosts (auto-parallel, no -jN needed). Enabled only when the host is not Windows.",
-            "generator": "Ninja",
-            "condition": {
-                "type": "notEquals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Windows"
+            "name": "local-release",
+            "displayName": "Local (Release)",
+            "inherits": "local",
+            "binaryDir": "${sourceDir}/build/local-release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
             }
-        },
-
-        {
-            "name": "default-debug-win",
-            "displayName": "Default (Debug)",
-            "inherits": ["windows", "default"],
-            "binaryDir": "${sourceDir}/build/default-debug",
-            "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
-        },
-        {
-            "name": "default-debug-nix",
-            "displayName": "Default (Debug)",
-            "inherits": ["unix", "default"],
-            "binaryDir": "${sourceDir}/build/default-debug",
-            "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
-        },
-        {
-            "name": "default-release-win",
-            "displayName": "Default (Release)",
-            "inherits": ["windows", "default"],
-            "binaryDir": "${sourceDir}/build/default-release",
-            "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
-        },
-        {
-            "name": "default-release-nix",
-            "displayName": "Default (Release)",
-            "inherits": ["unix", "default"],
-            "binaryDir": "${sourceDir}/build/default-release",
-            "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
-        },
-
-        {
-            "name": "local-debug-win",
-            "displayName": "Local (Debug)",
-            "inherits": ["windows", "local"],
-            "binaryDir": "${sourceDir}/build/local-debug",
-            "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
-        },
-        {
-            "name": "local-debug-nix",
-            "displayName": "Local (Debug)",
-            "inherits": ["unix", "local"],
-            "binaryDir": "${sourceDir}/build/local-debug",
-            "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
-        },
-        {
-            "name": "local-release-win",
-            "displayName": "Local (Release)",
-            "inherits": ["windows", "local"],
-            "binaryDir": "${sourceDir}/build/local-release",
-            "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
-        },
-        {
-            "name": "local-release-nix",
-            "displayName": "Local (Release)",
-            "inherits": ["unix", "local"],
-            "binaryDir": "${sourceDir}/build/local-release",
-            "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
         }
     ]
 }
