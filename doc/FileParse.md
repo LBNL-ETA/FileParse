@@ -2,8 +2,8 @@
 graph TD
     %% Package definitions
     xmlParser[xmlParser<br/><font color='red'>v1.0.5</font>]
-    nlohmann_json[nlohmann_json<br/><font color='red'>v3.11.3</font>]
-    FileParse[FileParse<br/><font color='red'>Version_1.1.4</font>]
+    nlohmann_json[nlohmann_json<br/><font color='red'>v3.12.0</font>]
+    FileParse[FileParse<br/><font color='red'>Version_1.1.5</font>]
 
     %% Package relations
     FileParse --> xmlParser

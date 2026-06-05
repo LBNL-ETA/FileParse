@@ -6,7 +6,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 set(LIB_MAJOR_VERSION "1")
 set(LIB_MINOR_VERSION "1")
-set(LIB_PATCH_VERSION "4")
+set(LIB_PATCH_VERSION "5")
 set(LIB_VERSION_STRING "${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_PATCH_VERSION}")
 
 # Local development mode. The `local` preset sets LBNL_LOCAL_SIBLINGS=ON (a cache
@@ -68,7 +68,7 @@ if(NOT TARGET xmlParser)
     target_include_directories(xmlParser SYSTEM PUBLIC ${xmlParser_INCLUDE_DIRS})
 endif()
 
-set(nlohmann_json_Branch "v3.11.3")
+set(nlohmann_json_Branch "v3.12.0")
 
 set(JSON_BuildTests OFF CACHE BOOL "" FORCE)
 set(JSON_Install OFF CACHE BOOL "" FORCE)
