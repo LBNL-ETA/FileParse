@@ -15,7 +15,7 @@ namespace XMLParser
 
 /// Class XMLNodeAdapter
 /// Adapts XMLNode for use with FileParse functionalities.
-class XMLNodeAdapter : public INodeAdapter<XMLNodeAdapter>
+class XMLNodeAdapter
 {
 public:
     /// Constructor for XMLNodeAdapter.
@@ -24,60 +24,60 @@ public:
 
     /// Checks if the node is empty.
     /// @return True if the node is empty, false otherwise.
-    [[nodiscard]] bool isEmpty() const override;
+    [[nodiscard]] bool isEmpty() const;
 
     /// Gets the current tag of the node.
     /// @return The current tag as a string.
-    [[nodiscard]] std::string getCurrentTag() const override;
+    [[nodiscard]] std::string getCurrentTag() const;
 
     /// Gets the text content of the node.
     /// @return The text content as a string.
-    [[nodiscard]] std::string getText() const override;
+    [[nodiscard]] std::string getText() const;
 
     /// Retrieves all child nodes.
     /// @return A vector of child node adapters.
-    [[nodiscard]] std::vector<XMLNodeAdapter> getChildNodes() const override;
+    [[nodiscard]] std::vector<XMLNodeAdapter> getChildNodes() const;
 
     /// Retrieves the first child node with a specified name.
     /// @param name The name of the child node to retrieve.
     /// @return An optional containing the child node adapter if successful, std::nullopt otherwise.
     [[nodiscard]] std::optional<XMLNodeAdapter>
-      getFirstChildByName(std::string_view name) const override;
+      getFirstChildByName(std::string_view name) const;
 
     /// Retrieves all child nodes with a specified name.
     /// @param name The name of the child nodes to retrieve.
     /// @return A vector of child node adapters with the specified name.
     [[nodiscard]] std::vector<XMLNodeAdapter>
-      getChildNodesByName(std::string_view name) const override;
+      getChildNodesByName(std::string_view name) const;
 
     /// Counts the number of child nodes with a specified name.
     /// @param name The name of the child nodes to count.
     /// @return The number of child nodes with the specified name.
-    [[nodiscard]] int nChildNode(std::string_view name) const override;
+    [[nodiscard]] int nChildNode(std::string_view name) const;
 
     /// Checks if the node has a child with a specified name.
     /// @param name The name of the child node to check.
     /// @return True if a child node with the specified name exists, false otherwise.
-    [[nodiscard]] bool hasChildNode(std::string_view name) const override;
+    [[nodiscard]] bool hasChildNode(std::string_view name) const;
 
     /// Adds a new child node with a specified name.
     /// @param name The name of the new child node.
     /// @return The newly added child node adapter.
-    [[nodiscard]] XMLNodeAdapter addChild(std::string_view name) override;
+    [[nodiscard]] XMLNodeAdapter addChild(std::string_view name);
 
     /// Adds text content to the node.
     /// @param text The text to add to the node.
-    void addText(std::string_view text) override;
+    void addText(std::string_view text);
 
     /// Writes the node's content to a file.
     /// @param outString The name of the file to write the content to.
     /// @return The number of characters written.
     [[nodiscard]] int writeToFile(std::string_view outString) const;
 
-    [[nodiscard]] std::string getContent() const override;
+    [[nodiscard]] std::string getContent() const;
 
-    void addAttribute(std::string_view name, std::string_view value) override;
-    [[nodiscard]] std::optional<std::string> getAttribute(std::string_view name) const override;
+    void addAttribute(std::string_view name, std::string_view value);
+    [[nodiscard]] std::optional<std::string> getAttribute(std::string_view name) const;
 
 private:
     struct Impl;
@@ -102,3 +102,6 @@ private:
 /// @return An optional containing the top node adapter if successful, std::nullopt otherwise.
 [[nodiscard]] std::optional<XMLNodeAdapter> getXMLTopNodeFromString(std::string_view xml,
                                                                     std::string_view topNodeName);
+
+static_assert(FileParse::NodeAdapterLike<XMLNodeAdapter>,
+              "XMLNodeAdapter must satisfy the NodeAdapter contract");

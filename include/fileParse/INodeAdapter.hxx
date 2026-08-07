@@ -1,61 +1,64 @@
 /// File: INodeAdapter.hxx
-/// @brief Defines the INodeAdapter interface which provides a set of functions
-///        for node manipulation and data extraction, used by a general parser.
+/// @brief Defines the NodeAdapter concept, the contract every node adapter must
+///        satisfy so the generic parser can traverse it.
 
 #pragma once
 
-#include <string>
-#include <vector>
+#include <concepts>
 #include <optional>
+#include <string>
+#include <string_view>
+#include <vector>
 
-/// Interface INodeAdapter provides a set of virtual functions for node manipulation
-/// and data extraction in a tree-like structure.
-/// @tparam AdapterType The specific adapter type that implements the interface.
-template<typename AdapterType>
-class INodeAdapter
+namespace FileParse
 {
-public:
-    virtual ~INodeAdapter() = default;
+    /// The generic serializer templates take adapters by concrete type, so the contract is
+    /// checked at compile time rather than dispatched through a vtable. Adapters are created
+    /// once per visited node, which makes a vptr and an indirect call per operation a cost
+    /// paid on every node of every document.
+    ///
+    /// Attributes are only supported by XML. For JSON these behave as a child node whose tag
+    /// is the attribute name and whose value goes into the value field.
+    template<typename AdapterType>
+    concept NodeAdapterLike = requires(AdapterType & adapter,
+                                   const AdapterType & constAdapter,
+                                   std::string_view name,
+                                   std::string_view text)
+    {
+        /// Checks if the current node is empty.
+        { constAdapter.isEmpty() } -> std::same_as<bool>;
 
-    /// Checks if the current node is empty.
-    [[nodiscard]] virtual bool isEmpty() const = 0;
+        /// Gets the tag of the current node.
+        { constAdapter.getCurrentTag() } -> std::same_as<std::string>;
 
-    /// Gets the tag of the current node.
-    [[nodiscard]] virtual std::string getCurrentTag() const = 0;
+        /// Gets the text content of the current node.
+        { constAdapter.getText() } -> std::same_as<std::string>;
 
-    /// Gets the text content of the current node.
-    [[nodiscard]] virtual std::string getText() const = 0;
+        /// Gets all child nodes of the current node.
+        { constAdapter.getChildNodes() } -> std::same_as<std::vector<AdapterType>>;
 
-    // Gets all child nodes of the current node.
-    [[nodiscard]] virtual std::vector<AdapterType> getChildNodes() const = 0;
+        /// Returns the first child node with the given name, if one exists.
+        { constAdapter.getFirstChildByName(name) } -> std::same_as<std::optional<AdapterType>>;
 
-    /// If child with given name exists, it will return the first child node with the given name.
-    [[nodiscard]] virtual std::optional<AdapterType>
-      getFirstChildByName(std::string_view name) const = 0;
+        /// Gets the child nodes with the specified name.
+        { constAdapter.getChildNodesByName(name) } -> std::same_as<std::vector<AdapterType>>;
 
-    /// Gets the child nodes with the specified name.
-    [[nodiscard]] virtual std::vector<AdapterType> getChildNodesByName(std::string_view name) const
-      = 0;
+        /// Counts the number of child nodes with the specified name.
+        { constAdapter.nChildNode(name) } -> std::same_as<int>;
 
-    /// Counts the number of child nodes with the specified name.
-    [[nodiscard]] virtual int nChildNode(std::string_view name) const = 0;
+        /// Checks if the current node has a child node with the specified name.
+        { constAdapter.hasChildNode(name) } -> std::same_as<bool>;
 
-    /// Checks if the current node has a child node with the specified name.
-    [[nodiscard]] virtual bool hasChildNode(std::string_view name) const = 0;
+        /// Adds a child node with the specified name to the current node.
+        { adapter.addChild(name) } -> std::same_as<AdapterType>;
 
-    /// Adds a child node with the specified name to the current node.
-    [[nodiscard]] virtual AdapterType addChild(std::string_view name) = 0;
+        /// Adds text content to the current node.
+        { adapter.addText(text) } -> std::same_as<void>;
 
-    /// Adds text content to the current node.
-    virtual void addText(std::string_view text) = 0;
+        /// The entire node structure as it will appear in the file.
+        { constAdapter.getContent() } -> std::same_as<std::string>;
 
-    // Adds content of the entire node structure with child into string (the same content
-    // that will be in the file).
-    [[nodiscard]] virtual std::string getContent() const = 0;
-
-    // Attributes are only supported by XML. For JSON, this functions should
-    // behave as they are operating with child node where attribute name is the tag name
-    // and value should go into value field.
-    virtual void addAttribute(std::string_view name, std::string_view value) = 0;
-    [[nodiscard]] virtual std::optional<std::string> getAttribute(std::string_view name) const = 0;
-};
+        { adapter.addAttribute(name, text) } -> std::same_as<void>;
+        { constAdapter.getAttribute(name) } -> std::same_as<std::optional<std::string>>;
+    };
+}   // namespace FileParse
