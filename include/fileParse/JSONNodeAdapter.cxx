@@ -4,47 +4,32 @@
 
 #include <fstream>
 
-struct JSONNodeAdapter::Impl
-{
-    explicit Impl(nlohmann::json * jsonPtr, std::string key)
-        : jsonPtr_(jsonPtr), key_(std::move(key))
-    {}
-
-    // For root nodes that own the JSON data
-    explicit Impl(std::shared_ptr<nlohmann::json> ownedJson, std::string key)
-        : ownedJson_(std::move(ownedJson)), jsonPtr_(ownedJson_.get()), key_(std::move(key))
-    {}
-
-    std::shared_ptr<nlohmann::json> ownedJson_;   // For root ownership
-    nlohmann::json * jsonPtr_;
-    std::string key_;
-};
-
 JSONNodeAdapter::JSONNodeAdapter(nlohmann::json * jsonPtr, std::string key)
-    : pimpl_(std::make_shared<Impl>(jsonPtr, std::move(key)))
+    : jsonPtr_(jsonPtr), key_(std::move(key))
 {}
 
-JSONNodeAdapter::JSONNodeAdapter(std::shared_ptr<Impl> impl) : pimpl_(std::move(impl))
+JSONNodeAdapter::JSONNodeAdapter(std::shared_ptr<nlohmann::json> ownedJson, std::string key)
+    : ownedJson_(std::move(ownedJson)), jsonPtr_(ownedJson_.get()), key_(std::move(key))
 {}
 
 bool JSONNodeAdapter::isEmpty() const
 {
-    return pimpl_->jsonPtr_ == nullptr || pimpl_->jsonPtr_->is_null();
+    return jsonPtr_ == nullptr || jsonPtr_->is_null();
 }
 
 std::string JSONNodeAdapter::getCurrentTag() const
 {
-    return pimpl_->key_;
+    return key_;
 }
 
 std::string JSONNodeAdapter::getText() const
 {
-    if(pimpl_->jsonPtr_ == nullptr)
+    if(jsonPtr_ == nullptr)
     {
         return {};
     }
 
-    const auto & json = *pimpl_->jsonPtr_;
+    const auto & json = *jsonPtr_;
 
     if(json.is_string())
     {
@@ -74,12 +59,12 @@ std::vector<JSONNodeAdapter> JSONNodeAdapter::getChildNodes() const
 {
     std::vector<JSONNodeAdapter> children;
 
-    if(pimpl_->jsonPtr_ == nullptr)
+    if(jsonPtr_ == nullptr)
     {
         return children;
     }
 
-    const auto & json = *pimpl_->jsonPtr_;
+    const auto & json = *jsonPtr_;
 
     if(json.is_object())
     {
@@ -91,13 +76,13 @@ std::vector<JSONNodeAdapter> JSONNodeAdapter::getChildNodes() const
                 for(size_t i = 0; i < it.value().size(); ++i)
                 {
                     children.emplace_back(
-                      const_cast<nlohmann::json *>(&((*pimpl_->jsonPtr_)[it.key()][i])), it.key());
+                      const_cast<nlohmann::json *>(&((*jsonPtr_)[it.key()][i])), it.key());
                 }
             }
             else
             {
                 children.emplace_back(
-                  const_cast<nlohmann::json *>(&((*pimpl_->jsonPtr_)[it.key()])), it.key());
+                  const_cast<nlohmann::json *>(&((*jsonPtr_)[it.key()])), it.key());
             }
         }
     }
@@ -105,8 +90,8 @@ std::vector<JSONNodeAdapter> JSONNodeAdapter::getChildNodes() const
     {
         for(size_t i = 0; i < json.size(); ++i)
         {
-            children.emplace_back(const_cast<nlohmann::json *>(&((*pimpl_->jsonPtr_)[i])),
-                                  pimpl_->key_);
+            children.emplace_back(const_cast<nlohmann::json *>(&((*jsonPtr_)[i])),
+                                  key_);
         }
     }
 
@@ -115,15 +100,15 @@ std::vector<JSONNodeAdapter> JSONNodeAdapter::getChildNodes() const
 
 std::optional<JSONNodeAdapter> JSONNodeAdapter::getFirstChildByName(std::string_view name) const
 {
-    if(pimpl_->jsonPtr_ == nullptr || !pimpl_->jsonPtr_->is_object())
+    if(jsonPtr_ == nullptr || !jsonPtr_->is_object())
     {
         return std::nullopt;
     }
 
     const std::string nameStr(name);
-    if(pimpl_->jsonPtr_->contains(nameStr))
+    if(jsonPtr_->contains(nameStr))
     {
-        auto & child = (*pimpl_->jsonPtr_)[nameStr];
+        auto & child = (*jsonPtr_)[nameStr];
         if(child.is_array() && !child.empty())
         {
             return JSONNodeAdapter(&child[0], nameStr);
@@ -138,15 +123,15 @@ std::vector<JSONNodeAdapter> JSONNodeAdapter::getChildNodesByName(std::string_vi
 {
     std::vector<JSONNodeAdapter> children;
 
-    if(pimpl_->jsonPtr_ == nullptr || !pimpl_->jsonPtr_->is_object())
+    if(jsonPtr_ == nullptr || !jsonPtr_->is_object())
     {
         return children;
     }
 
     const std::string nameStr(name);
-    if(pimpl_->jsonPtr_->contains(nameStr))
+    if(jsonPtr_->contains(nameStr))
     {
-        auto & child = (*pimpl_->jsonPtr_)[nameStr];
+        auto & child = (*jsonPtr_)[nameStr];
         if(child.is_array())
         {
             for(size_t i = 0; i < child.size(); ++i)
@@ -165,15 +150,15 @@ std::vector<JSONNodeAdapter> JSONNodeAdapter::getChildNodesByName(std::string_vi
 
 int JSONNodeAdapter::nChildNode(std::string_view name) const
 {
-    if(pimpl_->jsonPtr_ == nullptr || !pimpl_->jsonPtr_->is_object())
+    if(jsonPtr_ == nullptr || !jsonPtr_->is_object())
     {
         return 0;
     }
 
     const std::string nameStr(name);
-    if(pimpl_->jsonPtr_->contains(nameStr))
+    if(jsonPtr_->contains(nameStr))
     {
-        const auto & child = (*pimpl_->jsonPtr_)[nameStr];
+        const auto & child = (*jsonPtr_)[nameStr];
         if(child.is_array())
         {
             return static_cast<int>(child.size());
@@ -186,46 +171,46 @@ int JSONNodeAdapter::nChildNode(std::string_view name) const
 
 bool JSONNodeAdapter::hasChildNode(std::string_view name) const
 {
-    if(pimpl_->jsonPtr_ == nullptr || !pimpl_->jsonPtr_->is_object())
+    if(jsonPtr_ == nullptr || !jsonPtr_->is_object())
     {
         return false;
     }
 
-    return pimpl_->jsonPtr_->contains(std::string(name));
+    return jsonPtr_->contains(std::string(name));
 }
 
 JSONNodeAdapter JSONNodeAdapter::addChild(std::string_view name)
 {
-    if(pimpl_->jsonPtr_ == nullptr)
+    if(jsonPtr_ == nullptr)
     {
         return JSONNodeAdapter(nullptr, std::string(name));
     }
 
     // Ensure the current node is an object
-    if(!pimpl_->jsonPtr_->is_object())
+    if(!jsonPtr_->is_object())
     {
-        *pimpl_->jsonPtr_ = nlohmann::json::object();
+        *jsonPtr_ = nlohmann::json::object();
     }
 
     const std::string nameStr(name);
 
     // If child doesn't exist, create it as an object
-    if(!pimpl_->jsonPtr_->contains(nameStr))
+    if(!jsonPtr_->contains(nameStr))
     {
-        (*pimpl_->jsonPtr_)[nameStr] = nlohmann::json::object();
-        return JSONNodeAdapter(&(*pimpl_->jsonPtr_)[nameStr], nameStr);
+        (*jsonPtr_)[nameStr] = nlohmann::json::object();
+        return JSONNodeAdapter(&(*jsonPtr_)[nameStr], nameStr);
     }
 
     // Child exists - convert to array or append to existing array
-    auto & existing = (*pimpl_->jsonPtr_)[nameStr];
+    auto & existing = (*jsonPtr_)[nameStr];
     if(!existing.is_array())
     {
         // Convert existing value to array
         nlohmann::json arr = nlohmann::json::array();
         arr.push_back(std::move(existing));
         arr.push_back(nlohmann::json::object());
-        (*pimpl_->jsonPtr_)[nameStr] = std::move(arr);
-        return JSONNodeAdapter(&(*pimpl_->jsonPtr_)[nameStr].back(), nameStr);
+        (*jsonPtr_)[nameStr] = std::move(arr);
+        return JSONNodeAdapter(&(*jsonPtr_)[nameStr].back(), nameStr);
     }
 
     // Already an array, append new object
@@ -235,17 +220,17 @@ JSONNodeAdapter JSONNodeAdapter::addChild(std::string_view name)
 
 void JSONNodeAdapter::addText(std::string_view text)
 {
-    if(pimpl_->jsonPtr_ == nullptr)
+    if(jsonPtr_ == nullptr)
     {
         return;
     }
 
-    *pimpl_->jsonPtr_ = std::string(text);
+    *jsonPtr_ = std::string(text);
 }
 
 int JSONNodeAdapter::writeToFile(std::string_view fileName) const
 {
-    if(pimpl_->jsonPtr_ == nullptr)
+    if(jsonPtr_ == nullptr)
     {
         return 1;
     }
@@ -259,19 +244,19 @@ int JSONNodeAdapter::writeToFile(std::string_view fileName) const
 
     // If this is a root node with ownership, write the owned JSON
     // Otherwise, wrap in an object with the key if it has one
-    if(pimpl_->ownedJson_)
+    if(ownedJson_)
     {
-        file << pimpl_->ownedJson_->dump(4);
+        file << ownedJson_->dump(4);
     }
-    else if(!pimpl_->key_.empty())
+    else if(!key_.empty())
     {
         nlohmann::json wrapper;
-        wrapper[pimpl_->key_] = *pimpl_->jsonPtr_;
+        wrapper[key_] = *jsonPtr_;
         file << wrapper.dump(4);
     }
     else
     {
-        file << pimpl_->jsonPtr_->dump(4);
+        file << jsonPtr_->dump(4);
     }
 
     return 0;
@@ -279,57 +264,57 @@ int JSONNodeAdapter::writeToFile(std::string_view fileName) const
 
 std::string JSONNodeAdapter::getContent() const
 {
-    if(pimpl_->jsonPtr_ == nullptr)
+    if(jsonPtr_ == nullptr)
     {
         return {};
     }
 
     // If this is a root node with ownership, return the owned JSON
-    if(pimpl_->ownedJson_)
+    if(ownedJson_)
     {
-        return pimpl_->ownedJson_->dump(4);
+        return ownedJson_->dump(4);
     }
 
     // Otherwise, wrap in an object with the key if it has one
-    if(!pimpl_->key_.empty())
+    if(!key_.empty())
     {
         nlohmann::json wrapper;
-        wrapper[pimpl_->key_] = *pimpl_->jsonPtr_;
+        wrapper[key_] = *jsonPtr_;
         return wrapper.dump(4);
     }
 
-    return pimpl_->jsonPtr_->dump(4);
+    return jsonPtr_->dump(4);
 }
 
 void JSONNodeAdapter::addAttribute(std::string_view name, std::string_view value)
 {
-    if(pimpl_->jsonPtr_ == nullptr)
+    if(jsonPtr_ == nullptr)
     {
         return;
     }
 
     // Ensure the current node is an object
-    if(!pimpl_->jsonPtr_->is_object())
+    if(!jsonPtr_->is_object())
     {
-        *pimpl_->jsonPtr_ = nlohmann::json::object();
+        *jsonPtr_ = nlohmann::json::object();
     }
 
     // Store attribute with @ prefix to distinguish from child nodes
-    (*pimpl_->jsonPtr_)["@" + std::string(name)] = std::string(value);
+    (*jsonPtr_)["@" + std::string(name)] = std::string(value);
 }
 
 std::optional<std::string> JSONNodeAdapter::getAttribute(std::string_view name) const
 {
-    if(pimpl_->jsonPtr_ == nullptr || !pimpl_->jsonPtr_->is_object())
+    if(jsonPtr_ == nullptr || !jsonPtr_->is_object())
     {
         return std::nullopt;
     }
 
     // Look for attribute with @ prefix
     const std::string nameStr = "@" + std::string(name);
-    if(pimpl_->jsonPtr_->contains(nameStr))
+    if(jsonPtr_->contains(nameStr))
     {
-        const auto & val = (*pimpl_->jsonPtr_)[nameStr];
+        const auto & val = (*jsonPtr_)[nameStr];
         if(val.is_string())
         {
             return val.get<std::string>();
@@ -362,10 +347,10 @@ JSONNodeAdapter createJSONTopNode(std::string_view topNodeName)
     (*root)[topNodeStr] = nlohmann::json::object();
 
     // Create adapter for the inner node (the actual top node)
-    auto impl = std::make_shared<JSONNodeAdapter::Impl>(root, topNodeStr);
-    impl->jsonPtr_ = &(*root)[topNodeStr];
+    JSONNodeAdapter adapter(root, topNodeStr);
+    adapter.jsonPtr_ = &(*root)[topNodeStr];
 
-    return JSONNodeAdapter(std::move(impl));
+    return adapter;
 }
 
 std::optional<JSONNodeAdapter> getJSONTopNodeFromFile(std::string_view fileName,
@@ -389,10 +374,10 @@ std::optional<JSONNodeAdapter> getJSONTopNodeFromFile(std::string_view fileName,
             return std::nullopt;
         }
 
-        auto impl = std::make_shared<JSONNodeAdapter::Impl>(root, topNodeStr);
-        impl->jsonPtr_ = &(*root)[topNodeStr];
+        JSONNodeAdapter adapter(root, topNodeStr);
+        adapter.jsonPtr_ = &(*root)[topNodeStr];
 
-        return JSONNodeAdapter(std::move(impl));
+        return adapter;
     }
     catch(const std::exception &)
     {
@@ -413,10 +398,10 @@ std::optional<JSONNodeAdapter> getJSONTopNodeFromString(std::string_view json,
             return std::nullopt;
         }
 
-        auto impl = std::make_shared<JSONNodeAdapter::Impl>(root, topNodeStr);
-        impl->jsonPtr_ = &(*root)[topNodeStr];
+        JSONNodeAdapter adapter(root, topNodeStr);
+        adapter.jsonPtr_ = &(*root)[topNodeStr];
 
-        return JSONNodeAdapter(std::move(impl));
+        return adapter;
     }
     catch(const std::exception &)
     {
