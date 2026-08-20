@@ -246,17 +246,17 @@ int JSONNodeAdapter::writeToFile(std::string_view fileName) const
     // Otherwise, wrap in an object with the key if it has one
     if(ownedJson_)
     {
-        file << ownedJson_->dump(4);
+        file << ownedJson_->dump(1, '\t');
     }
     else if(!key_.empty())
     {
         nlohmann::json wrapper;
         wrapper[key_] = *jsonPtr_;
-        file << wrapper.dump(4);
+        file << wrapper.dump(1, '\t');
     }
     else
     {
-        file << jsonPtr_->dump(4);
+        file << jsonPtr_->dump(1, '\t');
     }
 
     return 0;
@@ -272,7 +272,7 @@ std::string JSONNodeAdapter::getContent() const
     // If this is a root node with ownership, return the owned JSON
     if(ownedJson_)
     {
-        return ownedJson_->dump(4);
+        return ownedJson_->dump(1, '\t');
     }
 
     // Otherwise, wrap in an object with the key if it has one
@@ -280,10 +280,10 @@ std::string JSONNodeAdapter::getContent() const
     {
         nlohmann::json wrapper;
         wrapper[key_] = *jsonPtr_;
-        return wrapper.dump(4);
+        return wrapper.dump(1, '\t');
     }
 
-    return jsonPtr_->dump(4);
+    return jsonPtr_->dump(1, '\t');
 }
 
 void JSONNodeAdapter::addAttribute(std::string_view name, std::string_view value)
