@@ -6,7 +6,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 set(LIB_MAJOR_VERSION "1")
 set(LIB_MINOR_VERSION "1")
-set(LIB_PATCH_VERSION "5")
+set(LIB_PATCH_VERSION "6")
 set(LIB_VERSION_STRING "${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_PATCH_VERSION}")
 
 # Local development mode. The `local` preset sets LBNL_LOCAL_SIBLINGS=ON (a cache
