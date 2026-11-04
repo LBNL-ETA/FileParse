@@ -81,6 +81,7 @@ add_executable(${PROJECT_TEST_NAME}
         units/MapKeyAsStructureSerializers.unit.cxx
         units/MapSameChilds.unit.cxx
         units/SetSerializers.unit.cxx
+        units/RenamedChild.unit.cxx
         units/ToLower.unit.cxx
         units/VariantEdgeCases.unit.cxx
         units/VectorSerializers.unit.cxx

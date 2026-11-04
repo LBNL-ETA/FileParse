@@ -129,6 +129,7 @@ int main() {
 
 - **NodeAdapter**: Abstraction over XML/JSON nodes (`XMLNodeAdapter`, `JSONNodeAdapter`)
 - **Child**: Wrapper that pairs data with a node path for navigation
+- **RenamedChild**: A child whose tag was renamed: reads under its current and legacy names, writes under the current one
 - **operator<<**: Serialization (C++ object → XML/JSON)
 - **operator>>**: Deserialization (XML/JSON → C++ object)
 

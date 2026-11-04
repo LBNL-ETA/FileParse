@@ -12,6 +12,7 @@ add_library( ${LIB_NAME}
 		Enum.hxx
 		Map.hxx
 		Optional.hxx
+		RenamedChild.hxx
 		Set.hxx
 		StringConversion.hxx
 		Variant.hxx
