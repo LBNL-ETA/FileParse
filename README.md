@@ -218,7 +218,7 @@ auto obj2 = Common::loadFromString<MyType>(jsonData, "Root", FileParse::FileForm
 
 ## Dependencies
 
-[Dependency Chart](doc/DependencyChart.md)
+[Dependency Chart](https://github.com/LBNL-ETA/FileParse/issues/14)
 
 ## Building (developers)
 
