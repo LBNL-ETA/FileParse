@@ -216,6 +216,10 @@ auto obj2 = Common::loadFromString<MyType>(jsonData, "Root", FileParse::FileForm
 | Enums | String representation | String representation |
 | XML Attributes | `attribute="value"` | `"@attribute": "value"` |
 
+## Dependencies
+
+[Dependency Chart](doc/DependencyChart.md)
+
 ## Building (developers)
 
 All dependencies (`XMLParser`, `nlohmann_json`) are downloaded automatically via CMake FetchContent on first configure. Tests are built by default (`-DBUILD_FileParse_tests=OFF` to disable).
