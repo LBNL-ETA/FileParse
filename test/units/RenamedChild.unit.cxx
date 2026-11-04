@@ -318,10 +318,10 @@ TEST_P(RenamedChildFormats, DesignatedInitializersReadAndWrite)
     const auto older{fileWith(firstName, written, GetParam())};
 
     readFrom(older, [&value](const auto & node) {
-        node >> RenamedChild{.current = currentName, .legacy = {lastName, firstName}, .data = value};
+        node >> RenamedChild<double>{.current = currentName, .legacy = {lastName, firstName}, .data = value};
     });
     const auto saved{contentOf(GetParam(), [&written](auto & node) {
-        node << RenamedChild{.current = currentName, .legacy = {lastName, firstName}, .data = written};
+        node << RenamedChild<const double>{.current = currentName, .legacy = {lastName, firstName}, .data = written};
     })};
 
     EXPECT_DOUBLE_EQ(value, written);

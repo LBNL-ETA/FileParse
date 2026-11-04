@@ -36,7 +36,8 @@ namespace FileParse
     };
 
     /// Deduces the type from a positional call on compilers without class template argument
-    /// deduction for aggregates. Designated initializers need that deduction: Clang 17 or later.
+    /// deduction for aggregates. Designated initializers need that deduction, which arrived in
+    /// Clang 17; code built on older compilers spells the type: RenamedChild<Info>{.current = ...}.
     template<typename T>
     RenamedChild(std::string, std::vector<std::string>, T &) -> RenamedChild<T>;
 
