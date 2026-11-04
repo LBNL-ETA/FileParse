@@ -87,7 +87,7 @@ endif()
 # Generate dependency diagram from template
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/doc/FileParse.md.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/doc/FileParse.md
+    ${CMAKE_CURRENT_SOURCE_DIR}/doc/DependencyChart.md
 )
 
 add_subdirectory(include/fileParse)
