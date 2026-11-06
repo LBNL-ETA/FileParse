@@ -312,7 +312,7 @@ Delete the `build/` directory and re-run the configure and build commands above.
 
 ## License
 
-Berkeley Lab WINDOW Calc Engine License - See LICENSE file for details.
+Berkeley Lab FileParse License - See LICENSE file for details.
 
 ## Contributing
 
