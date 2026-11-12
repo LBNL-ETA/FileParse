@@ -63,9 +63,24 @@ public:
     /// @return The newly added child node adapter.
     [[nodiscard]] JSONNodeAdapter addChild(std::string_view name);
 
+    /// Adds a child that is one item of a list. The list is always written as a JSON array,
+    /// also when it holds a single item.
+    /// @param name The name of the list.
+    /// @return The newly added item.
+    [[nodiscard]] JSONNodeAdapter addListChild(std::string_view name);
+
     /// Adds text content to the node.
     /// @param text The text to add to the node.
     void addText(std::string_view text);
+
+    /// Stores a number, given as text, as a JSON number. Text that is not a JSON number
+    /// (inf and nan are not) is stored as a string, so that it still reads back.
+    /// @param text The formatted number.
+    void addNumber(std::string_view text);
+
+    /// Stores a JSON boolean.
+    /// @param value The value to store.
+    void addBoolean(bool value);
 
     /// Writes the node's content to a file.
     /// @param fileName The name of the file to write the content to.
@@ -124,3 +139,7 @@ private:
                                                                        std::string_view topNodeName);
 static_assert(FileParse::NodeAdapterLike<JSONNodeAdapter>,
               "JSONNodeAdapter must satisfy the NodeAdapter contract");
+static_assert(FileParse::TypedValueAdapter<JSONNodeAdapter>,
+              "JSONNodeAdapter must write numbers and booleans as JSON values");
+static_assert(FileParse::ListChildAdapter<JSONNodeAdapter>,
+              "JSONNodeAdapter must write lists as JSON arrays");

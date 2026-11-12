@@ -35,17 +35,10 @@ std::string JSONNodeAdapter::getText() const
     {
         return json.get<std::string>();
     }
-    if(json.is_number_integer())
+    if(json.is_number())
     {
-        return std::to_string(json.get<int64_t>());
-    }
-    if(json.is_number_unsigned())
-    {
-        return std::to_string(json.get<uint64_t>());
-    }
-    if(json.is_number_float())
-    {
-        return std::to_string(json.get<double>());
+        // dump() keeps every digit of the number; std::to_string cuts a double to six decimals.
+        return json.dump();
     }
     if(json.is_boolean())
     {
@@ -218,6 +211,35 @@ JSONNodeAdapter JSONNodeAdapter::addChild(std::string_view name)
     return JSONNodeAdapter(&existing.back(), nameStr);
 }
 
+JSONNodeAdapter JSONNodeAdapter::addListChild(std::string_view name)
+{
+    if(jsonPtr_ == nullptr)
+    {
+        return JSONNodeAdapter(nullptr, std::string(name));
+    }
+
+    if(!jsonPtr_->is_object())
+    {
+        *jsonPtr_ = nlohmann::json::object();
+    }
+
+    const std::string nameStr(name);
+    auto & list = (*jsonPtr_)[nameStr];
+    if(!list.is_array())
+    {
+        // A value already stored under this name becomes the first item of the list.
+        auto items = nlohmann::json::array();
+        if(!list.is_null())
+        {
+            items.push_back(std::move(list));
+        }
+        list = std::move(items);
+    }
+
+    list.push_back(nlohmann::json::object());
+    return JSONNodeAdapter(&list.back(), nameStr);
+}
+
 void JSONNodeAdapter::addText(std::string_view text)
 {
     if(jsonPtr_ == nullptr)
@@ -226,6 +248,35 @@ void JSONNodeAdapter::addText(std::string_view text)
     }
 
     *jsonPtr_ = std::string(text);
+}
+
+void JSONNodeAdapter::addNumber(std::string_view text)
+{
+    if(jsonPtr_ == nullptr)
+    {
+        return;
+    }
+
+    constexpr bool allowExceptions{false};
+    auto number = nlohmann::json::parse(text, nullptr, allowExceptions);
+    if(number.is_number())
+    {
+        *jsonPtr_ = std::move(number);
+    }
+    else
+    {
+        *jsonPtr_ = std::string(text);
+    }
+}
+
+void JSONNodeAdapter::addBoolean(bool value)
+{
+    if(jsonPtr_ == nullptr)
+    {
+        return;
+    }
+
+    *jsonPtr_ = value;
 }
 
 int JSONNodeAdapter::writeToFile(std::string_view fileName) const
@@ -319,17 +370,9 @@ std::optional<std::string> JSONNodeAdapter::getAttribute(std::string_view name) 
         {
             return val.get<std::string>();
         }
-        if(val.is_number_integer())
+        if(val.is_number())
         {
-            return std::to_string(val.get<int64_t>());
-        }
-        if(val.is_number_unsigned())
-        {
-            return std::to_string(val.get<uint64_t>());
-        }
-        if(val.is_number_float())
-        {
-            return std::to_string(val.get<double>());
+            return val.dump();
         }
         if(val.is_boolean())
         {

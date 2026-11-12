@@ -61,4 +61,70 @@ namespace FileParse
         { adapter.addAttribute(name, text) } -> std::same_as<void>;
         { constAdapter.getAttribute(name) } -> std::same_as<std::optional<std::string>>;
     };
+
+    /// Optional capability: the file format has value types other than text (JSON does, XML
+    /// does not). An adapter that offers these methods receives numbers and booleans through
+    /// them; every other adapter keeps receiving them through addText, unchanged.
+    ///
+    /// addNumber takes the number already formatted as text, so the configured precision
+    /// applies to every format in the same way.
+    template<typename AdapterType>
+    concept TypedValueAdapter =
+      requires(AdapterType & adapter, std::string_view text, bool flag)
+    {
+        { adapter.addNumber(text) } -> std::same_as<void>;
+        { adapter.addBoolean(flag) } -> std::same_as<void>;
+    };
+
+    /// Optional capability: the file format tells a list from a single child (JSON does: an
+    /// array against an object; XML does not: both are repeated elements). An adapter that
+    /// offers addListChild receives every item of a list through it, so a list with one item
+    /// is still written as a list. Every other adapter keeps receiving items through addChild.
+    template<typename AdapterType>
+    concept ListChildAdapter = requires(AdapterType & adapter, std::string_view name)
+    {
+        { adapter.addListChild(name) } -> std::same_as<AdapterType>;
+    };
+
+    /// Writes a number that is already formatted as text.
+    template<typename NodeAdapter>
+    inline void addNumberText(NodeAdapter & node, std::string_view text)
+    {
+        if constexpr(TypedValueAdapter<NodeAdapter>)
+        {
+            node.addNumber(text);
+        }
+        else
+        {
+            node.addText(text);
+        }
+    }
+
+    /// Writes a boolean value.
+    template<typename NodeAdapter>
+    inline void addBooleanValue(NodeAdapter & node, bool value)
+    {
+        if constexpr(TypedValueAdapter<NodeAdapter>)
+        {
+            node.addBoolean(value);
+        }
+        else
+        {
+            node.addText(value ? "true" : "false");
+        }
+    }
+
+    /// Adds a child that is one item of a list of children with the same name.
+    template<typename NodeAdapter>
+    [[nodiscard]] inline NodeAdapter addListChild(NodeAdapter & node, std::string_view name)
+    {
+        if constexpr(ListChildAdapter<NodeAdapter>)
+        {
+            return node.addListChild(name);
+        }
+        else
+        {
+            return node.addChild(name);
+        }
+    }
 }   // namespace FileParse

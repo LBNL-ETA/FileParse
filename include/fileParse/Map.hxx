@@ -48,7 +48,7 @@ namespace FileParse
 
         for(const auto & [enumKey, mapValue] : map)
         {
-            auto childNode{node.addChild(childNodeName)};
+            auto childNode{addListChild(node, childNodeName)};
             childNode << enumKey;
             childNode << mapValue;
         }
@@ -112,7 +112,7 @@ namespace FileParse
 
         for(const auto & [enumKey, mapValue] : map)
         {
-            auto childNode{node.addChild(mapStructure.childsName)};
+            auto childNode{addListChild(node, mapStructure.childsName)};
             childNode << Child{mapStructure.keyName, enumKey};
             childNode << Child{mapStructure.valueName, mapValue};
         }

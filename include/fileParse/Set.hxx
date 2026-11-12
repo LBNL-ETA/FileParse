@@ -28,7 +28,7 @@ namespace FileParse
 
         for(const auto & item : value.data)
         {
-            NodeAdapter lastNode = secondToLastNode.addChild(value.nodeNames.back());
+            NodeAdapter lastNode = addListChild(secondToLastNode, value.nodeNames.back());
             lastNode << item;
         }
 
@@ -101,7 +101,7 @@ namespace FileParse
 
             for(const auto & item : opt_vec.data.value())
             {
-                auto tableNode = currentNode.addChild(opt_vec.nodeNames.back());
+                auto tableNode = addListChild(currentNode, opt_vec.nodeNames.back());
                 tableNode << item;
             }
         }
@@ -132,7 +132,7 @@ namespace FileParse
 
         for(const auto & value : vec)
         {
-            NodeAdapter childNode = currentNode.addChild(tags.back());
+            NodeAdapter childNode = addListChild(currentNode, tags.back());
             childNode.addText(converter(value));
         }
 

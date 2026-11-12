@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "Formatter.hxx"
+#include "INodeAdapter.hxx"
 
 namespace FileParse
 {
@@ -214,7 +215,7 @@ namespace FileParse
     template<typename NodeAdapter>
     inline NodeAdapter & operator<<(NodeAdapter & node, bool value)
     {
-        node.addText(value ? "true" : "false");
+        addBooleanValue(node, value);
         return node;
     }
 
@@ -237,7 +238,7 @@ namespace FileParse
     template<typename NodeAdapter>
     inline NodeAdapter & operator<<(NodeAdapter & node, int value)
     {
-        node.addText(std::to_string(value));
+        addNumberText(node, std::to_string(value));
         return node;
     }
 
@@ -262,7 +263,7 @@ namespace FileParse
     {
         const auto & config{SerializationConfig::getInstance()};
 
-        node.addText(FileParse::formatDouble(
+        addNumberText(node, FileParse::formatDouble(
           value, config.precision, config.scientificLowerBound, config.scientificUpperBound));
 
         return node;
@@ -287,7 +288,7 @@ namespace FileParse
     template<typename NodeAdapter>
     inline NodeAdapter & operator<<(NodeAdapter & node, size_t value)
     {
-        node.addText(std::to_string(value));
+        addNumberText(node, std::to_string(value));
         return node;
     }
 
