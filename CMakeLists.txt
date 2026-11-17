@@ -85,9 +85,24 @@ if(NOT TARGET nlohmann_json)
 endif()
 
 # Generate dependency diagram from template
+# This project's own box in the dependency chart: the checked-out branch while work is
+# in flight, the version when the checkout sits exactly on a release tag.
+set(Chart_Self "Version_${LIB_VERSION_STRING}")
+execute_process(COMMAND git describe --tags --exact-match
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    RESULT_VARIABLE Chart_NotOnTag OUTPUT_QUIET ERROR_QUIET)
+execute_process(COMMAND git rev-parse --abbrev-ref HEAD
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    OUTPUT_VARIABLE Chart_Branch OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
+if(Chart_Branch STREQUAL "HEAD" AND DEFINED ENV{GITHUB_REF_NAME})
+    set(Chart_Branch "$ENV{GITHUB_REF_NAME}")
+endif()
+if(Chart_NotOnTag AND Chart_Branch AND NOT Chart_Branch STREQUAL "HEAD")
+    set(Chart_Self "${Chart_Branch}")
+endif()
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/doc/FileParse.md.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/doc/FileParse.md
+    ${CMAKE_CURRENT_SOURCE_DIR}/doc/DependencyChart.md
 )
 
 add_subdirectory(include/fileParse)
@@ -110,6 +125,7 @@ endif()
 
 # Setting variable for parent projects so it can be checked if same version is used
 set_property(TARGET ${LIB_NAME} PROPERTY xmlParser_Branch ${xmlParser_Branch})
+set_property(TARGET ${LIB_NAME} PROPERTY nlohmann_json_Branch ${nlohmann_json_Branch})
 
 if (MSVC)
     # Set warning level to 4 for MSVC
